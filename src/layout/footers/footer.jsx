@@ -35,8 +35,8 @@ const footer_data = [
     links: [
       { name: "Contact us", link: "/contact" },
       { name: "Online Chat", link: "/online-chat" },
-      { name: "Whatsapp", link: "/whatsapp" },
-      { name: "Telegram", link: "/telegram" },
+      // { name: "Whatsapp", link: "/whatsapp" },
+      // { name: "Telegram", link: "/telegram" },
       { name: "Ticketing", link: "/ticketing" },
     ],
   },
@@ -44,33 +44,33 @@ const footer_data = [
 
 
 // social_links
-const social_links = [
-  {
-    link: "http://facebook.com",
-    target: "_blank",
-    icon: "fab fa-facebook-f",
-    name: "Facebook",
-  },
-  {
-    link: "https://www.youtube.com/",
-    target: "_blank",
-    icon: "fab fa-youtube",
-    name: "Youtube",
-  },
-  {
-    link: "https://www.basketball.com/",
-    target: "_blank",
-    icon: "fa-light fa-basketball",
-    name: "Instagram",
-  },
+// const social_links = [
+//   {
+//     link: "http://facebook.com",
+//     target: "_blank",
+//     icon: "fab fa-facebook-f",
+//     name: "Facebook",
+//   },
+//   {
+//     link: "https://www.youtube.com/",
+//     target: "_blank",
+//     icon: "fab fa-youtube",
+//     name: "Youtube",
+//   },
+//   {
+//     link: "https://www.basketball.com/",
+//     target: "_blank",
+//     icon: "fa-light fa-basketball",
+//     name: "Instagram",
+//   },
 
-  {
-    link: "http://whatsapp.com",
-    target: "_blank",
-    icon: "fa-brands fa-whatsapp",
-    name: "Twitter",
-  },
-];
+//   {
+//     link: "http://whatsapp.com",
+//     target: "_blank",
+//     icon: "fa-brands fa-whatsapp",
+//     name: "Twitter",
+//   },
+// ];
 
 const copyright = {
   logo: "/assets/img/logo/logo.png",
@@ -129,13 +129,13 @@ const Footer = () => {
                         </button>
                       </form>
                     </div>
-                    <div className="footer-widget__social d-flex align-items-center">
+                    {/* <div className="footer-widget__social d-flex align-items-center">
                       {social_links.map((link, i) => (
                         <a href={link.link} target={link.target} key={i}>
                           <i className={link.icon}></i>
                         </a>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

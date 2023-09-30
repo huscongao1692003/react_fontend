@@ -22,6 +22,13 @@ const  CourseListArea = () => {
           <div className="row mb-20">
             <div className="col-lg-4 col-md-12 courser-list-width mb-60">
               <div className="course-sidebar">
+              <div className="country-select">
+                  <select>
+                    <option value="view">View</option>
+                    <option value="course-grid">Course Grid</option>
+                    <option value="course-list">Course List</option>
+                  </select>
+                </div>
                 <div className="country-select">
                   <h4 className="course-sidebar__title mb-35">Category </h4>
                   <select>

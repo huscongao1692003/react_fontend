@@ -6,21 +6,14 @@ import Sidebar from "./sidebar";
 
 
 // category_data
-const category_data = [
-  {title: "Bangla Medium"},
-  {title: "English Medium"},
-  {title: "Video Edition"},
-  {title: "Logo Design"},
-  {title: "Francy Medium"},
 
-]
 const Header = () => {
 const {sticky} = useSticky()
   const [isActive, setIsActive] = useState(false);
 
   return (
     <>
-      <header className="header__transparent ">
+      <header className="header__transparent "style={{ backgroundColor: "rgba(36, 93, 81, 0.5)"}}>
         <div className="header__area">
           <div className={`main-header header-xy-spacing ${sticky ? "header-sticky" : ""}`} id="header-sticky">
             <div className="container-fluid">
@@ -31,27 +24,6 @@ const {sticky} = useSticky()
                       <Link href="/">
                         <img src="/assets/img/logo/logo.png" alt="logo" />
                       </Link>
-                    </div>
-                    <div className="header-cat-menu ml-40 d-none d-md-block">
-                      <nav>
-                        <ul>
-                          <li>
-                            <a href="#">
-                              Categorie {" "}
-                              <span>
-                                <i className="arrow_carrot-down"></i>
-                              </span>
-                            </a>
-                            <ul className="sub-menu">
-                              {category_data.map((item, i) => 
-                               <li key={i}>
-                               <Link href="/course-grid">{item.title}</Link>
-                             </li>
-                              )}
-                            </ul>
-                          </li>
-                        </ul>
-                      </nav>
                     </div>
                   </div>
                 </div>

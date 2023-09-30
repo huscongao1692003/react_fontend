@@ -213,7 +213,7 @@ const CheckoutArea = () => {
                                              <th className="product-total">Total</th>
                                           </tr>
                                        </thead>
-                                       <tbody>
+                                       {/* <tbody>
                                           <tr className="cart_item">
                                                 <td className="product-name">
                                                    Vestibulum suscipit <strong className="product-quantity"> × 1</strong>
@@ -230,7 +230,7 @@ const CheckoutArea = () => {
                                                    <span className="amount">$50.00</span>
                                                 </td>
                                           </tr>
-                                       </tbody>
+                                       </tbody> */}
                                        <tfoot>
                                           <tr className="cart-subtotal">
                                                 <th>Cart Subtotal</th>

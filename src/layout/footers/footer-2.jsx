@@ -36,33 +36,33 @@ const footer_two_content = [
 ];
 
 // social_links
-const social_links = [
-  {
-    link: "http://facebook.com",
-    target: "_blank",
-    icon: "fab fa-facebook-f",
-    name: "Facebook",
-  },
-  {
-    link: "https://www.youtube.com/",
-    target: "_blank",
-    icon: "fab fa-youtube",
-    name: "Youtube",
-  },
-  {
-    link: "https://www.basketball.com/",
-    target: "_blank",
-    icon: "fa-light fa-basketball",
-    name: "Instagram",
-  },
+// const social_links = [
+//   {
+//     link: "http://facebook.com",
+//     target: "_blank",
+//     icon: "fab fa-facebook-f",
+//     name: "Facebook",
+//   },
+//   {
+//     link: "https://www.youtube.com/",
+//     target: "_blank",
+//     icon: "fab fa-youtube",
+//     name: "Youtube",
+//   },
+//   {
+//     link: "https://www.basketball.com/",
+//     target: "_blank",
+//     icon: "fa-light fa-basketball",
+//     name: "Instagram",
+//   },
 
-  {
-    link: "http://whatsapp.com",
-    target: "_blank",
-    icon: "fa-brands fa-whatsapp",
-    name: "Twitter",
-  },
-];
+//   {
+//     link: "http://whatsapp.com",
+//     target: "_blank",
+//     icon: "fa-brands fa-whatsapp",
+//     name: "Twitter",
+//   },
+// ];
 
 // footer bottom data
 const footer_bottom = [

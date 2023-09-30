@@ -5,23 +5,21 @@ const menu_data = [
     link: "/",
     has_dropdown: true,
     sub_menus: [
-      { link: "/", title: "Home Style 1" },
-      { link: "/home-2", title: "Home Style 2" },
-      { link: "/home-3", title: "Home Style 3" },
+      // { link: "/", title: "Home" },
     ],
   },
   {
     id: 2,
-    title: "Pages",
+    title: "Contact",
     link: "/about",
     has_dropdown: true,
     sub_menus: [
       { link: "/about", title: "About" },
-      { link: "/contact", title: "Contact" },
+      // { link: "/contact", title: "Contact" },
       { link: "/check-out", title: "Check Out" },
       { link: "/faq", title: "FAQ" },
-      { link: "/register", title: "Register" },
-      { link: "/sign-in", title: "Sign In" },
+      // { link: "/register", title: "Register" },
+      // { link: "/sign-in", title: "Sign In" },
     ],
   },
   {
@@ -37,12 +35,12 @@ const menu_data = [
   {
     id: 4,
     title: "Course",
-    link: "/course-grid",
+    link: "/course-list",
     has_dropdown: true,
     sub_menus: [
-      { link: "/course-grid", title: "Course Grid" },
-      { link: "/course-list", title: "Course List" },
-      { link: "/course-details", title: "Course Details" },
+      // { link: "/course-grid", title: "Course Grid" },
+      // { link: "/course", title: "Course List" },
+      // { link: "/course-details", title: "Course Details" },
     ],
   },
   {
@@ -51,10 +49,10 @@ const menu_data = [
     link: "/blog",
     has_dropdown: true,
     sub_menus: [
-      { link: "/blog", title: "Blog Sidebar" },
-      { link: "/blog-grid", title: "Blog Grid" },
-      { link: "/blog-masonry", title: "Blog Masonry" },
-      { link: "/blog-details", title: "Blog Details" },
+      // { link: "/blog", title: "Blog Sidebar" },
+      // { link: "/blog-grid", title: "Blog Grid" },
+      // { link: "/blog-masonry", title: "Blog Masonry" },
+      // { link: "/blog-details", title: "Blog Details" },
     ],
   },
   

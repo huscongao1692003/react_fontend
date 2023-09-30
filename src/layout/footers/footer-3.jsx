@@ -71,33 +71,33 @@ const footer_three_content = [
 ];
 
 // social_links
-const social_links = [
-  {
-    link: "http://facebook.com",
-    target: "_blank",
-    icon: "fab fa-facebook-f",
-    name: "Facebook",
-  },
-  {
-    link: "https://www.youtube.com/",
-    target: "_blank",
-    icon: "fab fa-youtube",
-    name: "Youtube",
-  },
-  {
-    link: "https://www.basketball.com/",
-    target: "_blank",
-    icon: "fa-light fa-basketball",
-    name: "Instagram",
-  },
+// const social_links = [
+//   {
+//     link: "http://facebook.com",
+//     target: "_blank",
+//     icon: "fab fa-facebook-f",
+//     name: "Facebook",
+//   },
+//   {
+//     link: "https://www.youtube.com/",
+//     target: "_blank",
+//     icon: "fab fa-youtube",
+//     name: "Youtube",
+//   },
+//   {
+//     link: "https://www.basketball.com/",
+//     target: "_blank",
+//     icon: "fa-light fa-basketball",
+//     name: "Instagram",
+//   },
 
-  {
-    link: "http://whatsapp.com",
-    target: "_blank",
-    icon: "fa-brands fa-whatsapp",
-    name: "Twitter",
-  },
-];
+//   {
+//     link: "http://whatsapp.com",
+//     target: "_blank",
+//     icon: "fa-brands fa-whatsapp",
+//     name: "Twitter",
+//   },
+// ];
 
 const FooterThree = () => {
   return (
@@ -148,7 +148,7 @@ const FooterThree = () => {
                     </span>
                   </div>
                 </div>
-                <div className="col-xl-3 col-lg-4">
+                {/* <div className="col-xl-3 col-lg-4">
                   <div className="f-copyright__social-area mb-20 text-lg-end">
                     {social_links.map((item, i) => (
                       <a key={i} href={item.link} target={item.target}>
@@ -157,7 +157,7 @@ const FooterThree = () => {
                     ))}
                     <br />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
