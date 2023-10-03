@@ -3,13 +3,13 @@ import SuitableArea from "@/src/common/suitable-area";
 import React from "react";
 import VideoArea from "../../../common/video-area";
 import AboutArea from "../../../common/about-area";
-import BannerArea from "./banner-area";
+import BannerArea from "../home/banner-area";
 import BlogArea from "./blog-area";
 import CategoryArea from "./category-area";
 import ChooseArea from "./choose-area";
-import CounterArea from "./counter-area";
+import CounterArea from "../home/counter-area";
 import FeatureArea from "../../../common/feature-area";
-import OurCourse from "./our-course";
+import OurCourse from "../home/our-course";
 import TestimonialArea from "../../../common/testimonial-area-2";
 
 const HomeThree = () => {

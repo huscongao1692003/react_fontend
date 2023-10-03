@@ -59,11 +59,11 @@ const ChooseArea = ({style_about, style_2}) => {
                     ))}
                   </ul>
                 </div>
-                <div className="choose-btn">
+                {/* <div className="choose-btn">
                   <Link href="/about" className="tp-btn">
                     More Details
                   </Link>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="col-xl-7 col-lg-6 col-md-12">

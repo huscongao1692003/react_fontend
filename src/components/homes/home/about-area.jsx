@@ -27,7 +27,7 @@ const about_info = {
     img_3: "/assets/img/about/about-shape-02.png",
     about_title: "About Our Courses",
     sub_title:"Explore Thousands of Creative Classes.",
-    des: <>Dramatically supply transparent deliverables beforese backward comp internal or "organic" sources. Comp  transparent leverage other.</>,
+    des: <>Our drawing course provides aspiring artists with the skills and techniques needed to create stunning artwork, from basic sketching to advanced shading and composition, all taught by experienced instructors in a supportive and engaging online environment.</>,
     about_btn: "Read More"
 }
 

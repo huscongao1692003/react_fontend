@@ -1,7 +1,7 @@
 
 import React from "react";
 import Breadcrumb from "../bredcrumb/breadcrumb";
-import CounterArea from "../homes/home-3/counter-area";
+import CounterArea from "../homes/home/counter-area";
 import PostboxBlogDetails from "./postbox-blog-details";
 
 const BlogDetails = () => {
