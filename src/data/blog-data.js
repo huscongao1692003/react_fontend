@@ -1,3 +1,16 @@
+import axios, {isCancel, AxiosError} from 'axios';
+axios.get('https://drawproject-production.up.railway.app/api/v1/post')
+  .then(function (response) {
+     var result = response.data;
+    console.log(result);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .finally(function () {
+    // always executed
+  });
 const blog_data = [
   {
     id: 1,

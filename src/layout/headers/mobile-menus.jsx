@@ -41,7 +41,7 @@ const MobileMenus = () => {
                     }`}
                    
                     onClick={() => openMobileMenu(menu.title)}
-                    style={{ fontSize: "px", cursor: "pointer" }}
+                    style={{ fontSize: "18px", cursor: "pointer" }}
                   >
                     <i className="fal fa-plus"></i>
                   </a>
