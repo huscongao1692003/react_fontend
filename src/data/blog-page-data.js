@@ -1,3 +1,23 @@
+// import axios from "axios";
+// import React from "react";
+
+// const blog_page_data = async (blog_page_data, limit) => {
+//   const res = await axios.get('https://drawproject-production.up.railway.app/api/v1/post', {
+//     params: {
+//       limit,
+//     },
+//     withCredentials: true,
+//     credentials: 'include',
+//     headers:{
+//       'content-type': 'aplication/json',
+//       Authorization: 'Bearer ${blog_page_data}',
+//     },
+//   });
+//   return res.post;
+
+// }
+
+// export default blog_page_data;
 // blog_page_data like this
 const blog_page_data = [
   {
