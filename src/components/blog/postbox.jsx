@@ -7,6 +7,7 @@ import BlogSearch from "./blog-search";
 import Category from "./category";
 import RecentPost from "./recent-post";
 import Tags from "./tags";
+import App from "./Switch";
 
 const setting = {
   infinite: true,
@@ -158,6 +159,7 @@ const Postbox = () => {
             </div>
             <div className="col-xxl-4 col-xl-4 col-lg-5 col-md-12">
               <div className="sidebar__wrapper">
+                {/* <App/> */}
                 <BlogSearch />
                 <RecentPost />
                 <Category />

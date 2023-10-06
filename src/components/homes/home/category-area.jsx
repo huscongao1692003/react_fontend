@@ -5,52 +5,53 @@ import React from "react";
 const category_data = [
   {
     id: 1,
-    img: "/assets/img/category/category-01.png",
-    title: "Design Deve",
+    img: "/assets/img/category/drawing.png",
+    title: "Drawing",
     link: "/course-grid",
   },
   {
     id: 2,
-    img: "/assets/img/category/category-02.png",
-    title: "Development",
+    img: "/assets/img/category/digital.png",
+    title: "Digital",
     link: "/course-grid",
   },
   {
     id: 3,
-    img: "/assets/img/category/category-03.png",
-    title: "Marketing",
+    img: "/assets/img/category/sketching.png",
+    title: "Sketching",
     link: "/course-grid",
   },
   {
     id: 4,
-    img: "/assets/img/category/category-04.png",
-    title: "It & Software",
+    img: "/assets/img/category/painting.png",
+    title: "Painting",
     link: "/course-grid",
   },
   {
     id: 5,
-    img: "/assets/img/category/category-05.png",
-    title: "Videography",
+    img: "/assets/img/category/comic.png",
+    title: "Comic",
     link: "/course-grid",
   },
   {
     id: 6,
-    img: "/assets/img/category/category-06.png",
-    title: "Business Sys",
+    img: "/assets/img/category/animal.png",
+    title: "Animals",
     link: "/course-grid",
   },
   {
     id: 7,
-    img: "/assets/img/category/category-07.png",
-    title: "Photography",
+    img: "/assets/img/category/animation.png",
+    title: "Animation",
     link: "/course-grid",
   },
   {
     id: 8,
-    img: "/assets/img/category/category-08.png",
-    title: "Musical Intru",
+    img: "/assets/img/category/landscape.png",
+    title: "Landscape",
     link: "/course-grid",
   },
+  
 ];
 
 
@@ -63,7 +64,7 @@ const CategoryArea = () => {
         data-wow-delay=".4s"
         style={{ backgroundImage: `url(/assets/img/bg/shape-bg-1.png)` }}
       >
-        <div className="container">
+        <div className="container" style={{textAlign: "center"}}>
           <div className="row text-center">
             <div className="col-lg-12">
               <div className="section-title mb-65">

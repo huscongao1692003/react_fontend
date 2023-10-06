@@ -28,7 +28,7 @@ const Sidebar = ({ isActive, setIsActive }) => {
               <a href="mailto:epora@example.com">epora@example.com</a>
             </li>
           </ul>
-          <div className="side-social">
+          {/* <div className="side-social">
             <a href="#">
               <i className="fab fa-facebook-f"></i>
             </a>
@@ -41,7 +41,7 @@ const Sidebar = ({ isActive, setIsActive }) => {
             <a href="#">
               <i className="fab fa-instagram"></i>
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className={`body-overlay ${isActive ? "opened" : ""} `} onClick={() => setIsActive(false)}></div>

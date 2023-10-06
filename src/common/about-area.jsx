@@ -8,8 +8,8 @@ const about_info = {
     review: "4.7",
     pro_courses: "3.5K",
     title: 'Explore Thousands of Creative Classes.',
-    des: <> Dramatically supply transparent deliverables befoe backward
-    comp internal or "organic" sources.</>
+    des: <> Discover thousands of creative classes and courses to enhance your skills and knowledge. 
+    Our platform offers transparent and reliable learning materials from both internal and external sources."</>
 }
 
 
@@ -91,7 +91,7 @@ const AboutArea = ({style_about}) => {
                   </ul>
                 </div>
                 <div className="tp-about-btn-3">
-                  <Link href="/about" className="tp-btn">
+                  <Link href="/course-list" className="tp-btn">
                     Explore Courses
                   </Link>
                 </div>

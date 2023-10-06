@@ -9,9 +9,9 @@ const footer_data = [
     links: [
       { name: "About Us", link: "/about" },
       { name: "Blog", link: "/blog" },
-      { name: "Careers", link: "/careers" },
-      { name: "Jobs", link: "/" },
-      { name: "In Press", link: "/" },
+      // { name: "Careers", link: "/careers" },
+      // { name: "Jobs", link: "/" },
+      // { name: "In Press", link: "/" },
     ],
   },
   {
@@ -20,7 +20,7 @@ const footer_data = [
     cls: "col-xl-3",
     footer_col: "footer-col-2",
     links: [
-      { name: "Refund Policy", link: "/policy" },
+      // { name: "Refund Policy", link: "/policy" },
       { name: "Documentation", link: "/documentation" },
       { name: "Chat online", link: "/chat-online" },
       { name: "Order Cancel", link: "/order-cancel" },
@@ -112,7 +112,7 @@ const Footer = () => {
                 <div className="col-xl-4 col-lg-6 col-md-8">
                   <div className="footer-widget footer-col-4  mb-50">
                     <div className="footer-widget__text mb-35">
-                      <h3 className="footer-widget__title">Support</h3>
+                      <h3 className="footer-widget__title">Subcribe</h3>
                     </div>
                     <p>
                       Be the first one to know about discounts, offers and

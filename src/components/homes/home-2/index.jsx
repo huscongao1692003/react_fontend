@@ -8,7 +8,7 @@ import BlogArea from "./blog-area";
 import CategoryArea from "./category-area";
 import ChooseArea from "../../../common/choose-area";
 import CourseArea from "./course-area";
-import HeroSlider from "./hero-slider";
+import HeroSlider from "../home/hero-slider";
 import TestimonialAreaTwo from "./testimonial-area-2";
 import VideoArea from "../../../common/video-area";
 
