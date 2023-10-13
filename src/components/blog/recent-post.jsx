@@ -32,7 +32,7 @@ const RecentPost = () => {
 
   useEffect(() => {
     axios
-      .get("https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5")
+      .get("https://drawproject-production.up.railway.app/api/v1/instructor/1")
       .then((response) => {
         setBlogData(response.data.data);
       })
@@ -44,6 +44,7 @@ const RecentPost = () => {
     <>
       {Array.isArray(blogData) &&
         blogData.map((post, index) => (
+          
           <div key={index}>
             <div className="sidebar__widget mb-55">
               <h3 className="sidebar__widget-title mb-25">Recent Post</h3>
