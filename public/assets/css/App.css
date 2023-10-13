@@ -10,8 +10,10 @@
   --smboxShadow: -79px 51px 60px rgba(0, 0, 0, 0.08);
   --activeItem: #f799a354;
 }
-.App{
-  font-family: 'Inter', sans-serif;
+
+.App {
+  /* padding: 0.5rem 3.5rem; */
+  color: var(--black);
   background: linear-gradient(
     106.37deg,
     #ffe1bc 29.63%,
@@ -20,11 +22,12 @@
   );
   height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
 }
 
-.AppGlass{
+.AppGlass {
   display: grid;
   height: 97%;
   width: 97%;
@@ -33,4 +36,17 @@
   gap: 16px;
   grid-template-columns: 11rem auto 20rem;
   overflow: hidden;
+}
+
+@media screen and (max-width: 1200px) {
+  .AppGlass{
+    grid-template-columns: 10% 50% auto;
+    overflow-y: scroll;
+  } 
+}
+
+@media screen and (max-width: 768px) {
+  .AppGlass{
+    grid-template-columns: 1fr;
+  } 
 }
