@@ -28,8 +28,8 @@ const menu_data = [
     link: "/instructor",
     has_dropdown: true,
     sub_menus: [
-      { link: "/instructor", title: "Instructor" },
-      { link: "/instructor-profile", title: "Instructor Profile" },
+      // { link: "/instructor", title: "Instructor" },
+      // { link: "/instructor-profile", title: "Instructor Profile" },
     ],
   },
   {

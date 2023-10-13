@@ -1,6 +1,8 @@
 import comments_data from "@/src/data/comments-data";
 import Link from "next/link";
 import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import BlogSearch from "../blog/blog-search";
 import Category from "../blog/category";
 import RecentPost from "../blog/recent-post";
@@ -8,9 +10,24 @@ import Tags from "../blog/tags";
 import PostComment from "../form/post-comment";
 
 const PostboxBlogDetails = () => {
+  const [blogData, setBlogData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5")
+      .then((response) => {
+        setBlogData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <>
-      <div
+      {Array.isArray(blogData) &&
+        blogData.map((post, index) => (
+          <div key={index}>
+            <div
         className="postbox__area pt-120 pb-120 wow fadeInUp"
         data-wow-duration=".8s"
         data-wow-delay=".2s"
@@ -30,25 +47,26 @@ const PostboxBlogDetails = () => {
                   <div className="postbox__content">
                     <div className="postbox__meta">
                       <span>
-                        <i className="fi fi-rr-calendar"></i> July 21, 2020
+                        <i className="fi fi-rr-calendar"></i> {post.date}
                       </span>
                       <span>
                         <a href="#">
-                          <i className="fi fi-rr-user"></i> JAMIL RAYHAN
+                          <i className="fi fi-rr-user"></i> {post.userName}
                         </a>
                       </span>
-                      <span>
+                      {/* <span>
                         <a href="#">
                           <i className="fi fi-rr-comments"></i> 02 Comments
                         </a>
-                      </span>
+                      </span> */}
                     </div>
                     <h3 className="postbox__title">
-                      How to Succeed in the aws Certified Developer Associate
-                      Exam
+                      {post.title}
                     </h3>
                     <div className="postbox__text">
+                      
                       <p>
+                        {post.description}
                         Nancy boy Charles down the pub get stuffed mate easy
                         peasy brown bread car boot squiffy loo, blimey arse over
                         tit it's your round cup of char horse play chimney pot
@@ -70,7 +88,7 @@ const PostboxBlogDetails = () => {
                         lost the plot.
                       </p>
 
-                      <blockquote>
+                      {/* <blockquote>
                         <p>
                           Tosser argy-bargy mush loo at public school Elizabeth
                           up the duff buggered chinwag on your bike mate don't
@@ -79,12 +97,7 @@ const PostboxBlogDetails = () => {
                           horse.
                         </p>
                         <cite>Jon Barsito</cite>
-                      </blockquote>
-
-                      <p>
-                        <img src="/assets/img/blog/blog-in-4.jpg" alt="" />
-                      </p>
-
+                      </blockquote> */}
                       <h3>Epora is the only template you will ever need</h3>
 
                       <p>
@@ -111,17 +124,17 @@ const PostboxBlogDetails = () => {
                       </p>
                     </div>
 
-                    <div className="postbox__tag tagcloud">
+                    {/* <div className="postbox__tag tagcloud">
                       <span>Post Tags :</span>
                       <a href="#">Fresh</a>
                       <a href="#">Home</a>
                       <a href="#">Kitchen</a>
-                    </div>
+                    </div> */}
                   </div>
                 </article>
 
 
-                <div className="postbox__comment mb-65">
+                {/* <div className="postbox__comment mb-65">
                   <h3 className="postbox__comment-title">3 Comments</h3>
                   <ul>
 
@@ -153,10 +166,10 @@ const PostboxBlogDetails = () => {
                       ) 
                     }                    
                   </ul>
-                </div>
+                </div> */}
 
-                <PostComment />
-
+                {/* <PostComment />
+ */}
 
               </div>
             </div>
@@ -165,12 +178,15 @@ const PostboxBlogDetails = () => {
                 <BlogSearch />
                 <RecentPost />
                 <Category />
-                <Tags />
+                {/* <Tags /> */}
               </div>
             </div>
           </div>
         </div>
       </div>
+          </div>
+        ))}
+      
     </>
   );
 };

@@ -2,6 +2,8 @@ import Count from "@/src/common/count.jsx";
 import our_course_data from "@/src/data/our-course-data.js";
 import Link from "next/link";
 import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import course_data_2 from "../../data/course-data-2.js";
 
 
@@ -14,8 +16,6 @@ const instructor_portfolio_data = [
     total_class: "35",
     total_st: "291",
     title: "Instructor",
-    sub_title:
-      "UX/UI Designer, Chemical Engineer, Youtuber, Life Style Blogger",
     followers: "35,600",
     following: "135",
     job_title: "Lead UX Engineer",
@@ -74,8 +74,27 @@ const counter_data = [
  ];
 
 const InstructorPortfolioArea = () => {
+  const [instructorData, setInstructorData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("https://drawproject-production.up.railway.app/api/v1/instructor/1")
+      .then((response) => {
+        setInstructorData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <>
+    {Array.isArray(instructorData) &&
+        instructorData.map((instructor, index) => (
+          <div key={index}>
+            <h2>{instructor.userName}</h2>
+            <p>{instructor.description}</p>
+          </div>
+        ))}
       <section
         className="instructor-portfolio pt-120 pb-80 wow fadeInUp"
         data-wow-duration=".8s"
@@ -96,32 +115,12 @@ const InstructorPortfolioArea = () => {
                     <h4 className="side-instructor-title mb-15">
                       Emilia Williamson
                     </h4>
-                    <p>
-                      UX/UI Designer, Chemical Engineer, Youtuber, Life Style
-                      Blogger
-                    </p>
+                    
                   </div>
-                  <div className="instruc-follower d-flex align-items-center justify-content-center mb-25">
-                    <div className="ins-followers">
-                      <h4>35,600</h4>
-                      <span>Followers</span>
-                    </div>
-                    <div className="ins-following">
-                      <h4>135</h4>
-                      <span>Following</span>
-                    </div>
-                  </div>
-                  <div className="instruc-side-btn text-center mb-40">
-                    <Link className="ins-btn" href="#">
-                      Follow +
-                    </Link>
-                  </div>
+                  
                   <div className="cd-information instruc-profile-info mb-35">
                     <ul>
-                      <li>
-                        <i className="fi fi-rr-briefcase"></i>{" "}
-                        <label>Job Title</label> <span>Lead UX Engineer</span>
-                      </li>
+                      
                       <li>
                         <i className="fi fi-rr-phone-call"></i>{" "}
                         <label>Phone</label> <span>+00 365 9852 65</span>
@@ -144,21 +143,7 @@ const InstructorPortfolioArea = () => {
                       </li>
                     </ul>
                   </div>
-                  <div className="c-details-social">
-                    <h5 className="cd-social-title mb-25">Follow More:</h5>
-                    <Link href="#">
-                      <i className="fa-brands fa-facebook-f"></i>
-                    </Link>
-                    <Link href="#">
-                      <i className="fa-brands fa-twitter"></i>
-                    </Link>
-                    <Link href="#">
-                      <i className="fa-brands fa-instagram"></i>
-                    </Link>
-                    <Link href="#">
-                      <i className="fa-brands fa-youtube"></i>
-                    </Link>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -185,31 +170,7 @@ const InstructorPortfolioArea = () => {
                     e-services for.
                   </p>
                 </div>
-                <div className="instruc-statics mb-20">
-                  <div className="row">
-
-                     {
-                        counter_data.map((item, i) =>                         
-                        <div key={i} className="col-xl-4 col-lg-6 col-md-4">
-                      <div className="isntruc-tp-counter mb-30">
-                        <h4 className="isntruc-tp-counter__title p-relative">
-                          <span className="counter">
-                          <Count
-                          add_style={true}
-                          number={item.count_number}
-                          text={item.thousand}
-                          style_3={true}
-                        />                          
-                           </span>
-                        </h4>
-                        <p>{item.title}</p>
-                      </div>
-                    </div>
-                        )
-                     }
-                    
-                  </div>
-                </div>
+                
                 <div className="instructor-tp-course">
                   <div className="row">
                     <div className="col-md-12">

@@ -1,10 +1,31 @@
 import instructor_info_data from "@/src/data/instructor-data";
 import Link from "next/link";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import React from "react";
 
 const InstructorArea = () => {
+  const [blogData, setBlogData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5")
+      .then((response) => {
+        setBlogData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <>
+    {Array.isArray(blogData) &&
+        blogData.map((post, index) => (
+          <div key={index}>
+            <h2>{post.data}</h2>
+            <p>{post.description}</p>
+          </div>
+        ))}
       <section className="instructor-area pb-110">
         <div className="container">
           <div className="row">
@@ -34,61 +55,15 @@ const InstructorArea = () => {
                       </h4>
                       <div className="tp-instructor__stu-info">
                         <ul className="d-flex align-items-center justify-content-center">
-                          <li className="d-flex align-items-center">
-                            <img
-                              src="/assets/img/icon/c-meta-01.png"
-                              alt="meta-icon"
-                            />
-                            <i>{item.total_class} Classes</i>
-                          </li>
-                          <li className="d-flex align-items-center">
-                            <img
-                              src="/assets/img/icon/c-meta-02.png"
-                              alt="meta-icon"
-                            />
-                            <i>{item.total_st}+ Students</i>
-                          </li>
                         </ul>
                       </div>
-                      <div className="tp-instructor__social">
-                        <ul>
-                          <li>
-                            <a href="#">
-                              <i className="fa-brands fa-facebook-f"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa-brands fa-twitter"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa-brands fa-instagram"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa-brands fa-youtube"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
               </div>
             ))}
             
-          </div>
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="instructor-btn text-center mt-20">
-                <Link className="tp-btn" href="/instructor">
-                  All Instructor
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
       </section>
