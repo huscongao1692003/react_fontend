@@ -341,16 +341,16 @@
                     &:not(:last-child) {
                         border-bottom: 1px solid rgba(0, 0, 0, 0.10);
                     }
-                    &.has-dropdown {
-                        &>a {
-                            &::after {
-                                position: absolute;
-                                top: 50%;
-                                right: 25px;
-                                @include transform(translateY(-50%) rotate(-90deg));
-                            }
-                        }
-                    }
+                    // &.has-dropdown {
+                    //     &>a {
+                    //         &::after {
+                    //             position: absolute;
+                    //             top: 50%;
+                    //             right: 25px;
+                    //             @include transform(translateY(-50%) rotate(-90deg));
+                    //         }
+                    //     }
+                    // }
                     & a {
                         padding: 10px 25px;
                         font-size: 14px;
