@@ -5,26 +5,35 @@ import RecentPost from "./recent-post";
 import Category from "./category";
 import Tags from "./tags";
 import Link from "next/link";
-import VideoPopup from "@/src/modals/video-popup";
 import Slider from "react-slick";
+import { useRouter } from 'next/router';
+
 
 const Postbox = () => {
-  const [blogData, setBlogData] = useState({});
+  const router = useRouter();
+  const [blogData, setBlogData] = useState(null);
 
-  useEffect(() => {
     axios
-      .get("https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5")
+      .get('https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5')
       .then((response) => {
-        setBlogData(response.data.data);
+        const decodedData = response.data.data.map((post) => ({
+          ...post,
+//          image: post.image ? atob(post.image) : null,
+          created_at: new Date(post.created_at).toLocaleString(),
+
+        }));
+        setBlogData(decodedData);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
+  if (!blogData) {
+    // You can render a loading message or spinner here while fetching data.
+  return <div>Loading...</div>;
+  }
   return (
     <>
-      {Array.isArray(blogData) &&
+    {Array.isArray(blogData) &&
         blogData.map((post, index) => (
           <div key={index}>
             <div className="postbox__area pt-120 pb-120 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".2s">
@@ -33,40 +42,13 @@ const Postbox = () => {
                   <div className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
                     <div className="postbox__wrapper pr-20">
                       <article className="postbox__item format-image mb-60 transition-3">
-                        {blogData.img && (
+                        {blogData.image && (
                           <div className="postbox__thumb w-img mb-30">
                             <Link href="/blog-details">
-                              <img src={blogData.img} alt="" />
+                              <img src={`data:image/png;base64,${post.image}`} alt="" />
                             </Link>
                           </div>
                         )}
-
-                        {blogData.video &&
-                          blogData.video.map((v_link, i) => (
-                            <div
-                              key={i}
-                              className="postbox__thumb postbox__video p-relative w-img mb-30"
-                            >
-                              <Link href="/blog-details">
-                                <img src={v_link.video_tum} alt="" />
-                              </Link>
-
-                              {/* video modal start */}
-                              <VideoPopup
-                                isVideoOpen={isVideoOpen}
-                                setIsVideoOpen={setIsVideoOpen}
-                                videoId={v_link.videoId}
-                              />
-                              {/* video modal end */}
-
-                              <a
-                                onClick={() => setIsVideoOpen(true)}
-                                className="play-btn popup-video"
-                              >
-                                <i className="fas fa-play"></i>
-                              </a>
-                            </div>
-                          ))}
 
                         {blogData.slider_img && (
                           <div className="postbox__thumb postbox__slider w-img mb-30 p-relative">
@@ -100,7 +82,7 @@ const Postbox = () => {
                         <div className="postbox__content">
                           <div className="postbox__meta">
                             <span>
-                              <i className="fi fi-rr-calendar"></i> {post.date}
+                              <i className="fi fi-rr-calendar"></i> {post.created_at}
                             </span>
                             <span>
                               <Link href="#">
@@ -109,9 +91,11 @@ const Postbox = () => {
                             </span>
                             
                           </div>
+                          <Link href={`/blog-details?postId=${post.postId}`}>
                           <h3 className="postbox__title">
-                            <Link href="/blog-details">{post.title}</Link>
+                              {post.title}
                           </h3>
+                          </Link>
                           <div className="postbox__text">
                             <p>{post.description}</p>
                           </div>

@@ -1,5 +1,6 @@
 import comments_data from "@/src/data/comments-data";
 import Link from "next/link";
+import { useRouter } from 'next/router';
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -9,19 +10,40 @@ import RecentPost from "../blog/recent-post";
 import Tags from "../blog/tags";
 import PostComment from "../form/post-comment";
 
-const PostboxBlogDetails = () => {
-  const [blogData, setBlogData] = useState({});
 
-  useEffect(() => {
-    axios
-      .get("https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5")
-      .then((response) => {
-        setBlogData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+const PostboxBlogDetails = () => {
+  const router = useRouter();
+  const { postId } = router.query;
+  const [blogData, setBlogData] = useState(null);
+if(postId){
+  axios
+    .get(`https://drawproject-production.up.railway.app/api/v1/post/${postId}`)
+    .then((response) => {
+      const post = response.data; // Assuming it returns a single post
+      const decodedPost = {
+        title: post.title,
+        categoryId: post.categoryId,
+        categoryName: post.categoryName,
+        description: post.description,
+        readingTime: post.readingTime,
+        //        image: post.image ? atob(post.image) : null,
+        body: post.body,
+        userId: post.userId,
+        status: post.status,
+        userName: post.userName,
+        created_at: new Date(post.created_at).toLocaleString(),
+        avatar: post.avatar,
+      };
+      setBlogData([decodedPost]);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+  if (!blogData) {
+    // You can render a loading message or spinner here while fetching data.
+  return <div>Loading...</div>;
+  }
   return (
     <>
       {Array.isArray(blogData) &&
@@ -41,13 +63,13 @@ const PostboxBlogDetails = () => {
                 <article className="postbox__item format-image mb-60 transition-3">
                   <div className="postbox__thumb w-img mb-30">
                     <Link href="/blog-details">
-                      <img src="/assets/img/blog/blog-in-1.jpg" alt="" />
+                      {/*<img src={`data:image/png;base64,${post.image}`} alt="" />*/}
                     </Link>
                   </div>
                   <div className="postbox__content">
                     <div className="postbox__meta">
                       <span>
-                        <i className="fi fi-rr-calendar"></i> {post.date}
+                        <i className="fi fi-rr-calendar"></i> {post.created_at}
                       </span>
                       <span>
                         <a href="#">
@@ -66,61 +88,7 @@ const PostboxBlogDetails = () => {
                     <div className="postbox__text">
                       
                       <p>
-                        {post.description}
-                        Nancy boy Charles down the pub get stuffed mate easy
-                        peasy brown bread car boot squiffy loo, blimey arse over
-                        tit it's your round cup of char horse play chimney pot
-                        old. Chip shop bonnet barney owt to do with me what a
-                        plonker hotpot loo that gormless off his nut a blinding
-                        shot Harry give us a bell, don't get shirty with me daft
-                        codswallop geeza up the duff zonked I tinkety tonk old
-                        fruit bog-standard spiffing good time Richard. Are you
-                        taking the piss young delinquent wellies absolutely
-                        bladdered the BBC Eaton my good sir, cup of tea spiffing
-                        bleeder David mufty you mug{" "}
-                        <span>cor blimey guvnor, burke bog-standard brown</span>{" "}
-                        bread wind up barney. Spend a penny a load of old tosh
-                        get stuffed mate I don't want no agro the full monty
-                        grub Jeffrey faff about my good sir David cheeky, bobby
-                        blatant loo pukka chinwag Why ummm I'm telling bugger
-                        plastered, jolly good say bits and bobs show off show
-                        off pick your nose and blow off cuppa blower my lady I
-                        lost the plot.
-                      </p>
-
-                      {/* <blockquote>
-                        <p>
-                          Tosser argy-bargy mush loo at public school Elizabeth
-                          up the duff buggered chinwag on your bike mate don't
-                          get shirty with me super, Jeffrey bobby Richard
-                          cheesed off spend a penny a load of old tosh blag
-                          horse.
-                        </p>
-                        <cite>Jon Barsito</cite>
-                      </blockquote> */}
-                      <h3>Epora is the only template you will ever need</h3>
-
-                      <p>
-                        Are you taking the piss young delinquent wellies
-                        absolutely bladdered the Eaton my good sir, cup of tea
-                        spiffing bleeder David mufty you mug cor blimey guvnor,
-                        burke bog-standard brown bread wind up barney. Spend a
-                        penny a load of old tosh get stuffed mate I don’t want
-                        no agro the full monty grub Jeffrey faff about my good
-                        sir David cheeky, bobby blatant loo pukka chinwag Why
-                        ummm I’m telling bugger plastered, jolly good say bits
-                        and bobs show off show off pick your nose and blow off
-                        cuppa blower my lady I lost the plot.
-                      </p>
-
-                      <p>
-                        Cheeky bugger cracking goal starkers lemon squeezy lost
-                        the plot pardon me no biggie the BBC burke gosh boot so
-                        I said wellies, zonked a load of old tosh bodge barmy
-                        skive off he legged it morish spend a penny my good sir
-                        wind up hunky-dory. Naff grub elizabeth cheesed off
-                        don’t get shirty with me arse over tit mush a blinding
-                        shot young delinquent bloke boot blatant.
+                        {post.body}
                       </p>
                     </div>
 

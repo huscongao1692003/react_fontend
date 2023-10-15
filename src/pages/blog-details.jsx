@@ -5,10 +5,12 @@ import WrapperFour from '../layout/wrapper-4';
 
 const index = () => {
     return (
+<>
         <WrapperFour>
             <SEO pageTitle={"Blog Details"} />
             <BlogDetails />
         </WrapperFour>
+</>
     );
 };
 
