@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import axios from "axios";
 import BlogSearch from "./blog-search";
 import RecentPost from "./recent-post";
@@ -18,7 +18,7 @@ const Postbox = () => {
       .then((response) => {
         const decodedData = response.data.data.map((post) => ({
           ...post,
-//          image: post.image ? atob(post.image) : null,
+          image: post.image ? `data:image/jpeg;base64,${post.image}` : null,
           created_at: new Date(post.created_at).toLocaleString(),
 
         }));
@@ -33,22 +33,20 @@ const Postbox = () => {
   }
   return (
     <>
-    {Array.isArray(blogData) &&
-        blogData.map((post, index) => (
-          <div key={index}>
+
+          <div>
             <div className="postbox__area pt-120 pb-120 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".2s">
               <div className="container">
                 <div className="row">
-                  <div className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
+                  {Array.isArray(blogData) &&
+                     blogData.map((post, index) => (
+                       <div key={index} className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
                     <div className="postbox__wrapper pr-20">
                       <article className="postbox__item format-image mb-60 transition-3">
-                        {blogData.image && (
-                          <div className="postbox__thumb w-img mb-30">
-                            <Link href="/blog-details">
-                              <img src={`data:image/png;base64,${post.image}`} alt="" />
-                            </Link>
+
+                        <div className="postbox__thumb w-img mb-30" href={`/blog-details?postId=${post.postId}`}>
+                            {post.image && <img src={post.image} alt="image" />}
                           </div>
-                        )}
 
                         {blogData.slider_img && (
                           <div className="postbox__thumb postbox__slider w-img mb-30 p-relative">
@@ -100,7 +98,7 @@ const Postbox = () => {
                             <p>{post.description}</p>
                           </div>
                           <div className="postbox__read-more">
-                            <Link href="/blog-details" className="tp-btn">
+                            <Link href={`/blog-details?postId=${post.postId}`} className="tp-btn">
                               read more
                             </Link>
                           </div>
@@ -108,24 +106,22 @@ const Postbox = () => {
                       </article>
                     </div>
                   </div>
+                  ))}
                   <div className="col-xxl-4 col-xl-4 col-lg-5 col-md-12">
-                    <div className="sidebar__wrapper">
-                      {/* render sidebar components here */}
-                      <BlogSearch />
-                      <RecentPost />
-                      <Category />
-                      {/* <Tags /> */}
-                    </div>
+                  <div className="sidebar__wrapper">
+                    {/* render sidebar components here */}
+                    <BlogSearch />
+                    <RecentPost />
+                    <Category />
+                    {/* <Tags /> */}
+                  </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        ))}
-
-
     </>
-  );
-};
+  )
+}
 
 export default Postbox;
