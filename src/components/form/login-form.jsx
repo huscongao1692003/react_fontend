@@ -27,21 +27,21 @@ const LoginForm = () => {
             }
             );
          const { data } = response;
-         const headers = {
-            Authorization: `Bearer ${data.accessToken}`,
-         };
-         const responseRole = await axios.get("https://drawproject-production.up.railway.app/api/v1/dashboard", {headers});
+         console.log(data.accessToken);
+         const responseRole = await axios.get("https://drawproject-production.up.railway.app/api/v1/dashboard",
+                                              { headers: {"Authorization" : `Bearer ${data.accessToken}`} });
          const roles = responseRole.data.roles;
-         const userRole = roles.length > 0 ? roles[0].authority : null;
-
-         // Save the access token from the response to state
+         const rolesString = roles.map(role => role.authority).join(', ');
+         console.log(rolesString);
          setAccessToken(data.accessToken);
+         setUserRole(rolesString);
          localStorage.setItem("accessToken", data.accessToken);
+         localStorage.setItem("roles", rolesString)
          setShowAlert(true);
+
          setIsLoggedIn(true);
-         setUserRole(userRole);
-         localStorage.setItem("roles", userRole)
-         console.log(role);
+
+
          
          const delayDuration = 30000; // 30 seconds (adjust as needed)
       setTimeout(() => {
@@ -49,7 +49,7 @@ const LoginForm = () => {
       }, delayDuration);
       } catch (error) {
          console.error("Login failed:", error);
-         // Handle login error, e.g., display an error message to the user
+
       }
    };
 
