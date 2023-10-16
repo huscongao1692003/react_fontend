@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import axios from "axios";
-
+import Alert from 'react-bootstrap/Alert';
 
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,11 +30,11 @@ const ContactForm = () => {
       // Handle success
       console.log("Request successful", response.data);
       setLoading(false);
-
-      // Reload the page on success
-      window.location.reload();
-
-      // Optionally, you can display a success message or perform other actions here
+      setShowAlert(true);
+      const delayDuration = 3000; // 3 seconds (adjust as needed)
+      setTimeout(() => {
+        window.location.reload();
+        }, delayDuration);
     } catch (error) {
       // Handle error
       console.error("Error sending the request", error);
@@ -44,6 +45,15 @@ const ContactForm = () => {
   };
   return (
     <>
+    <Alert
+      variant="success"
+      show={showAlert}
+      onClose={() => setShowAlert(false)}
+      dismissible
+      >
+      <Alert.Heading>Send Contact Successful!</Alert.Heading>
+      <p>You have successfully send contact.</p>
+    </Alert>
       <section
         className="contact-area pb-60 wow fadeInUp"
         data-wow-duration=".8s"

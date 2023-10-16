@@ -7,6 +7,7 @@ import Tags from "./tags";
 import Link from "next/link";
 import Slider from "react-slick";
 import { useRouter } from 'next/router';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const Postbox = () => {
@@ -29,7 +30,11 @@ const Postbox = () => {
       });
   if (!blogData) {
     // You can render a loading message or spinner here while fetching data.
-  return <div>Loading...</div>;
+    return(
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '200px', paddingBottom: '200px' }}>
+    <Spinner animation="grow" variant="success" size="lg"/>
+    </div>
+    );
   }
   return (
     <>
