@@ -2,9 +2,6 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 
 const LoginForm = () => {
-   const [Username, setUsername] = useState("");
-   const [Password, setPassword] = useState("");
-
    return (
       <>
          <section className="login-area pt-100 pb-100 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".5s">
