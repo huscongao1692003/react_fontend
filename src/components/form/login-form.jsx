@@ -11,6 +11,9 @@ const LoginForm = () => {
    const [accessToken, setAccessToken] = useState("");
    const router = useRouter();
    const [showAlert, setShowAlert] = useState(false);
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const [userRole, setUserRole] = useState("");
+
 
    const handleSubmit = async (e) => {
       e.preventDefault();
@@ -23,16 +26,24 @@ const LoginForm = () => {
                pwd: pwd,
             }
             );
-
          const { data } = response;
+         const headers = {
+            Authorization: `Bearer ${data.accessToken}`,
+         };
+         const responseRole = await axios.get("https://drawproject-production.up.railway.app/api/v1/dashboard", {headers});
+         const roles = responseRole.data.roles;
+         const userRole = roles.length > 0 ? roles[0].authority : null;
 
          // Save the access token from the response to state
          setAccessToken(data.accessToken);
          localStorage.setItem("accessToken", data.accessToken);
          setShowAlert(true);
-
+         setIsLoggedIn(true);
+         setUserRole(userRole);
+         localStorage.setItem("roles", userRole)
+         console.log(role);
          
-         const delayDuration = 3000; // 3 seconds (adjust as needed)
+         const delayDuration = 30000; // 30 seconds (adjust as needed)
       setTimeout(() => {
         router.push('/');
       }, delayDuration);
