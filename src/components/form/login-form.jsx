@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
+
 import axios from "axios";
 import { useRouter } from 'next/router';
 import Alert from 'react-bootstrap/Alert';
@@ -53,8 +54,6 @@ const LoginForm = () => {
       }
    };
 
-
-
     return (
         <>
         <Alert
@@ -85,10 +84,10 @@ const LoginForm = () => {
                      </div>
                   </div>
                </div>
-         </div>
-      </section>
-        </>
-    );
+            </div>
+         </section>
+      </>
+   );
 };
 
 export default LoginForm;
