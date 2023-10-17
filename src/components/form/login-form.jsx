@@ -21,7 +21,7 @@ const LoginForm = () => {
 
       try {
          const response = await axios.post(
-            "https://drawproject-production.up.railway.app/api/auth/login", // Replace with your actual authentication API endpoint
+            "https://drawproject-production.up.railway.app/api/auth/login",
             {
                username: username,
                pwd: pwd,
@@ -31,6 +31,8 @@ const LoginForm = () => {
          console.log(data.accessToken);
          const responseRole = await axios.get("https://drawproject-production.up.railway.app/api/v1/dashboard",
                                               { headers: {"Authorization" : `Bearer ${data.accessToken}`} });
+
+
          const roles = responseRole.data.roles;
          const rolesString = roles.map(role => role.authority).join(', ');
          console.log(rolesString);
