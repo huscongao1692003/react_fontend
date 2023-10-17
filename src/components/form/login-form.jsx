@@ -43,11 +43,14 @@ const LoginForm = () => {
          setIsLoggedIn(true);
 
 
-         
-         const delayDuration = 30000; // 30 seconds (adjust as needed)
-      setTimeout(() => {
-        router.push('/');
-      }, delayDuration);
+         if (rolesString === "ROLE_ADMIN"){
+            router.push('/dashboard');
+         }else {
+            const delayDuration = 30000; // 30 seconds (adjust as needed)
+            setTimeout(() => {
+               router.push('/');
+               }, delayDuration);
+         }
       } catch (error) {
          console.error("Login failed:", error);
 
