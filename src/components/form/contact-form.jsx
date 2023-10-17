@@ -1,8 +1,59 @@
-import React from "react";
+import React, {useState} from "react";
+import axios from "axios";
+import Alert from 'react-bootstrap/Alert';
 
 const ContactForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Get form data
+    const formData = new FormData(e.target);
+
+    // Convert form data to JSON object
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    // Send POST request using Axios
+    try {
+      console.log(data);
+      const response = await axios.post(
+        "https://drawproject-production.up.railway.app/api/v1/contact",
+        data
+        );
+
+      // Handle success
+      console.log("Request successful", response.data);
+      setLoading(false);
+      setShowAlert(true);
+      const delayDuration = 3000; // 3 seconds (adjust as needed)
+      setTimeout(() => {
+        window.location.reload();
+        }, delayDuration);
+    } catch (error) {
+      // Handle error
+      console.error("Error sending the request", error);
+      setLoading(false);
+
+      // Optionally, you can display an error message or perform other actions here
+    }
+  };
   return (
     <>
+    <Alert
+      variant="success"
+      show={showAlert}
+      onClose={() => setShowAlert(false)}
+      dismissible
+      >
+      <Alert.Heading>Send Contact Successful!</Alert.Heading>
+      <p>You have successfully send contact.</p>
+    </Alert>
       <section
         className="contact-area pb-60 wow fadeInUp"
         data-wow-duration=".8s"
@@ -16,11 +67,7 @@ const ContactForm = () => {
                   <h5 className="contact-title mb-30">Send Us Message</h5>
                 </div>
                 <div className="contact-form">
-                  <form
-                    id="contact-form"
-                    action="assets/mail.php"
-                    method="POST"
-                  >
+                <form id="contact-form" onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="contact-form-input mb-25">
@@ -33,6 +80,7 @@ const ContactForm = () => {
                           />
                         </div>
                       </div>
+
                       <div className="col-md-6">
                         <div className="contact-form-input mb-25">
                           <span>Email Id</span>
@@ -40,6 +88,17 @@ const ContactForm = () => {
                             type="email"
                             placeholder="Your Email"
                             name="email"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-12">
+                        <div className="contact-form-input mb-40">
+                          <span>Mobile Number</span>
+                          <input
+                            type="number"
+                            placeholder="MobileNumber"
+                            name="mobileNum"
                             required
                           />
                         </div>

@@ -1,72 +1,57 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import axios from "axios";
 import BlogSearch from "./blog-search";
 import RecentPost from "./recent-post";
 import Category from "./category";
 import Tags from "./tags";
 import Link from "next/link";
-import VideoPopup from "@/src/modals/video-popup";
 import Slider from "react-slick";
+import { useRouter } from 'next/router';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 const Postbox = () => {
-  const [blogData, setBlogData] = useState({});
+  const router = useRouter();
+  const [blogData, setBlogData] = useState(null);
 
-  useEffect(() => {
     axios
-      .get("https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5")
+      .get('https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5')
       .then((response) => {
-        setBlogData(response.data.data);
+        const decodedData = response.data.data.map((post) => ({
+          ...post,
+          image: post.image ? `data:image/jpeg;base64,${post.image}` : null,
+          created_at: new Date(post.created_at).toLocaleString(),
+
+        }));
+        setBlogData(decodedData);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
+  if (!blogData) {
+    // You can render a loading message or spinner here while fetching data.
+    return(
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '200px', paddingBottom: '200px' }}>
+    <Spinner animation="grow" variant="success" size="lg"/>
+    </div>
+    );
+  }
   return (
     <>
-      {Array.isArray(blogData) &&
-        blogData.map((post, index) => (
-          <div key={index}>
+
+          <div>
             <div className="postbox__area pt-120 pb-120 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".2s">
               <div className="container">
                 <div className="row">
-                  <div className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
+                  {Array.isArray(blogData) &&
+                     blogData.map((post, index) => (
+                       <div key={index} className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
                     <div className="postbox__wrapper pr-20">
                       <article className="postbox__item format-image mb-60 transition-3">
-                        {blogData.img && (
-                          <div className="postbox__thumb w-img mb-30">
-                            <Link href="/blog-details">
-                              <img src={blogData.img} alt="" />
-                            </Link>
+
+                        <div className="postbox__thumb w-img mb-30" href={`/blog-details?postId=${post.postId}`}>
+                            {post.image && <img src={post.image} alt="image" />}
                           </div>
-                        )}
-
-                        {blogData.video &&
-                          blogData.video.map((v_link, i) => (
-                            <div
-                              key={i}
-                              className="postbox__thumb postbox__video p-relative w-img mb-30"
-                            >
-                              <Link href="/blog-details">
-                                <img src={v_link.video_tum} alt="" />
-                              </Link>
-
-                              {/* video modal start */}
-                              <VideoPopup
-                                isVideoOpen={isVideoOpen}
-                                setIsVideoOpen={setIsVideoOpen}
-                                videoId={v_link.videoId}
-                              />
-                              {/* video modal end */}
-
-                              <a
-                                onClick={() => setIsVideoOpen(true)}
-                                className="play-btn popup-video"
-                              >
-                                <i className="fas fa-play"></i>
-                              </a>
-                            </div>
-                          ))}
 
                         {blogData.slider_img && (
                           <div className="postbox__thumb postbox__slider w-img mb-30 p-relative">
@@ -100,7 +85,7 @@ const Postbox = () => {
                         <div className="postbox__content">
                           <div className="postbox__meta">
                             <span>
-                              <i className="fi fi-rr-calendar"></i> {post.date}
+                              <i className="fi fi-rr-calendar"></i> {post.created_at}
                             </span>
                             <span>
                               <Link href="#">
@@ -109,14 +94,16 @@ const Postbox = () => {
                             </span>
                             
                           </div>
+                          <Link href={`/blog-details?postId=${post.postId}`}>
                           <h3 className="postbox__title">
-                            <Link href="/blog-details">{post.title}</Link>
+                              {post.title}
                           </h3>
+                          </Link>
                           <div className="postbox__text">
                             <p>{post.description}</p>
                           </div>
                           <div className="postbox__read-more">
-                            <Link href="/blog-details" className="tp-btn">
+                            <Link href={`/blog-details?postId=${post.postId}`} className="tp-btn">
                               read more
                             </Link>
                           </div>
@@ -124,24 +111,22 @@ const Postbox = () => {
                       </article>
                     </div>
                   </div>
+                  ))}
                   <div className="col-xxl-4 col-xl-4 col-lg-5 col-md-12">
-                    <div className="sidebar__wrapper">
-                      {/* render sidebar components here */}
-                      <BlogSearch />
-                      <RecentPost />
-                      <Category />
-                      {/* <Tags /> */}
-                    </div>
+                  <div className="sidebar__wrapper">
+                    {/* render sidebar components here */}
+                    <BlogSearch />
+                    <RecentPost />
+                    <Category />
+                    {/* <Tags /> */}
+                  </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        ))}
-
-
     </>
-  );
-};
+  )
+}
 
 export default Postbox;
