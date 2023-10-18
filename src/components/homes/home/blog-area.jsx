@@ -1,9 +1,38 @@
 import blog_data from "@/src/data/blog-data";
 import Link from "next/link";
-import React from "react";
+import React,{ useState, useEffect } from "react";
+import axios from "axios";
+import { useRouter } from 'next/router';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const BlogArea = () => {
+  const router = useRouter();
+  const [blogData, setBlogData] = useState(null);
+  useEffect(() => {
+  axios
+      .get('https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=3')
+      .then((response) => {
+        const decodedData = response.data.data.map((post) => ({
+          ...post,
+          image: post.image ? `data:image/jpeg;base64,${post.image}` : null,
+          created_at: new Date(post.created_at).toLocaleString(),
+
+        }));
+        setBlogData(decodedData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  if (!blogData) {
+    // You can render a loading message or spinner here while fetching data.
+    return(
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+        <Spinner animation="grow" variant="success" size="lg"/>
+      </div>
+      );
+  }
   return (
     <>
       <section
@@ -15,35 +44,36 @@ const BlogArea = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="section-title mb-65 text-center">
-                <h2 className="tp-section-title mb-20">Latest Blogs & News</h2>
+                <h2 className="tp-section-title mb-20">Latest Blogs</h2>
               </div>
             </div>
           </div>
           <div className="row">
-            {blog_data.map((item) => (
-              <div key={item.id} className="col-xl-4 col-md-6">
+            {Array.isArray(blogData) &&
+                     blogData.map((post, index) => (
+              <div key={index} className="col-xl-4 col-md-6">
                 <div className="tp-blog mb-60">
                   <div className="tp-blog__thumb p-relative">
                     <div className="tp-blog__timg fix">
-                      <Link href="/blog-details">
-                        <img src={item.img} alt="blog-img" />
+                      <Link href={`/blog-details?postId=${post.postId}`}>
+                        {post.image && <img src={post.image} alt="image" />}
                       </Link>
                     </div>
                     <div className="tp-blog__icon">
-                      <Link href="/blog-details">
+                      <Link href={`/blog-details?postId=${post.postId}`}>
                         <i className="fi fi-rs-angle-right"></i>
                       </Link>
                     </div>
                   </div>
                   <div className="tp-blog__content">
                     <div className="tp-blog__meta mb-10">
-                      <Link href="/blog-details">Education</Link> <span>-</span>
-                      <Link href="/blog-details">{item.date}</Link>
+                      <div>Date</div>
+                      <div>{post.created_at}</div>
                     </div>
                     <h3 className="tp-blog__title mb-15">
-                      <Link href="/blog-details">{item.title}</Link>
+                      <Link href={`/blog-details?postId=${post.postId}`}>{post.title}</Link>
                     </h3>
-                    <p>{item.des}</p>
+
                   </div>
                 </div>
               </div>

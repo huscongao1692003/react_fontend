@@ -16,7 +16,6 @@ const menu_data = [
     sub_menus: [
       { link: "/about", title: "About" },
       { link: "/contact", title: "Contact" },
-      { link: "/check-out", title: "Check Out" },
       { link: "/faq", title: "FAQ" },
       // { link: "/register", title: "Register" },
       // { link: "/sign-in", title: "Sign In" },
@@ -27,7 +26,7 @@ const menu_data = [
     title: "Instructor",
     link: "/instructor",
     has_dropdown: true,
-    sub_menus: [
+ sub_menus: [
       // { link: "/instructor", title: "Instructor" },
       // { link: "/instructor-profile", title: "Instructor Profile" },
     ],

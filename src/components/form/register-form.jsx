@@ -158,7 +158,7 @@ const RegisterhtmlForm = () => {
                     Select Role <span>**</span>
                   </label>
                   <Dropdown onSelect={(eventKey, event) => handleInputChange({ target: { name: "roleName", value: eventKey } })}>
-                    <Dropdown.Toggle variant="primary">
+                    <Dropdown.Toggle variant="success">
                       {formData.roleName || "Select Role"}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>

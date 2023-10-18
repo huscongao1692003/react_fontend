@@ -1,8 +1,37 @@
-import course_list_data from "@/src/data/course-list-data";
+
 import Link from "next/link";
-import React from "react";
+import React, {useState,useEffect} from "react";
+import axios from "axios";
+import { useRouter } from 'next/router';
+import Spinner from 'react-bootstrap/Spinner';
+
+
 
 const  CourseListArea = () => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Fetch data from the API when the component mounts
+    axios
+      .get('https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=4&star=0')
+      .then((response) => {
+        const data = response.data.data;
+        setCourses(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+    }, []); // Empty dependency array means this effect runs once when the component mounts
+
+  if (loading) {
+    return  <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+      <Spinner animation="grow" variant="success" size="lg"/>
+    </div>;
+  }
   return (
     <>
       <section
@@ -22,13 +51,6 @@ const  CourseListArea = () => {
           <div className="row mb-20">
             <div className="col-lg-4 col-md-12 courser-list-width mb-60">
               <div className="course-sidebar">
-              <div className="country-select">
-                  <select>
-                    <option value="view">View</option>
-                    <option value="course-grid">Course Grid</option>
-                    <option value="course-list">Course List</option>
-                  </select>
-                </div>
                 <div className="country-select">
                   <h4 className="course-sidebar__title mb-35">Category </h4>
                   <select>
@@ -158,71 +180,7 @@ const  CourseListArea = () => {
                     </div>
                   </div>
                 </div>
-                <div className="course-sidebar__widget mb-50">
-                  <div className="course-sidebar__info c-info-list">
-                    <h4 className="course-sidebar__title mb-35">Instructor</h4>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault8"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckDefault8"
-                      >
-                        Albert Flores
-                      </label>
-                      <span className="f-right">55</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked9"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked9"
-                      >
-                        Savannah Nguyen
-                      </label>
-                      <span className="f-right">40</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked10"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked10"
-                      >
-                        Arlene McCoy
-                      </label>
-                      <span className="f-right">26</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked11"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked11"
-                      >
-                        Bessie Cooper
-                      </label>
-                      <span className="f-right">35</span>
-                    </div>
-                  </div>
-                </div>
+
                 <div className="course-sidebar__widget mb-50">
                   <div className="course-sidebar__info c-info-list">
                     <h4 className="course-sidebar__title mb-35">
@@ -278,13 +236,13 @@ const  CourseListArea = () => {
               </div>
             </div>
             <div className="col-lg-8 col-md-12 course-item-width ml-30">
-              {course_list_data.map((item, i) => (
+              {courses.map((course, i) => (
                 <div key={i} className="tpcourse tp-list-course mb-40">
                   <div className="row g-0">
                     <div className="col-xl-4 course-thumb-width">
                       <div className="tpcourse__thumb p-relative w-img fix">
-                        <Link href="/course-details">
-                          <img src={item.img} alt="course-thumb" />
+                          <Link href={`/course-details?id=${course.courseId}`}>
+                          <img src={course.image} alt="course-thumb" />
                         </Link>
                       </div>
                     </div>
@@ -293,67 +251,56 @@ const  CourseListArea = () => {
                         <div className="tpcourse__category mb-10">
                           <ul className="tpcourse__price-list d-flex align-items-center">
                             <li>
-                              <Link
-                                className={item.ct_color}
-                                href="/course-details"
-                              >
-                                {item.course_title}
+                              <Link className={course.ct_color} href="/course-details">
+                                {course.skill}
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                className={item.cn_color}
-                                href="/course-details"
-                              >
-                                {item.course_name}
+                              <Link className={course.cn_color} href="/course-details">
+                                {course.category}
                               </Link>
+
                             </li>
                           </ul>
                         </div>
                         <div className="tpcourse__ava-title mb-15">
                           <h4 className="tpcourse__title tp-cours-title-color">
-                            <Link href="/course-details">
-                              {item.title}
+                            <Link href={`/course-details?id=${course.courseId}`}>
+                              {course.courseTitle}
                             </Link>
                           </h4>
                         </div>
                         <div className="tpcourse__meta tpcourse__meta-gap pb-15 mb-15">
                           <ul className="d-flex align-items-center">
                             <li>
-                              <img
-                                src="/assets/img/icon/c-meta-01.png"
-                                alt="meta-icon"
-                              />
-                              <span>35 Classes</span>
+                              <img src="/assets/img/icon/c-meta-01.png" alt="meta-icon" />
+                              <span>{course.numLesson} Lessons</span>
                             </li>
                             <li>
-                              <img
-                                src="/assets/img/icon/c-meta-02.png"
-                                alt="meta-icon"
-                              />
+                              <img src="/assets/img/icon/c-meta-02.png" alt="meta-icon" />
                               <span>291 Students</span>
                             </li>
                           </ul>
                         </div>
                         <div className="tpcourse__rating d-flex align-items-center justify-content-between">
                           <div className="tpcourse__rating-icon">
-                            <span>4.7</span>
+                            <span>{course.averageStar}</span>
                             <i className="fi fi-ss-star"></i>
                             <i className="fi fi-ss-star"></i>
                             <i className="fi fi-ss-star"></i>
                             <i className="fi fi-ss-star"></i>
                             <i className="fi fi-rs-star"></i>
-                            <p>(125)</p>
+                            <p>({course.numReviews})</p>
                           </div>
                           <div className="tpcourse__pricing">
-                            <h5 className="price-title">$29.99</h5>
+                            <h5 className="price-title">${course.price}</h5>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+                ))}
             </div>
           </div>
           <div className="basic-pagination text-center">

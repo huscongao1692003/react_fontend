@@ -31,7 +31,7 @@ const Postbox = () => {
   if (!blogData) {
     // You can render a loading message or spinner here while fetching data.
     return(
-      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '200px', paddingBottom: '200px' }}>
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
     <Spinner animation="grow" variant="success" size="lg"/>
     </div>
     );
