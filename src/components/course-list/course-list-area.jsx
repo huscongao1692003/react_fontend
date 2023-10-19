@@ -13,7 +13,6 @@ const  CourseListArea = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Fetch data from the API when the component mounts
     axios
       .get('https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=4&star=0')
       .then((response) => {
