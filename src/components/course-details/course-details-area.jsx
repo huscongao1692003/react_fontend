@@ -11,10 +11,12 @@ const CourseDetailsArea = () => {
   const [instructorData, setInstructorData] = useState('');
   const router = useRouter();
   const { id } = router.query;
+  const [feedbackData,setFeedbackData] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const storedUserRole = typeof window !== 'undefined' ? localStorage.getItem('roles') : null;
   const isLoggedIn = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const [avatar,setAvatar] = useState("/assets/img/icon/course-avata-05.png");
   console.log(accessToken)
 
   const addToCart = async () => {
@@ -50,8 +52,22 @@ const CourseDetailsArea = () => {
       .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}`)
       .then((response) => {
         setCourseData(response.data.data);
-            const instructorId = response.data.data.instructorId;
 
+       axios
+      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback?page=1&eachPage=4`)
+      .then((responseFeedback) => {
+         const decodedData = responseFeedback.data.data.map((feedback) => ({
+            ...feedback,
+         }));
+         setAvatar(decodedData.avatar)
+         setFeedbackData(decodedData);
+      })
+      .catch((error) => {
+         console.log(error);
+      });
+
+
+            const instructorId = response.data.data.instructorId;
         axios
           .get(`https://drawproject-production.up.railway.app/api/v1/instructor/${instructorId}`)
           .then((instructorResponse) => {
@@ -165,7 +181,7 @@ const CourseDetailsArea = () => {
                                  <ul>
                                     <li className="d-flex align-items-center">
                                        <img src="/assets/img/icon/c-details-02.png" alt="meta-icon" />{' '}
-                                       <span>2,35,687 Students</span>
+                                       <span>2,395,687 Students</span>
                                     </li>
                                  </ul>
                               </div>
@@ -182,13 +198,14 @@ const CourseDetailsArea = () => {
                            <h5 className="c-review-title mb-40">Review</h5>
                         </div>
                         <div className="course-reviewer-item-wrapper">
-                           {review_content.map((item, i) => (
+                          {Array.isArray(feedbackData) &&
+                     feedbackData.map((feedback, i) => (
                               <div key={i} className="course-reviewer-item d-flex mb-25">
                                  <div className="course-review-ava">
-                                    <img src={item.img} alt="details-avata" />
+                                    <img src={avatar} alt="details-avata" />
                                  </div>
                                  <div className="course-review-content p-relative">
-                                    <h5 className="course-ava-title mb-15">{item.name}</h5>
+                                    <h5 className="course-ava-title mb-15">{feedback.username}</h5>
                                     <div className="tpcourse__rating-icon d-flex align-items-center mb-10">
                                        <i className="fi fi-ss-star"></i>
                                        <i className="fi fi-ss-star"></i>
@@ -196,10 +213,10 @@ const CourseDetailsArea = () => {
                                        <i className="fi fi-ss-star"></i>
                                        <i className="fi fi-rs-star"></i>
                                     </div>
-                                    <p>{item.review_text}</p>
-                                    <div className="c-reviewer-time">
-                                       <span>{item.review_time}</span>
-                                    </div>
+                                    <p>{feedback.feedbackInformation}</p>
+                                    {/*<div className="c-reviewer-time">*/}
+                                    {/*   <span>{item.review_time}</span>*/}
+                                    {/*</div>*/}
                                  </div>
                               </div>
                               ))}
