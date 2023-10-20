@@ -6,9 +6,8 @@ import Spinner from 'react-bootstrap/Spinner';
 const CheckoutArea = () => {
    const [cartData, setCartData] = useState([]);
    const [loading, setLoading] = useState(true);
-   const accessToken = localStorage.getItem("accessToken");
+   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-   // Fetch cart data when the component mounts
    useEffect(() => {
       axios
          .get(`https://drawproject-production.up.railway.app/api/v1/cart`,

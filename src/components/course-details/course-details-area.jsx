@@ -12,9 +12,9 @@ const CourseDetailsArea = () => {
   const router = useRouter();
   const { id } = router.query;
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const storedUserRole = localStorage.getItem("roles");
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const accessToken = localStorage.getItem("accessToken");
+  const storedUserRole = typeof window !== 'undefined' ? localStorage.getItem('roles') : null;
+  const isLoggedIn = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
+  const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   console.log(accessToken)
 
   const addToCart = async () => {
