@@ -24,8 +24,27 @@ const  CourseListArea = () => {
         console.error('Error fetching data:', error);
         setLoading(false);
       });
-    }, []); // Empty dependency array means this effect runs once when the component mounts
+    }, []);
 
+  const renderStarIcons = (averageStar) => {
+    const starIcons = [];
+    const roundedAverageStar = Math.round(averageStar); // Round to the nearest whole number
+
+  for (let i = 1; i <= 5; i++) {
+    if (i <= roundedAverageStar) {
+      // Full star
+      starIcons.push(<i key={i} className="fi fi-ss-star"></i>);
+    } else if (i - 1 < averageStar && i > averageStar) {
+      // Half star
+      starIcons.push(<i key={i} className="fi fi-ss-star-half"></i>);
+    } else {
+      // Empty star
+      starIcons.push(<i key={i} className="fi fi-rs-star"></i>);
+    }
+  }
+
+  return starIcons;
+  };
   if (loading) {
     return  <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
       <Spinner animation="grow" variant="success" size="lg"/>
@@ -283,12 +302,8 @@ const  CourseListArea = () => {
                         </div>
                         <div className="tpcourse__rating d-flex align-items-center justify-content-between">
                           <div className="tpcourse__rating-icon">
+                            {renderStarIcons(course.averageStar)}
                             <span>{course.averageStar.toFixed(1)}</span>
-                            <i className="fi fi-ss-star"></i>
-                            <i className="fi fi-ss-star"></i>
-                            <i className="fi fi-ss-star"></i>
-                            <i className="fi fi-ss-star"></i>
-                            <i className="fi fi-rs-star"></i>
                             <p>({course.numReviews})</p>
                           </div>
                           <div className="tpcourse__pricing">

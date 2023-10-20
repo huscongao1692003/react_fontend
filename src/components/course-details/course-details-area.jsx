@@ -81,6 +81,25 @@ const CourseDetailsArea = () => {
          console.error('Error fetching course data:', error);
       });
     }, [id]);
+  const renderStarIcons = (averageStar) => {
+     const starIcons = [];
+     const roundedAverageStar = Math.round(averageStar); // Round to the nearest whole number
+
+     for (let i = 1; i <= 5; i++) {
+        if (i <= roundedAverageStar) {
+           // Full star
+           starIcons.push(<i key={i} className="fi fi-ss-star"></i>);
+        } else if (i - 1 < averageStar && i > averageStar) {
+           // Half star
+           starIcons.push(<i key={i} className="fi fi-ss-star-half"></i>);
+        } else {
+           // Empty star
+           starIcons.push(<i key={i} className="fi fi-rs-star"></i>);
+        }
+     }
+
+     return starIcons;
+  };
    return (
       <>
       <section className="c-details-area pt-120 pb-50 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".2s">
@@ -121,17 +140,14 @@ const CourseDetailsArea = () => {
                            <ul className="d-flex align-items-center">
                               <li>
                                  <div className="rating-gold d-flex align-items-center">
-                                    <span>
-                                       {courseData.averageStar ? courseData.averageStar.toFixed(1) : 'N/A'}
-                                    </span>
+                                   <div className="tpcourse__rating-icon">
 
-                                    <i className="fi fi-ss-star"></i>
-                                    <i className="fi fi-ss-star"></i>
-                                    <i className="fi fi-ss-star"></i>
-                                    <i className="fi fi-ss-star"></i>
-                                    <i className="fi fi-rs-star"></i>
+                                    <span>{courseData.averageStar ? courseData.averageStar.toFixed(1) : 'N/A'}</span>
+                                      {renderStarIcons(courseData.averageStar)}
+                                 </div>
 
                                  </div>
+
                               </li>
                               <li>
                                  <img src="/assets/img/icon/c-meta-01.png" alt="meta-icon" />{' '}
@@ -207,16 +223,9 @@ const CourseDetailsArea = () => {
                                  <div className="course-review-content p-relative">
                                     <h5 className="course-ava-title mb-15">{feedback.username}</h5>
                                     <div className="tpcourse__rating-icon d-flex align-items-center mb-10">
-                                       <i className="fi fi-ss-star"></i>
-                                       <i className="fi fi-ss-star"></i>
-                                       <i className="fi fi-ss-star"></i>
-                                       <i className="fi fi-ss-star"></i>
-                                       <i className="fi fi-rs-star"></i>
+                                       {renderStarIcons(feedback.star)}
                                     </div>
                                     <p>{feedback.feedbackInformation}</p>
-                                    {/*<div className="c-reviewer-time">*/}
-                                    {/*   <span>{item.review_time}</span>*/}
-                                    {/*</div>*/}
                                  </div>
                               </div>
                               ))}
