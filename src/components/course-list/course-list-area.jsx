@@ -283,7 +283,7 @@ const  CourseListArea = () => {
                         </div>
                         <div className="tpcourse__rating d-flex align-items-center justify-content-between">
                           <div className="tpcourse__rating-icon">
-                            <span>{course.averageStar}</span>
+                            <span>{course.averageStar.toFixed(1)}</span>
                             <i className="fi fi-ss-star"></i>
                             <i className="fi fi-ss-star"></i>
                             <i className="fi fi-ss-star"></i>

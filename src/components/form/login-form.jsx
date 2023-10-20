@@ -14,6 +14,7 @@ const LoginForm = () => {
    const [showAlert, setShowAlert] = useState(false);
    const [isLoggedIn, setIsLoggedIn] = useState(false);
    const [userRole, setUserRole] = useState("");
+   const [err,setErr] = useState("");
 
 
    const handleSubmit = async (e) => {
@@ -41,20 +42,21 @@ const LoginForm = () => {
          localStorage.setItem("accessToken", data.accessToken);
          localStorage.setItem("roles", rolesString)
          setShowAlert(true);
-
+         localStorage.setItem("isLoggedIn", true.toString());
          setIsLoggedIn(true);
+         setErr("You have successfully logged in.")
 
 
          if (rolesString === "ROLE_ADMIN"){
             router.push('/dashboard');
          }else {
-            const delayDuration = 30000; // 30 seconds (adjust as needed)
+            const delayDuration = 3000; // 30 seconds (adjust as needed)
             setTimeout(() => {
                router.push('/');
                }, delayDuration);
          }
       } catch (error) {
-         console.error("Login failed:", error);
+         setErr(error);
 
       }
    };
@@ -68,7 +70,7 @@ const LoginForm = () => {
            dismissible
            >
            <Alert.Heading>Login Successful!</Alert.Heading>
-           <p>You have successfully logged in.</p>
+           <p>{err}</p>
         </Alert>
         <section className="login-area pt-100 pb-100 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".5s">
          <div className="container">

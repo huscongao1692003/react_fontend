@@ -11,7 +11,7 @@ const RegisterhtmlForm = () => {
 
   const [formData, setFormData] = useState({
     username: "",
-    skillId: 0,
+    skillId: 1,
     pwd: "",
     confirmEmail: "",
     email: "",

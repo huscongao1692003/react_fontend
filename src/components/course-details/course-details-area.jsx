@@ -5,12 +5,45 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
+
 const CourseDetailsArea = () => {
   const [courseData, setCourseData] = useState({});
   const [instructorData, setInstructorData] = useState('');
   const router = useRouter();
   const { id } = router.query;
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const storedUserRole = localStorage.getItem("roles");
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const accessToken = localStorage.getItem("accessToken");
+  console.log(accessToken)
+
+  const addToCart = async () => {
+    try {
+      if (isLoggedIn !== "true") {
+        const delayDuration = 1000; // 1 second (adjust as needed)
+        setTimeout(() => {
+          router.push('/sign-in');
+        }, delayDuration);
+        return;
+      }
+
+      const response = await axios.post(
+        `https://drawproject-production.up.railway.app/api/v1/cart/${id}`,
+        null,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      if (response.status === 200) {
+         alert('Course added to the cart!');
+      } else {
+         alert('Failed to add the course to the cart.');
+      }
+    } catch (error) {
+       console.error('Error adding the course to the cart:', error);
+    }
+  };
 
   useEffect(() => {
     axios
@@ -40,9 +73,9 @@ const CourseDetailsArea = () => {
                <div className="col-lg-8 col-md-12">
                   <div className="c-details-wrapper mr-25">
                      <div className="c-details-thumb p-relative mb-40">
-                        <img src={`/assets/img/course/${courseData.image || 'c-details-bg-01.jpg'}`} alt="details-bg" />
+                        <img src={`${courseData.image || 'c-details-bg-01.jpg'}`} alt="details-bg" />
                         <div className="c-details-ava d-md-flex align-items-center">
-                           <img src="/assets/img/course/c-details-ava-01.png" alt="avata" />
+                           <img src="/assets/img/icon/course-avata-05.png" alt="avata" />
                            <span>
                               By <a href="#">{instructorData.userName}</a>
                            </span>
@@ -72,13 +105,16 @@ const CourseDetailsArea = () => {
                            <ul className="d-flex align-items-center">
                               <li>
                                  <div className="rating-gold d-flex align-items-center">
-                                    <p>{courseData.averageStar}</p>
+                                    <span>
+                                       {courseData.averageStar ? courseData.averageStar.toFixed(1) : 'N/A'}
+                                    </span>
+
                                     <i className="fi fi-ss-star"></i>
                                     <i className="fi fi-ss-star"></i>
                                     <i className="fi fi-ss-star"></i>
                                     <i className="fi fi-ss-star"></i>
                                     <i className="fi fi-rs-star"></i>
-                                    <span>(125)</span>
+
                                  </div>
                               </li>
                               <li>
@@ -185,9 +221,14 @@ const CourseDetailsArea = () => {
                         <div className="cd-video-price">
                            <h3 className="pricing-video text-center mb-15">${courseData.price || '29.99'}</h3>
                            <div className="cd-pricing-btn text-center mb-30">
-                              <Link className="tp-vp-btn" href="/course-details">
+                              {isLoggedIn === "true"  && storedUserRole === "ROLE_Customer" ? (
+                                 <button className="tp-vp-btn" href="/check-out" onClick={addToCart}>
                                  Add To Cart
-                              </Link>
+                              </button>
+
+                              ) : (
+                                 <p>Please log in as a customer to add to cart.</p>
+                                 )}
                               <Link className="tp-vp-btn-green" href="/course-details">
                                  Enroll Now
                               </Link>
