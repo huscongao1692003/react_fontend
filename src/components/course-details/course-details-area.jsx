@@ -19,33 +19,34 @@ const CourseDetailsArea = () => {
   const [avatar,setAvatar] = useState("/assets/img/icon/course-avata-05.png");
   console.log(accessToken)
 
-  const addToCart = async () => {
-    try {
-      if (isLoggedIn !== "true") {
-        const delayDuration = 1000; // 1 second (adjust as needed)
-        setTimeout(() => {
-          router.push('/sign-in');
-        }, delayDuration);
-        return;
-      }
-
-      const response = await axios.post(
-        `https://drawproject-production.up.railway.app/api/v1/cart/${id}`,
-        null,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
-
-      if (response.status === 200) {
-         alert('Course added to the cart!');
-      } else {
-         alert('Failed to add the course to the cart.');
-      }
-    } catch (error) {
-       console.error('Error adding the course to the cart:', error);
-    }
-  };
+//  const addToCart = async () => {
+//    try {
+//      if (isLoggedIn !== "true") {
+//        const delayDuration = 1000; // 1 second (adjust as needed)
+//        setTimeout(() => {
+//          router.push('/sign-in');
+//        }, delayDuration);
+//        return;
+//      }
+//
+//      const response = await axios.post(
+//        `https://drawproject-production.up.railway.app/api/v1/cart/${id}`,
+//        null,
+//        {
+//          headers: { Authorization: `Bearer ${accessToken}` },
+//        }
+//      );
+//
+//      if (response.status === 200) {
+//         alert('Course added to the cart!');
+//         console.log(response)
+//      } else {
+//         alert('Failed to add the course to the cart.');
+//      }
+//    } catch (error) {
+//       console.error('Error adding the course to the cart:', error);
+//    }
+//  };
 
   useEffect(() => {
     axios
@@ -67,6 +68,8 @@ const CourseDetailsArea = () => {
       .catch((error) => {
          console.log(error);
       });
+
+
 
 
             const instructorId = response.data.data.instructorId;
@@ -250,16 +253,21 @@ const CourseDetailsArea = () => {
                            <h3 className="pricing-video text-center mb-15">${courseData.price || '29.99'}</h3>
                            <div className="cd-pricing-btn text-center mb-30">
                               {isLoggedIn === "true"  && storedUserRole === "ROLE_CUSTOMER" ? (
-                                 <button className="tp-vp-btn" href="/check-out" onClick={addToCart}>
+                                 <Link className="tp-vp-btn" href={`/check-out?idCourse=${courseData.courseId}`}>
                                  Add To Cart
-                              </button>
+                                 </Link>
 
                               ) : (
-                                 <p>Please log in as a customer to add to cart.</p>
+                                 <p>Please log in as a customer to buy.</p>
                                  )}
+                              {isLoggedIn === "true"  && storedUserRole === "ROLE_CUSTOMER" ? (
+
                               <Link className="tp-vp-btn-green" href="/course-details">
                                  Enroll Now
                               </Link>
+                              ) : (
+                                 <p>Your role cant access this course</p>
+                                 )}
                            </div>
                         </div>
                         <div className="cd-information mb-35">

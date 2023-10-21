@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import Spinner from 'react-bootstrap/Spinner';
 
 const CheckoutArea = () => {
   const [cartData, setCartData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [courseData, setCourseData] = useState({});
+  const router = useRouter();
+  const { idCourse } = router.query;
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-  useEffect( () => {
-    axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/cart`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then(async (response) => {
-        const cartItems = await response.data;
-        setCartData(cartItems);
-        console.log(cartItems)
-        setLoading(false);
+     useEffect(() => {
+        axios
+      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse}`)
+      .then((response) => {
+         setCourseData(response.data.data);
+         console.log(response.data.data)
+
+         setLoading(false)
       })
       .catch((error) => {
-        console.log(error);
-        setLoading(false);
+         console.error('Error fetching course data:', error);
       });
-  }, [accessToken]);
+        }, [idCourse]);
+
 
   return (
     <>
@@ -42,7 +44,7 @@ const CheckoutArea = () => {
                     <div className="container">
                       <div className="row">
                         <div className="col-12">
-                          {cartData.length > 0 ? (
+                          {courseData != null ? (
                              <div className="table-content table-responsive">
                                 <table className="table">
                                    <thead>
@@ -55,21 +57,21 @@ const CheckoutArea = () => {
                                       </tr>
                                    </thead>
                                    <tbody>
-                                      {cartData.map((item, i) => (
-                                         <tr key={i}>
-                                            {/*<td className="product-thumbnail">*/}
-                                            {/*   <Link href="/course-details">*/}
-                                            {/*      <img src={item.img} alt="" />*/}
-                                            {/*   </Link>*/}
-                                            {/*</td>*/}
+                                      {/*{courseData.map((item, i) => (*/}
+                                         <tr>
+                                            <td className="product-thumbnail">
+                                               <Link href="/course-details">
+                                                  <img src={courseData.image} alt="" />
+                                               </Link>
+                                            </td>
                                             <td className="product-name">
-                                               <Link href="/course-details">{item.courseName}</Link>
+                                               <Link href="/course-details">{courseData.courseTitle}</Link>
                                             </td>
                                             <td className="product-price">
-                                               <span className="amount">${item.price}</span>
+                                               <span className="amount">${courseData.price}</span>
                                             </td>
                                             <td className="product-subtotal">
-                                               <span className="amount">${item.price}</span>
+                                               <span className="amount">${courseData.price}</span>
                                             </td>
                                             <td className="product-remove">
                                                <a href="#">
@@ -77,7 +79,7 @@ const CheckoutArea = () => {
                                                </a>
                                             </td>
                                          </tr>
-                                         ))}
+                                         {/*))}*/}
                                    </tbody>
                                 </table>
                              </div>
@@ -127,7 +129,7 @@ const CheckoutArea = () => {
                                 <tr>
                                    <td className="product-name">Cart Subtotal</td>
                                    <td className="product-total">
-                                      {/*<span className="amount">${cartTotal.toFixed(2)}</span>*/}
+                                      <span className="amount">${courseData.price}</span>
                                    </td>
                                 </tr>
                              </tbody>
@@ -136,7 +138,7 @@ const CheckoutArea = () => {
                                    <th>Order Total</th>
                                    <td>
                                       <strong>
-                                         {/*<span className="amount">${cartTotal.toFixed(2)}</span>*/}
+                                         <span className="amount">${courseData.price}</span>
                                       </strong>
                                    </td>
                                 </tr>
