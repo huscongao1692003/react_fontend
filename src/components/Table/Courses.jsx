@@ -7,31 +7,31 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createCustomerData(name, trackingId, date, price) {
-    return { name, trackingId, date, price };
+function createCourseData(name,instructor, trackingId, date, price) {
+    return { name,instructor, trackingId, date, price };
   }
   
   const rows = [
-    createCustomerData("Lasania Chiken Fri", 18908424, "2 March 2022", "69.96$"),
-    createCustomerData("Big Baza Bang ", 18908424, "2 March 2022", "69.96$"),
-    createCustomerData("Mouth Freshner", 18908424, "2 March 2022", "69.96$"),
-    createCustomerData("Cupcake", 18908421, "2 March 2022", "69.96$"),
+    createCourseData("Lasania Chiken Fri","John", 18908424, "2 March 2022", "69.96$"),
+    createCourseData("Big Baza Bang ","Dory", 18908424, "2 March 2022", "69.96$"),
+    createCourseData("Mouth Freshner","Ron", 18908424, "2 March 2022", "69.96$"),
+    createCourseData("Cupcake","Tom", 18908421, "2 March 2022", "69.96$"),
   ];
 
-export default function CustomerTable() {
-    const [selectedCustomer, setSelectedCustomer] = React.useState(null);
+export default function CourseTable() {
+    const [selectedCourse, setSelectedCourse] = React.useState(null);
   
-    const handleDetailsClick = (customer) => {
-      setSelectedCustomer(customer);
+    const handleDetailsClick = (Course) => {
+      setSelectedCourse(Course);
     };
   
     const handleCloseForm = () => {
-      setSelectedCustomer(null);
+      setSelectedCourse(null);
     };
   
     return (
       <div className="Table">
-        <h3>Orders</h3>
+        <h3>Courses</h3>
         <TableContainer
           component={Paper}
           style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
@@ -41,10 +41,12 @@ export default function CustomerTable() {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
+              <TableCell align="left">Instructor</TableCell>
               <TableCell align="left">Tracking ID</TableCell>
               <TableCell align="left">Date</TableCell>
               <TableCell align="left">Price</TableCell>
               <TableCell align="left">Details</TableCell>
+              
             </TableRow>
           </TableHead>
           <TableBody style={{ color: "white" }}>
@@ -56,6 +58,7 @@ export default function CustomerTable() {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
+                <TableCell align="left">{row.instructor}</TableCell>
                 <TableCell align="left">{row.trackingId}</TableCell>
                 <TableCell align="left">{row.date}</TableCell>
                 <TableCell align="left">
@@ -77,7 +80,7 @@ export default function CustomerTable() {
           </TableBody>
         </Table>
         </TableContainer>
-        {selectedCustomer && (
+        {selectedCourse && (
           <div className="popup-form" style={{ marginTop: "1rem" }}>
             <h3>Order Details</h3>
             <div
@@ -95,7 +98,7 @@ export default function CustomerTable() {
                   </label>
                   <input
                     type="text"
-                    value={selectedCustomer.name}
+                    value={selectedCourse.name}
                     readOnly
                     style={{ width: "100%", padding: "0.25rem" }}
                   />
@@ -106,7 +109,7 @@ export default function CustomerTable() {
                   </label>
                   <input
                     type="text"
-                    value={selectedCustomer.trackingId}
+                    value={selectedCourse.trackingId}
                     readOnly
                     style={{ width: "100%", padding: "0.25rem" }}
                   />
@@ -117,7 +120,7 @@ export default function CustomerTable() {
                   </label>
                   <input
                     type="text"
-                    value={selectedCustomer.date}
+                    value={selectedCourse.date}
                     readOnly
                     style={{ width: "100%", padding: "0.25rem" }}
                   />
@@ -128,7 +131,7 @@ export default function CustomerTable() {
                   </label>
                   <input
                     type="text"
-                    value={selectedCustomer.price}
+                    value={selectedCourse.price}
                     readOnly
                     style={{ width: "100%", padding: "0.25rem" }}
                   />

@@ -20,7 +20,7 @@ const Card = (props) => {
 function CompactCard({ param, setExpanded }) {
   const Png = param.png;
   return (
-    <motion.div
+    <div
       className="CompactCard"
       style={{
         background: param.color.backGround,
@@ -41,7 +41,7 @@ function CompactCard({ param, setExpanded }) {
         <span>${param.value}</span>
         <span>Last 24 hours</span>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

@@ -12,8 +12,9 @@ import {
 } from "@iconscout/react-unicons";
 import MainDash from "../MainDash/MainDash";
 import Table from '../Table/Table';
-import Customer from '../Table/Customer';
-
+import User from '../Table/User'
+import Courses from "../Table/Courses"
+import Cards from "../Cards/Cards";
 const MenuItems = [
   {
     icon: UilEstate,
@@ -28,17 +29,17 @@ const MenuItems = [
   {
     icon: UilUsersAlt,
     heading: "Customers",
-    content: <Customer/>,
+    content: <User/>,
   },
   {
     icon: UilPackage,
-    heading: 'Products',
-    content: "Products content goes here",
+    heading: 'Courses',
+    content: <Courses/>,
   },
   {
     icon: UilChart,
     heading: 'Analytics',
-    content: "Analytics content goes here",
+    content: <Cards/>,
   },
 ];
 
@@ -68,11 +69,7 @@ const Sidebar = () => {
             </div>
           )
         })}
-        <div className='menuItem'>
-          <Link href="/">
-            <UilSignOutAlt />
-          </Link>
-        </div>
+        
       </div>
       <div className="content">
         {MenuItems[selected] && MenuItems[selected].content}
