@@ -59,7 +59,9 @@ const CourseDetailsArea = () => {
          const decodedData = responseFeedback.data.data.map((feedback) => ({
             ...feedback,
          }));
-         setAvatar(decodedData.avatar)
+         if(decodedData.avatar != null){
+            setAvatar(decodedData.avatar)
+         }
          setFeedbackData(decodedData);
       })
       .catch((error) => {
@@ -247,7 +249,7 @@ const CourseDetailsArea = () => {
                         <div className="cd-video-price">
                            <h3 className="pricing-video text-center mb-15">${courseData.price || '29.99'}</h3>
                            <div className="cd-pricing-btn text-center mb-30">
-                              {isLoggedIn === "true"  && storedUserRole === "ROLE_Customer" ? (
+                              {isLoggedIn === "true"  && storedUserRole === "CUSTOMER" ? (
                                  <button className="tp-vp-btn" href="/check-out" onClick={addToCart}>
                                  Add To Cart
                               </button>
