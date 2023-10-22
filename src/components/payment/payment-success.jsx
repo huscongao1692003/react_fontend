@@ -21,37 +21,38 @@ const PaymentSuccess = () => {
     setIdCourse(idCourse);
 
     if (idCourse && idCourse.id && accessToken) {
-        axios
-            .get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse.id}`)
-            .then((response) => {
-                setCourseData(response.data.data);
-                console.log(response.data.data);
-                
-                axios.get(`https://drawproject-production.up.railway.app/api/v1/pay/success?paymentId=${paymentId}&token=${token}&PayerID=${PayerID}`,
-                    {
-                        description: "test",
-                        courseId: idCourse.id, 
-                        price: response.data.data.price, 
-                        totalPrice: response.data.data.price 
-                    },
-                    { headers: { "Authorization": `Bearer ${accessToken}` } }
-                )
-                .then(response => {
-                    console.log("done");
-                })
-                .catch(error => {
-                    console.error('Error fetching course data:', error);
+        console.log("idCourse, accessToken, paymentId, token, PayerID:", idCourse, accessToken, paymentId, token, PayerID);
+
+        try {
+            (async () => {
+                const courseResponse = await axios.get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse.id}`, {
+                    headers: { "Authorization": `Bearer ${accessToken}` }
                 });
 
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching course data:', error);
-            });
+                setCourseData(courseResponse.data.data);
+                const paymentData = {
+                    description: "test",
+                    courseId: idCourse.id,
+                    price: courseResponse.data.data.price,
+                    totalPrice: courseResponse.data.data.price,
+                };
+                const paymentResponse = await axios
+                .post(`https://drawproject-production.up.railway.app/api/v1/pay/success?paymentId=${paymentId}&token=${token}&PayerID=${PayerID}`,
+                     paymentData,
+                    {headers: { "Authorization": `Bearer ${accessToken}` }
+                });
+
+                console.log("Payment response:", paymentResponse.data);
+                console.log(courseResponse.data.data);
+            })();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     } else {
         console.error('The "idCourse" data is not found in localStorage or does not contain an "id" property.');
     }
-    }, []);
+    }, [router.query, accessToken]);
+
     return (
         <>
         <section className="error-area pt-120 pb-115">
