@@ -1,16 +1,22 @@
 import useSticky from "@/hooks/use-sticky";
 import Link from "next/link";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import NavMenu from "./nav-menu";
 import Sidebar from "./sidebar";
 
 
-// category_data
-
 const Header = () => {
-const {sticky} = useSticky()
+  const {sticky} = useSticky()
   const [isActive, setIsActive] = useState(false);
+  const [userRole, setUserRole] = useState("");
+  const isLoggedIn = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
 
+useEffect(() => {
+
+  // Retrieve the user's role from local storage
+  const role = localStorage.getItem("userRole");
+  setUserRole(role);
+  }, []);
   return (
     <>
       <header className="header__transparent " style={{ backgroundColor: "rgba(36, 93, 81, 0.80)"}}>
@@ -46,16 +52,48 @@ const {sticky} = useSticky()
                     </div>
                     <div className="header-meta">
                       <ul>
-                        <li>
-                          <Link href="/sign-in" className="d-none d-md-block">
-                            <i className="fi fi-rr-user"></i>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/check-out" className="d-none d-md-block">
-                            <i className="fi fi-rr-shopping-bag"></i>
-                          </Link>
-                        </li>
+                          <li>
+                            <Link href="/sign-in" className="d-none d-md-block">
+                              <i className="fi fi-rr-user"></i>
+                            </Link>
+                          </li>
+                          {isLoggedIn && (
+                            <>
+                            {userRole === "ROLE_ADMIN" && (
+                              <li>
+                                <Link href="/dashboard" className="d-none d-md-block">
+                                  <i className="fi fi-rr-user"></i>
+                                </Link>
+                              </li>
+                              )}
+                            {userRole === "ROLE_CUSTOMER" && (
+                              <li>
+                                <Link href="/Settings" className="d-none d-md-block">
+                                  <i className="fi fi-rr-user"></i>
+                                </Link>
+                              </li>
+                              )}
+                            {userRole === "ROLE_INSTRUCTOR" && (
+                              <li>
+                                <Link href="/dashboard-instructor" className="d-none d-md-block">
+                                  <i className="fi fi-rr-user"></i>
+                                </Link>
+                              </li>
+                              )}
+                            {userRole === "ROLE_STAFF" && (
+                              <li>
+                                <Link href="/dashboard-staff" className="d-none d-md-block">
+                                  <i className="fi fi-rr-user"></i>
+                                </Link>
+                              </li>
+                              )}
+                            </>
+                            )}
+                          <li>
+                            <Link href="/check-out" className="d-none d-md-block">
+                              <i className="fi fi-rr-shopping-bag"></i>
+                            </Link>
+                          </li>
                         <li>
                           <a onClick={() => setIsActive(true)}  href="#" className="tp-menu-toggle d-xl-none">
                             <i className="icon_ul"></i>
