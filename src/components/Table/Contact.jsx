@@ -11,7 +11,6 @@ import {
   Paper,
 } from '@mui/material';
 import Spinner from 'react-bootstrap/Spinner';
-import CloseButton from 'react-bootstrap/CloseButton';
 
 export default function ContactTable() {
   const [contacts, setContacts] = useState([]);
@@ -41,6 +40,10 @@ export default function ContactTable() {
       await axios.put(`https://drawproject-production.up.railway.app/api/v1/admin/contact/${id}`, null, { headers });
       alert("Close contact msg successfully");
       setLoading(false);
+      axios.get('https://drawproject-production.up.railway.app/api/v1/admin/contact', { headers }).then((response) => {
+        setContacts(response.data);
+        setLoading(false);
+      });
     } catch (error) {
       // Handle any errors that may occur during the API request.
       console.error('Error closing contact:', error);

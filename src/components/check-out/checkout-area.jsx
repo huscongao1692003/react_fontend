@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
@@ -9,25 +10,26 @@ const CheckoutArea = () => {
   const [courseData, setCourseData] = useState({});
   const router = useRouter();
   const { idCourse } = router.query;
-  localStorage.setItem('idCourse', JSON.stringify({
-     id: Number(idCourse)
-  }));
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-     useEffect(() => {
-        axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse}`)
-      .then((response) => {
-         setCourseData(response.data.data);
-         console.log(response.data.data)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('idCourse', JSON.stringify({
+        id: Number(idCourse)
+      }));
 
-         setLoading(false)
-      })
-      .catch((error) => {
-         console.error('Error fetching course data:', error);
-      });
-
-        }, [idCourse]);
+      axios
+        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse}`)
+        .then((response) => {
+          setCourseData(response.data.data);
+          console.log(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+           console.error('Error fetching course data:', error);
+        });
+    }
+     }, [idCourse]);
      const handelPay = async (e) => {
         e.preventDefault();
 
@@ -97,9 +99,9 @@ const CheckoutArea = () => {
                                                <span className="amount">${courseData.price}</span>
                                             </td>
                                             <td className="product-remove">
-                                               <a href="#">
+                                               <Link href={`course-details?id=${idCourse}`}>
                                                   <i className="fa fa-times"></i>
-                                               </a>
+                                               </Link>
                                             </td>
                                          </tr>
                                          {/*))}*/}

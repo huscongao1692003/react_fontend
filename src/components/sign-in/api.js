@@ -1,8 +1,5 @@
 const token = response.accessToken;
 localStorage.setItem('accessToken', token);
-
-
-import Password from 'antd/es/input/Password';
 import axios from 'axios';
 
 const loginApi = (username, pwd) =>{

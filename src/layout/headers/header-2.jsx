@@ -14,7 +14,7 @@ const Header = () => {
 useEffect(() => {
 
   // Retrieve the user's role from local storage
-  const role = localStorage.getItem("userRole");
+  const role = typeof window !== 'undefined' ? localStorage.getItem("userRole"):null;
   setUserRole(role);
   }, []);
   return (
