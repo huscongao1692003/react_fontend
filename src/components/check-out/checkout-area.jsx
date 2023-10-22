@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import Spinner from 'react-bootstrap/Spinner';
 
 const CheckoutArea = () => {
-  const [cartData, setCartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [courseData, setCourseData] = useState({});
   const router = useRouter();
   const { idCourse } = router.query;
+  localStorage.setItem('idCourse', JSON.stringify({
+     id: Number(idCourse)
+  }));
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
      useEffect(() => {
@@ -24,8 +26,29 @@ const CheckoutArea = () => {
       .catch((error) => {
          console.error('Error fetching course data:', error);
       });
-        }, [idCourse]);
 
+        }, [idCourse]);
+     const handelPay = async (e) => {
+        e.preventDefault();
+
+        try {
+           const response = await axios.post(
+              "https://drawproject-production.up.railway.app/api/v1/pay",
+              {
+                 description: "test",
+                 courseId: courseData.courseId,
+                 price: courseData.price,
+                 totalPrice: courseData.price,
+                 url: "http://localhost:3000"
+              },
+              { headers: {"Authorization" : `Bearer ${accessToken}`} });
+
+            await  router.push(response.data);
+
+        } catch (error) {
+           console.error('Error fetching course data:', error);
+        }
+     };
 
   return (
     <>
@@ -171,7 +194,7 @@ const CheckoutArea = () => {
                              </div>
                           </div>
                           <div className="order-button-payment mt-20">
-                             <button type="submit" className="tp-btn">
+                             <button type="submit" className="tp-btn" onClick={handelPay}>
                                 Place order
                              </button>
                           </div>
