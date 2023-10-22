@@ -49,7 +49,7 @@ const InstructorArea = () => {
                 >
                   <div className="tp-instructor text-center p-relative mb-40">
                     <div className="tp-instructor__thumb mb-25">
-                      <img src={item.avatar} alt="instructor-profile" />
+                      <img src={item.avatar || `/assets/img/icon/course-avata-05.png`} alt="instructor-profile" />
                     </div>
                     <div className="tp-instructor__content">
                       <span>{item.username}</span>
