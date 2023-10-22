@@ -8,64 +8,68 @@ const Settings = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
-  const [skillId, setSkillId] = useState('');
   const [skillName, setSkillName] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchProfile = async () => {
       try {
+        const accessToken = localStorage.getItem('accessToken');
         const response = await axios.get('https://drawproject-production.up.railway.app/api/v1/profile', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
+          headers: { Authorization: `Bearer ${accessToken}` }
         });
         const { data } = response;
         setFullName(data.fullName);
         setMobileNumber(data.mobileNumber);
         setEmail(data.email);
         setAvatar(data.avatar);
-        setSkillId(data.skill.skillId);
         setSkillName(data.skill.skillName);
       } catch (error) {
-        console.error('Failed to fetch user data:', error);
+        console.error('Failed to fetch profile:', error);
       }
     };
 
-    fetchUserData();
+    fetchProfile();
   }, []);
-
-  const handleFileInputChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
+      const accessToken = localStorage.getItem('accessToken');
       const formData = new FormData();
       formData.append('fullName', fullName);
       formData.append('mobileNumber', mobileNumber);
       formData.append('email', email);
+      formData.append('skill', JSON.stringify({ skillName }));
       if (selectedFile) {
         formData.append('avatar', selectedFile);
       }
-      formData.append('skillId', skillId);
-      formData.append('skillName', skillName);
-
-      const response = await axios.put('https://drawproject-production.up.railway.app/api/user', formData, {
+  
+      await axios.put('https://drawproject-production.up.railway.app/api/v1/profile', formData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      console.log('User data updated:', response.data);
-
-      router.push('/dashboard');
+  
+      // Show success message or redirect to dashboard
+      console.log('Profile updated successfully');
+      router.push('/');
     } catch (error) {
-      console.error('Failed to update user data:', error);
+      console.error('Failed to update profile:', error);
+      // Show error message
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    router.push('/');
+  };
+  
+
+  const handleFileInputChange = (e) => {
+    // Handle file input change logic here
   };
 
   return (
@@ -89,28 +93,25 @@ const Settings = () => {
                     <input
                       id="fileInput"
                       type="file"
-                      style={{ display: 'none' }}
-                      className="settingsPPInput"
+                      accept=".jpg,.jpeg,.png"
                       onChange={handleFileInputChange}
+                      style={{ display: 'none' }}
                     />
                   </div>
-                  <label>Full Name</label>
-                  <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                  <label>Mobile Number</label>
-                  <input type="tel" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
-                  <label>Email</label>
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                  <label>Skill ID</label>
-                  <input type="number" value={skillId} onChange={(e) => setSkillId(e.target.value)} max={3} min={1} />
-                  <label>Skill Name</label>
-                  <input type="text" value={skillName} onChange={(e) => setSkillName(e.target.value)} />
-
                   <div className="mt-10"></div>
-                  <button className="tp-btn w-100" type="submit">
-                    Update
-                  </button>
+                  <label htmlFor="name">Full Name <span>**</span></label>
+                  <input id="name" type="text" placeholder="Enter your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                  <label htmlFor="mobile">Mobile Number <span>**</span></label>
+                  <input id="mobile" type="tel" placeholder="Enter your mobile number" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
+                  <label htmlFor="email">Email <span>**</span></label>
+                  <input id="email" type="email" placeholder="Enter your email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <label htmlFor="skill">Skill <span>**</span></label>
+                  <input id="skill" type="text" placeholder="Enter your skill" value={skillName} onChange={(e) => setSkillName(e.target.value)} />
+                  <div className="mt-10"></div>
+                  <button className="tp-btn w-100">Update Profile</button>
                 </form>
-              </div>
+                <div className="mt-20"></div>
+                <button onClick={handleLogout} className="tp-btn w-100">Logout</button>              </div>
             </div>
           </div>
         </div>
