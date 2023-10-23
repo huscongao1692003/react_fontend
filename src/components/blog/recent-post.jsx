@@ -35,7 +35,7 @@ const RecentPost = () => {
                     >
                       <div className="rc__post-thumb">
                         <Link href="/blog-details">
-                          <img src={post.img} alt="blog-sidebar" />
+                          <img src={post.image} alt="blog-sidebar" />
                         </Link>
                       </div>
                       <div className="rc__post-content">
