@@ -16,7 +16,6 @@ const menu_data = [
     sub_menus: [
       { link: "/about", title: "About" },
       { link: "/contact", title: "Contact" },
-      { link: "/check-out", title: "Check Out" },
       { link: "/faq", title: "FAQ" },
       // { link: "/register", title: "Register" },
       // { link: "/sign-in", title: "Sign In" },
@@ -38,6 +37,7 @@ const menu_data = [
     link: "/course-list",
     has_dropdown: true,
     sub_menus: [
+      { link: "/course-create", title: "Create Course" },
       // { link: "/course-grid", title: "Course Grid" },
       // { link: "/course", title: "Course List" },
       // { link: "/course-details", title: "Course Details" },
@@ -55,6 +55,5 @@ const menu_data = [
       // { link: "/blog-details", title: "Blog Details" },
     ],
   },
-  
 ];
 export default menu_data;

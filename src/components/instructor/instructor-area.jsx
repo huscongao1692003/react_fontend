@@ -3,29 +3,32 @@ import Link from "next/link";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import React from "react";
+import Spinner from 'react-bootstrap/Spinner';
+
 
 const InstructorArea = () => {
-  const [blogData, setBlogData] = useState({});
-
-  useEffect(() => {
+  const [instructorData, setInstructorData] = useState([]);
+  const [loading, setLoading] = useState(true);
+ useEffect(() => {
     axios
-      .get("https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=5")
+      .get("https://drawproject-production.up.railway.app/api/v1/instructor")
       .then((response) => {
-        setBlogData(response.data.data);
+        setInstructorData(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
-  }, []);
+    }, []); // The empty dependency array ensures this effect runs only once
+  if (loading) {
+    return  <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+      <Spinner animation="grow" variant="success" size="lg"/>
+    </div>;
+  }
+
   return (
     <>
-    {Array.isArray(blogData) &&
-        blogData.map((post, index) => (
-          <div key={index}>
-            <h2>{post.data}</h2>
-            <p>{post.description}</p>
-          </div>
-        ))}
       <section className="instructor-area pb-110">
         <div className="container">
           <div className="row">
@@ -37,7 +40,7 @@ const InstructorArea = () => {
             </div>
           </div>
           <div className="row">
-            {instructor_info_data.map((item, i) => (
+             {instructorData.map((item, i) => (
               <div key={i} className="col-lg-4 col-md-6 col-12">
                 <div
                   className="tp-instruc-item wow fadeInUp"
@@ -46,15 +49,16 @@ const InstructorArea = () => {
                 >
                   <div className="tp-instructor text-center p-relative mb-40">
                     <div className="tp-instructor__thumb mb-25">
-                      <img src={item.img} alt="instructor-profile" />
+                      <img src={item.avatar} alt="instructor-profile" />
                     </div>
                     <div className="tp-instructor__content">
-                      <span>{item.title}</span>
+                      <span>{item.username}</span>
                       <h4 className="tp-instructor__title tp-instructor__title-info p-relative mb-35 mt-5">
-                        <Link href="/instructor-profile">{item.name}</Link>
+                        <Link href="/instructor-profile">{item.username}</Link>
                       </h4>
                       <div className="tp-instructor__stu-info">
                         <ul className="d-flex align-items-center justify-content-center">
+                          <li>Number of Courses: {item.numberOfCourse}</li>
                         </ul>
                       </div>
                       

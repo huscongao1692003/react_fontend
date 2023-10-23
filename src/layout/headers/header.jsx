@@ -52,7 +52,7 @@ const {sticky} = useSticky()
                           </Link>
                         </li>
                         <li>
-                          <Link href="/cart" className="d-none d-md-block">
+                          <Link href="/check-out" className="d-none d-md-block">
                             <i className="fi fi-rr-shopping-bag"></i>
                           </Link>
                         </li>

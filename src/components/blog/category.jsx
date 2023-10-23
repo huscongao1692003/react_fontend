@@ -19,7 +19,9 @@ const Category = () => {
   return (
     <>
       <div className="sidebar__widget mb-40">
-        <h3 className="sidebar__widget-title mb-10">Category</h3>
+        <div className="row">
+          <h3 className="sidebar__widget-title mb-10 col-md-7">Category</h3>
+        </div>
         <div className="sidebar__widget-content">
           <ul>
             {categoryData.map((item) => (
@@ -68,7 +70,7 @@ export default Category;
 // ];
 
 // const Category = () => {
-  
+
 //   return (
 //     <>
 //       <div className="sidebar__widget mb-40">

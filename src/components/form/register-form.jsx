@@ -1,52 +1,64 @@
-import { postData } from "@/src/api/api";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from 'next/router';
+import Alert from 'react-bootstrap/Alert';
+import { Form, Dropdown } from "react-bootstrap";
 
 const RegisterhtmlForm = () => {
-  const [name, setName] = useState("");
-  const [pass, setPass] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [errorMess, setErrorMess] = useState("");
-  const [LoginError, setLoginError] = useState(false);
-
+  const [showAlert, setShowAlert] = useState(false);
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => {
-    postData("auth/register", {
-      username: data.username,
-      skillId: 1,
-      pwd: data.pwd,
-      confirmEmail: data.email,
-      email: data.email,
-      mobileNum: data.mobileNum,
-      confirmPwd: data.pwd,
-      fullName: data.fullName,
-      roleName: "CUSTOMER",
-    })
-      .then((response) => {
-        setErrorMess("Sign Up Success");
-        localStorage.setItem("accessToken", response.accessToken);
-        setTimeout(() => {
-          router.push("/sign-in");
-        }, 2000);
-      })
-      .catch((error) => {
-        // Xử lý lỗi nếu có
-        console.error("Error making POST request: ", error);
-        setLoginError(true);
-        setErrorMess(error?.response?.data);
-      });
+
+  const [formData, setFormData] = useState({
+    username: "",
+    skillId: 1,
+    pwd: "",
+    confirmEmail: "",
+    email: "",
+    mobileNum: "",
+    confirmPwd: "",
+    fullName: "",
+    roleName: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "https://drawproject-production.up.railway.app/api/auth/register",
+        formData
+        );
+
+      setShowAlert(true);
+      console.log("Registration successful:", response.data);
+      const delayDuration = 3000; // 3 seconds (adjust as needed)
+      setTimeout(() => {
+        router.push('/sign-in');
+        }, delayDuration);
+    } catch (error) {
+      console.error("Registration failed:", error);
+
+    }
+  };
+
   return (
+
     <>
+    <Alert
+      variant="success"
+      show={showAlert}
+      onClose={() => setShowAlert(false)}
+      dismissible
+      >
+      <Alert.Heading>Register Successful!</Alert.Heading>
+      <p>You have successfully Register.</p>
+    </Alert>
       <section
         className="login-area pt-100 pb-100 wow fadeInUp"
         data-wow-duration=".8s"
@@ -57,117 +69,122 @@ const RegisterhtmlForm = () => {
             <div className="col-lg-8 offset-lg-2">
               <div className="basic-login">
                 <h3 className="text-center mb-60">Sign up From Here</h3>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <label htmlFor="name">
+                <Form onSubmit={handleSubmit}>
+                  <label htmlFor="username">
                     Username <span>**</span>
                   </label>
                   <input
-                    {...register("username", {
-                      required: { value: true, message: "Please enter" },
-                      minLength: {
-                        value: 4,
-                        message: "Please enter all 4 characters",
-                      },
-                      maxLength: {
-                        value: 40,
-                        message: "Maximum length is 40 characters",
-                      },
-                    })}
-                    id="name"
+                    id="username"
                     type="text"
                     placeholder="Enter Username"
+                    name="username"
+                    required
+                    value={formData.username}
+                    onChange={handleInputChange}
                   />
-                  <p style={{ color: "red" }}> {errors.username?.message}</p>
                   <label htmlFor="fullName">
-                    Full Name <span>**</span>
+                    Fullname <span>**</span>
                   </label>
                   <input
-                    {...register("fullName", {
-                      required: { value: true, message: "Please enter" },
-                      minLength: {
-                        value: 6,
-                        message: "Please enter all 6 characters",
-                      },
-                      maxLength: {
-                        value: 20,
-                        message: "Maximum length is 20 characters",
-                      },
-                    })}
                     id="fullName"
                     type="text"
-                    placeholder="Enter Full Name"
+                    placeholder="Enter Fullname"
+                    name="fullName"
+                    required
+                    value={formData.fullName}
+                    onChange={handleInputChange}
                   />
-                  <p style={{ color: "red" }}>{errors.fullName?.message}</p>
-                  <label htmlFor="email-id">
+                  <label htmlFor="mobileNum">
+                    Mobile Number <span>**</span>
+                  </label>
+                  <input
+                    id="mobileNum"
+                    type="number"
+                    placeholder="Mobile..."
+                    name="mobileNum"
+                    required
+                    value={formData.mobileNum}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor="email">
                     Email Address <span>**</span>
                   </label>
                   <input
-                    id="email-id"
-                    {...register("email", {
-                      required: { value: true, message: "Please enter" },
-                      minLength: {
-                        value: 6,
-                        message: "Please enter all 6 characters",
-                      },
-                      maxLength: {
-                        value: 40,
-                        message: "Maximum length is 40 characters",
-                      },
-                    })}
-                    type="email"
+                    id="email"
+                    type="text"
                     placeholder="Email address..."
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
-                  <p style={{ color: "red" }}>{errors.email?.message}</p>
-                  <label htmlFor="phone-id">
-                    Phone <span>**</span>
+                  <label htmlFor="confirmEmail">
+                    Confirm Email <span>**</span>
                   </label>
                   <input
-                    {...register("mobileNum", {
-                      required: { value: true, message: "Please enter" },
-                      minLength: {
-                        value: 10,
-                        message: "Please enter all 10 characters",
-                      },
-                      maxLength: {
-                        value: 10,
-                        message: "Maximum length is 10 characters",
-                      },
-                    })}
-                    id="phone-id"
+                    id="confirmEmail"
                     type="text"
-                    placeholder="Phone..."
+                    placeholder="Email confirm..."
+                    name="confirmEmail"
+                    required
+                    value={formData.confirmEmail}
+                    onChange={handleInputChange}
                   />
-                  <p style={{ color: "red" }}>{errors.mobileNum?.message}</p>
-                  <label htmlFor="pass">
+                  <label htmlFor="pwd">
                     Password <span>**</span>
                   </label>
                   <input
-                    id="pass"
-                    {...register("pwd", {
-                      required: { value: true, message: "Please enter" },
-                      minLength: {
-                        value: 6,
-                        message: "Please enter all 6 characters",
-                      },
-                      maxLength: {
-                        value: 20,
-                        message: "Maximum length is 20 characters",
-                      },
-                    })}
+                    id="pwd"
                     type="password"
                     placeholder="Enter password..."
+                    name="pwd"
+                    required
+                    value={formData.pwd}
+                    onChange={handleInputChange}
                   />
-                  <p style={{ color: "red" }}>{errors.pwd?.message}</p>
+                  <label htmlFor="confirmPwd">
+                    Confirm Password <span>**</span>
+                  </label>
+                  <input
+                    id="confirmPwd"
+                    type="password"
+                    placeholder="Enter confirm password..."
+                    name="confirmPwd"
+                    required
+                    value={formData.confirmPwd}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor="roleName">
+                    Select Role <span>**</span>
+                  </label>
+                  <Dropdown onSelect={(eventKey, event) => handleInputChange({ target: { name: "roleName", value: eventKey } })}>
+                    <Dropdown.Toggle variant="success">
+                      {formData.roleName || "Select Role"}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item eventKey="CUSTOMER">Customer</Dropdown.Item>
+                      <Dropdown.Item eventKey="INSTRUCTOR">Instructor</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <label htmlFor="skillId" className="mt-10">
+                    Select Skill <span>**</span>
+                  </label>
+                  <Form.Control className="mt-10" as="select" name="skillId" value={formData.skillId} onChange={handleInputChange} required>
+                    <option value={1}>Beginner</option>
+                    <option value={2}>Intermediate</option>
+                    <option value={3}>Advance</option>
+                    <option value={4}>Profession</option>
+
+                  </Form.Control>
                   <div className="mt-10"></div>
-                  <p style={{ color: "red" }}>{LoginError ? errorMess : ""}</p>
-                  <button className="tp-btn w-100">Register Now</button>
+                  <button className="tp-btn w-100" type="submit">Register Now</button>
                   <div className="or-divide">
                     <span>or</span>
                   </div>
                   <Link href="/sign-in" className="tp-border-btn w-100">
-                    login Now
+                    Login Now
                   </Link>
-                </form>
+                </Form>
               </div>
             </div>
           </div>

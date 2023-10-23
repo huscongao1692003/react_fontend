@@ -5,12 +5,12 @@ const location_info = [
     {
         id: 1,
         icon: "fa-light fa-phone",
-        info: "(209) 555-0104"
+        info: "0866671519"
     }, 
     {
         id: 2,
         icon: "fa-light fa-location-dot",
-        info: "1901 Thornridge Cir. Shiloh, Hawaii 81063"
+        info: "HCM City, VietNam"
     }, 
     {
         id: 3,
@@ -32,7 +32,7 @@ const LocationArea = () => {
                         <i className="fa-light fa-phone"></i>
                      </div>
                      <div className="location-content">
-                        <h5 className="location-title"><a href="tell:(209)555-0104">(209) 555-0104</a></h5>
+                        <h5 className="location-title"><a href="tell:0866671519">0866671519</a></h5>
                      </div>
                   </div>
                </div>
@@ -42,7 +42,7 @@ const LocationArea = () => {
                         <i className="fa-light fa-location-dot"></i>
                      </div>
                      <div className="location-content">
-                        <h5 className="location-title">1901 Thornridge Cir. Shiloh, Hawaii 81063</h5>
+                        <h5 className="location-title">HCM City, VietNam</h5>
                      </div>
                   </div>
                </div>

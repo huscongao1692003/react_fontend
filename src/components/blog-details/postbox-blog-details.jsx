@@ -9,6 +9,7 @@ import Category from "../blog/category";
 import RecentPost from "../blog/recent-post";
 import Tags from "../blog/tags";
 import PostComment from "../form/post-comment";
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const PostboxBlogDetails = () => {
@@ -26,7 +27,7 @@ if(postId){
         categoryName: post.categoryName,
         description: post.description,
         readingTime: post.readingTime,
-        //        image: post.image ? atob(post.image) : null,
+        image: post.image ? `data:image/jpeg;base64,${post.image}` : null,
         body: post.body,
         userId: post.userId,
         status: post.status,
@@ -42,7 +43,11 @@ if(postId){
 }
   if (!blogData) {
     // You can render a loading message or spinner here while fetching data.
-  return <div>Loading...</div>;
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '200px', paddingBottom: '200px' }}>
+      <Spinner animation="grow" variant="success" size="lg"/>
+    </div>
+    );
   }
   return (
     <>
@@ -62,10 +67,11 @@ if(postId){
 
                 <article className="postbox__item format-image mb-60 transition-3">
                   <div className="postbox__thumb w-img mb-30">
-                    <Link href="/blog-details">
-                      {/*<img src={`data:image/png;base64,${post.image}`} alt="" />*/}
-                    </Link>
+
+                      {post.image && <img src={post.image} alt="image" />}
+
                   </div>
+
                   <div className="postbox__content">
                     <div className="postbox__meta">
                       <span>

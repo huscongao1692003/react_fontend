@@ -45,25 +45,7 @@ const CouponArea = () => {
                </div>
             </div>
             <div className="col-md-6">
-               <div className="coupon-accordion">
-                     {/* <!-- ACCORDION START --> */}
-                     <h3>Have a coupon ? <span id="showcoupon" onClick={() => setIsCoupon(!isCoupon)}>Click here to enter your code</span></h3>
-                     
-                     {
-                        isCoupon && 
-                     <div id="checkout_coupon" className={`coupon-checkout-content ${isCoupon ? "d-block" : ""}`}>                        
-                        <div className="coupon-info">
-                           <form onSubmit={(e) => e.preventDefault()}>
-                                 <p className="checkout-coupon">
-                                    <input type="text" placeholder="Coupon Code" />
-                                    <button className="tp-btn-3" type="submit">Apply Coupon</button>
-                                 </p>
-                           </form>
-                        </div>
-                     </div>
-                     }
-                     {/* <!-- ACCORDION END --> */}
-               </div>
+               
             </div>
          </div>
       </div>
