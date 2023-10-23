@@ -26,7 +26,7 @@ const menu_data = [
     title: "Instructor",
     link: "/instructor",
     has_dropdown: true,
-    sub_menus: [
+ sub_menus: [
       // { link: "/instructor", title: "Instructor" },
       // { link: "/instructor-profile", title: "Instructor Profile" },
     ],
@@ -55,5 +55,6 @@ const menu_data = [
       // { link: "/blog-details", title: "Blog Details" },
     ],
   },
+  
 ];
 export default menu_data;

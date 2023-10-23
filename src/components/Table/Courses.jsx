@@ -12,19 +12,18 @@ import {
 import Spinner from 'react-bootstrap/Spinner';
 
 
-export default function CustomerTable() {
-  const [orders, setOrders] = useState([]);
+export default function CourseTable() {
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  
 
   useEffect(() => {
-
-
-    // Make an API request to fetch orders
-    axios.get('https://drawproject-production.up.railway.app/api/v1/admin/orders',
+    // Make an API request to fetch courses
+    axios.get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8',
               { headers: {"Authorization" : `Bearer ${accessToken}`} }
     ).then((response) => {
-      setOrders(response.data);
+      setCourses(response.data.data);
       setLoading(false)
     });
     }, [accessToken]);
@@ -37,7 +36,7 @@ export default function CustomerTable() {
   }
   return (
     <div className="Table">
-      <h3>Orders</h3>
+      <h3>Courses</h3>
       <TableContainer
         component={Paper}
         style={{ boxShadow: '0px 13px 20px 0px #80808029' }}
@@ -45,23 +44,21 @@ export default function CustomerTable() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="left">Tracking ID</TableCell>
-              <TableCell align="left">Date</TableCell>
-              <TableCell align="left">Price</TableCell>
+              <TableCell>Course Title</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Course ID</TableCell>
+              <TableCell>Number of Lessons</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.username}>
+            {courses.map((course) => (
+              <TableRow key={course.courseId}>
                 <TableCell component="th" scope="row">
-                  {order.fullName}
+                  {course.courseTitle}
                 </TableCell>
-                <TableCell align="left">{order.username}</TableCell>
-                <TableCell align="left">{order.courseName}</TableCell>
-                <TableCell align="left">
-                  <span className="status">{order.price}</span>
-                </TableCell>
+                <TableCell>{course.price}</TableCell>
+                <TableCell>{course.courseId}</TableCell>
+                <TableCell>{course.numLesson}</TableCell>
               </TableRow>
               ))}
           </TableBody>
@@ -70,3 +67,4 @@ export default function CustomerTable() {
     </div>
     );
 }
+

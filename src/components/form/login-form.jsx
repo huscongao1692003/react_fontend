@@ -49,11 +49,13 @@ const LoginForm = () => {
 
          if (rolesString === "ROLE_ADMIN"){
             router.push('/dashboard');
-         }else {
-            const delayDuration = 3000; // 30 seconds (adjust as needed)
-            setTimeout(() => {
-               router.push('/');
-               }, delayDuration);
+         }else if(rolesString === "ROLE_STAFF") {
+            router.push('/dashboard-staff');
+         }else if(rolesString === "ROLE_INSTRUCTOR"){
+            router.push('/Settings');
+         }else if(rolesString === "ROLE_CUSTOMER"){
+               router.push('/Settings');
+
          }
       } catch (error) {
          setErr(error);

@@ -6,7 +6,7 @@ import {
   UilUsersAlt,
   UilPackage,
   UilChart,
-  UilAt,
+  UilSignOutAlt,
   UilMoneyWithdrawal,
   UilUsdSquare
 } from "@iconscout/react-unicons";
@@ -14,7 +14,7 @@ import MainDash from "../MainDash/MainDash";
 import Table from '../Table/Table';
 import User from '../Table/User'
 import Courses from "../Table/Courses"
-import Contact from "../Table/Contact";
+import Cards from "../Cards/Cards";
 const MenuItems = [
   {
     icon: UilEstate,
@@ -37,9 +37,9 @@ const MenuItems = [
     content: <Courses/>,
   },
   {
-    icon: UilAt,
-    heading: 'Contact msg',
-    content: <Contact/>,
+    icon: UilChart,
+    heading: 'Analytics',
+    content: <Cards/>,
   },
 ];
 

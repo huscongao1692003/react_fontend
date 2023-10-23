@@ -1,20 +1,17 @@
-import { useRouter } from "next/router";
-import SEO from "@/src/common/seo";
-import WrapperFour from "@/src/layout/wrapper-4";
+import SEO from "../common/seo";
+import WrapperFour from "../layout/wrapper-4";
 import CourseCreateTopic from "../components/course-create-topic";
+import { useRouter } from "next/router";
 
-
-function CreateTopic() {
+function index() {
   const router = useRouter();
   const courseId = router.query.id;
   return (
-    <>
-      <WrapperFour>
-        <SEO pageTitle={"Create Topic"} />
-        <CourseCreateTopic courseId={courseId} />
-      </WrapperFour>
-    </>
+    <WrapperFour>
+      <SEO pageTitle={"Create Topic"} />
+      <CourseCreateTopic courseId={courseId} />
+    </WrapperFour>
   );
 }
 
-export default CreateTopic;
+export default index;
