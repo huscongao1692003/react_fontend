@@ -20,7 +20,6 @@ const Header = () => {
 
     const handleLogout = () => {
         localStorage.clear();
-
         router.push('/');
     };
 
@@ -110,9 +109,10 @@ const Header = () => {
 
                                                       <Dropdown.Menu>
                                                         <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
-                                                        <Dropdown.Item href="/create-post">CreatePost</Dropdown.Item>
-                                                        <Dropdown.Item href="/create-course">Create Course</Dropdown.Item>
-                                                        <Dropdown.Item href="/dashboard-instructor">Create Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/create-post">Create Post</Dropdown.Item>
+                                                        <Dropdown.Item href="/view-post">View Your Post</Dropdown.Item>
+                                                          <Dropdown.Item href="/course-create">Create Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/dashboard-instructor">Dashboard</Dropdown.Item>
 
                                                       </Dropdown.Menu>
                                                     </Dropdown>
@@ -130,6 +130,7 @@ const Header = () => {
                                                       <Dropdown.Menu>
                                                         <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
                                                         <Dropdown.Item href="/create-post">Create Post</Dropdown.Item>
+                                                        <Dropdown.Item href="/view-post">View Your Post</Dropdown.Item>
                                                         <Dropdown.Item href="/study">Study</Dropdown.Item>
                                                         <Dropdown.Item href="/orders">View Payment Course</Dropdown.Item>
                                                       </Dropdown.Menu>

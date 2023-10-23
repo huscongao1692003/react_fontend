@@ -14,6 +14,7 @@ function CourseCreateArea() {
   const fileInputRef = useRef(null);
   const [descriptionError, setDescriptionError] = useState("");
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -51,6 +52,7 @@ function CourseCreateArea() {
   const submitPostData = async () => {
     try {
       if (localStorage.getItem("accessToken")) {
+          setLoading(true);
         const accessToken = localStorage.getItem("accessToken");
         const headers = {
             Accept: "application/json",
@@ -68,6 +70,7 @@ function CourseCreateArea() {
           const response = await axios.post(url, formData, { headers });
 
           if (response.status === 201) {
+              setLoading(false);
               alert("Post created successfully");
           }
       }
@@ -202,14 +205,14 @@ function CourseCreateArea() {
                     }
                                       ></textarea>
                               </div>
-                              {/* Your submit button */}
-                              <button
-                                  type="button"
-                                  className="tp-btn"
-                                  onClick={submitPostData}
-                                  >
-                                  Submit
-                              </button>
+                             <button
+                  type="button"
+                  className="tp-btn"
+                  onClick={submitPostData}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"} {/* Show loading or Submit text */}
+                </button>
                           </form>
                       </div>
                   </div>
