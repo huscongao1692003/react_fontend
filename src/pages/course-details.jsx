@@ -1,7 +1,7 @@
 import React from "react";
 import SEO from "../common/seo";
-import CourseDetails from "../components/course-details";
 import WrapperFour from "../layout/wrapper-4";
+import CourseDetails from "../components/course-details";
 
 const index = () => {
   return (
