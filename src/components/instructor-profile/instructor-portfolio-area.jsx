@@ -1,100 +1,68 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Count from "@/src/common/count.jsx";
 import our_course_data from "@/src/data/our-course-data.js";
 import Link from "next/link";
-import React from "react";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import course_data_2 from "../../data/course-data-2.js";
-
-
-// instructor_portfolio_data
-const instructor_portfolio_data = [
-  {
-    id: 6,
-    img: "/assets/img/bg/instruc-in-06.jpg",
-    name: "Esther Howard",
-    total_class: "35",
-    total_st: "291",
-    title: "Instructor",
-    followers: "35,600",
-    following: "135",
-    job_title: "Lead UX Engineer",
-    phone: "+00 365 9852 65",
-    email: "epora@mail.com",
-    experiences_year: "12+ Years",
-    skill_level: "Pro Level",
-    language: "English",
-    biography: (
-      <>
-        <p>
-          Synergistically foster 24/7 leadership rather than scalable platforms.
-          Conveniently visualize installed base products before interactive
-          results. Collaboratively restore corporate experiences and open-source
-          applications. Proactively mesh cooperative growth strategies for
-          covalent opportunities. Competently create efficient markets through
-          best-of-breed potentialities.
-        </p>
-        <p>
-          Compellingly exploit B2B vortals with emerging total linkage.
-          Appropriately pursue strategic leadership whe intermandated ideas.
-          Proactively revolutionize interoperable "outside the box" thinking
-          with fully researched innovation. Dramatically facilitate exceptional
-          architectures and bricks-and-clicks data. Progressively genera
-          extensible e-services for.
-        </p>
-      </>
-    ),
-  },
-];
-
-
-// counter data 
-const counter_data = [
-   {
-     id: 1,
-     icon: "fi fi-rr-user",
-     count_number: 276,
-     thousand: "K",
-     title: "Worldwide Students",
-   },
-   {
-     id: 2,
-     icon: "fi fi-rr-document",
-     count_number: 35,
-     thousand: "",
-     title: "Professional Courses",
-   },
-   {
-     id: 3,
-     icon: "fi fi-rr-star",
-     count_number: 407,
-     thousand: "K",
-     title: "Beautiful Review",
-   },
- ];
+import { Spinner } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { useRouter } from "next/router.js";
 
 const InstructorPortfolioArea = () => {
-  const [instructorData, setInstructorData] = useState({});
+  const [instructorData, setInstructorData] = useState(null);
+  const [coursesData, setCoursesData] = useState([]);
+  const router = useRouter();
+  const { userId } = router.query;
 
   useEffect(() => {
-    axios
-      .get("https://drawproject-production.up.railway.app/api/v1/instructor/1")
-      .then((response) => {
-        setInstructorData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const fetchInstructorData = async () => {
+      try {
+        const response = await axios.get(
+          `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}`
+        );
+        setInstructorData(response.data);
+      } catch (error) {
+        console.error("Error fetching instructor data:", error);
+      }
+    };
+
+    const fetchCoursesData = async () => {
+      try {
+        const response = await axios.get(
+          `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=4`
+        );
+        setCoursesData(response.data.data);
+      } catch (error) {
+        console.error("Error fetching courses data:", error);
+      }
+    };
+
+    fetchInstructorData();
+    fetchCoursesData();
   }, []);
+
+  if (!instructorData) {
+    return (
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ paddingTop: "300px", paddingBottom: "300px" }}
+      >
+        <Spinner animation="grow" variant="success" size="lg" />
+      </div>
+    );
+  }
+  if (!coursesData) {
+    return (
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ paddingTop: "300px", paddingBottom: "300px" }}
+      >
+        <Spinner animation="grow" variant="success" size="lg" />
+      </div>
+    );
+  }
+
   return (
     <>
-    {Array.isArray(instructorData) &&
-        instructorData.map((instructor, index) => (
-          <div key={index}>
-            <h2>{instructor.userName}</h2>
-            <p>{instructor.description}</p>
-          </div>
-        ))}
       <section
         className="instructor-portfolio pt-120 pb-80 wow fadeInUp"
         data-wow-duration=".8s"
@@ -113,37 +81,41 @@ const InstructorPortfolioArea = () => {
                 <div className="instructor-sidebar-widget">
                   <div className="isntruc-side-content text-center">
                     <h4 className="side-instructor-title mb-15">
-                      Emilia Williamson
+                      {instructorData.userName}
                     </h4>
-                    
                   </div>
-                  
                   <div className="cd-information instruc-profile-info mb-35">
                     <ul>
-                      
                       <li>
-                        <i className="fi fi-rr-phone-call"></i>{" "}
-                        <label>Phone</label> <span>+00 365 9852 65</span>
+                        <i className="fi fi-rr-phone-call"></i> <label>Phone</label>
+                        <span>{instructorData.mobileNum}</span>
                       </li>
                       <li>
-                        <i className="fi fi-rr-envelope"></i>{" "}
-                        <label>Email</label> <span>epora@mail.com</span>
-                      </li>
-                      <li>
-                        <i className="fi fi-rr-time-forward"></i>{" "}
-                        <label>Experiences</label> <span>12+ Years</span>
+                        <i className="fi fi-rr-envelope"></i> <label>Email</label>
+                        <span>{instructorData.email}</span>
                       </li>
                       <li>
                         <i className="fi fi-rs-time-check"></i>{" "}
-                        <label>Skill Level</label> <span>Pro Level</span>
+                        <label>Skill Level</label>{" "}
+                        <span>{instructorData.skillName}</span>
                       </li>
                       <li>
-                        <i className="fi fi-br-comments"></i>{" "}
-                        <label>Language</label> <span>English</span>
+                        <i className="fi fi-rs-time-check"></i>{" "}
+                        <label>Experience</label>{" "}
+                        <span>12 years</span>
+                      </li>
+                      <li>
+                        <i className="fi fi-rs-time-check"></i>{" "}
+                        <label>Language</label>{" "}
+                        <span>English</span>
+                      </li>
+                      <li>
+                        <i className="fi fi-rs-time-check"></i>{" "}
+                        <label>Education</label>{" "}
+                        <span>{instructorData.education}</span>
                       </li>
                     </ul>
                   </div>
-                  
                 </div>
               </div>
             </div>
@@ -151,26 +123,8 @@ const InstructorPortfolioArea = () => {
               <div className="instructor-main-content ml-30 mb-40">
                 <div className="instruc-biography mb-50">
                   <h4 className="ins-bio-title mb-30">Biography</h4>
-                  <p>
-                    Synergistically foster 24/7 leadership rather than scalable
-                    platforms. Conveniently visualize installed base products
-                    before interactive results. Collaboratively restore
-                    corporate experiences and open-source applications.
-                    Proactively mesh cooperative growth strategies for covalent
-                    opportunities. Competently create efficient markets through
-                    best-of-breed potentialities.
-                  </p>
-                  <p>
-                    Compellingly exploit B2B vortals with emerging total
-                    linkage. Appropriately pursue strategic leadership whe
-                    intermandated ideas. Proactively revolutionize interoperable
-                    "outside the box" thinking with fully researched innovation.
-                    Dramatically facilitate exceptional architectures and
-                    bricks-and-clicks data. Progressively genera extensible
-                    e-services for.
-                  </p>
+                  <p>{instructorData.bio}</p>
                 </div>
-                
                 <div className="instructor-tp-course">
                   <div className="row">
                     <div className="col-md-12">
@@ -180,12 +134,15 @@ const InstructorPortfolioArea = () => {
                     </div>
                   </div>
                   <div className="row">
-                    {our_course_data.slice(0, 4).map((item, i) => (
-                      <div key={i} className="col-xl-6 col-lg-12 col-md-6">
+                    {coursesData.map((item, i) => (
+                      <div
+                        key={i}
+                        className="col-xl-6 col-lg-12 col-md-6"
+                      >
                         <div className="tpcourse mb-40">
                           <div className="tpcourse__thumb p-relative w-img fix">
                             <Link href="/course-details">
-                              <img src={item.img} alt="course-thumb" />
+                              <img src={item.image} alt="course-thumb" />
                             </Link>
                             <div className="tpcourse__tag">
                               <Link href="#">
@@ -204,7 +161,7 @@ const InstructorPortfolioArea = () => {
                                     className={item.ct_color}
                                     href="/course-details"
                                   >
-                                    {item.course_title}
+                                    {item.category}
                                   </Link>
                                 </li>
                                 <li>
@@ -212,14 +169,16 @@ const InstructorPortfolioArea = () => {
                                     className={item.cn_color}
                                     href="/course-details"
                                   >
-                                    {item.course_name}
+                                    {item.skill}
                                   </Link>
                                 </li>
                               </ul>
                             </div>
                             <div className="tpcourse__ava-title mb-15">
                               <h4 className="tpcourse__title">
-                                <Link href="/course-details">{item.title}</Link>
+                                <Link href="/course-details">
+                                  {item.courseTitle}
+                                </Link>
                               </h4>
                             </div>
                             <div className="tpcourse__meta tpcourse__meta-gap pb-15 mb-15">
@@ -229,7 +188,7 @@ const InstructorPortfolioArea = () => {
                                     src="/assets/img/icon/c-meta-01.png"
                                     alt="meta-icon"
                                   />
-                                  <span>{item.cls_text}</span>
+                                  <span>({item.numLesson})</span>
                                 </li>
                                 <li>
                                   <img
@@ -242,47 +201,21 @@ const InstructorPortfolioArea = () => {
                             </div>
                             <div className="tpcourse__rating d-flex align-items-center justify-content-between">
                               <div className="tpcourse__rating-icon">
-                                <span>4.7</span>
+                                <span>{item.averageStar.toFixed(1)}</span>
                                 <i className="fi fi-ss-star"></i>
                                 <i className="fi fi-ss-star"></i>
                                 <i className="fi fi-ss-star"></i>
                                 <i className="fi fi-ss-star"></i>
                                 <i className="fi fi-rs-star"></i>
-                                <p>(125)</p>
                               </div>
                               <div className="tpcourse__pricing">
-                                <h5 className="price-title">$29.99</h5>
+                                <h5 className="price-title">${item.price}</h5>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
-                  </div>
-                  <div className="basic-pagination">
-                    <nav>
-                      <ul>
-                        <li>
-                          <Link href="/blog">
-                            <i className="far fa-angle-left"></i>
-                          </Link>
-                        </li>
-                        <li>
-                          <span className="current">1</span>
-                        </li>
-                        <li>
-                          <Link href="/blog">2</Link>
-                        </li>
-                        <li>
-                          <Link href="/blog">3</Link>
-                        </li>
-                        <li>
-                          <Link href="/blog">
-                            <i className="far fa-angle-right"></i>
-                          </Link>
-                        </li>
-                      </ul>
-                    </nav>
                   </div>
                 </div>
               </div>

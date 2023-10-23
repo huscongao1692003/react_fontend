@@ -54,6 +54,15 @@ const menu_data = [
       // { link: "/blog-details", title: "Blog Details" },
     ],
   },
+  {
+    id: 5,
+    title: "Login",
+    link: "/sign-in",
+    has_dropdown: true,
+    sub_menus: [
+      
+    ],
+  },
   
 ];
 export default menu_data;
