@@ -44,6 +44,7 @@ const PaymentSuccess = () => {
 
                 console.log("Payment response:", paymentResponse.data);
                 console.log(courseResponse.data.data);
+                setLoading(false)
             })();
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -57,6 +58,11 @@ const PaymentSuccess = () => {
         <>
         <section className="error-area pt-120 pb-115">
             <div className="container">
+                {loading ? (
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                    ) : (
                 <div className="row">
                     <div className="col-12">
                         <div className="error-item text-center">
@@ -74,6 +80,7 @@ const PaymentSuccess = () => {
                         </div>
                     </div>
                 </div>
+                )}
             </div>
         </section>
         </>

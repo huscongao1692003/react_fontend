@@ -28,20 +28,6 @@ const Sidebar = ({ isActive, setIsActive }) => {
               <a href="mailto:epora@example.com">epora@example.com</a>
             </li>
           </ul>
-          {/* <div className="side-social">
-            <a href="#">
-              <i className="fab fa-facebook-f"></i>
-            </a>
-            <a href="#">
-              <i className="fab fa-twitter"></i>
-            </a>
-            <a href="#">
-              <i className="fab fa-linkedin"></i>
-            </a>
-            <a href="#">
-              <i className="fab fa-instagram"></i>
-            </a>
-          </div> */}
         </div>
       </div>
       <div className={`body-overlay ${isActive ? "opened" : ""} `} onClick={() => setIsActive(false)}></div>
