@@ -1,3 +1,4 @@
+
 import instructor_info_data from "@/src/data/instructor-data";
 import Link from "next/link";
 import axios from "axios";
@@ -78,3 +79,4 @@ const InstructorArea = () => {
 };
 
 export default InstructorArea;
+

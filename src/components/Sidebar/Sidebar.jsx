@@ -6,7 +6,7 @@ import {
   UilUsersAlt,
   UilPackage,
   UilChart,
-  UilSignOutAlt,
+  UilAt,
   UilMoneyWithdrawal,
   UilUsdSquare
 } from "@iconscout/react-unicons";
@@ -14,7 +14,9 @@ import MainDash from "../MainDash/MainDash";
 import Table from '../Table/Table';
 import User from '../Table/User'
 import Courses from "../Table/Courses"
-import Cards from "../Cards/Cards";
+import Contact from "../Table/Contact";
+import Postbox from "@/src/components/blog/postbox";
+import Post from "../Table/Post"
 const MenuItems = [
   {
     icon: UilEstate,
@@ -23,8 +25,13 @@ const MenuItems = [
   },
   {
     icon: UilClipboardAlt,
-    heading: "Orders",
-    content: <Table/>,
+    heading: "Posts",
+    content: <Postbox/>,
+  },
+  {
+    icon: UilClipboardAlt,
+    heading: "Posts Manager",
+    content: <Post/>,
   },
   {
     icon: UilUsersAlt,
@@ -37,9 +44,9 @@ const MenuItems = [
     content: <Courses/>,
   },
   {
-    icon: UilChart,
-    heading: 'Analytics',
-    content: <Cards/>,
+    icon: UilAt,
+    heading: 'Contact msg',
+    content: <Contact/>,
   },
 ];
 

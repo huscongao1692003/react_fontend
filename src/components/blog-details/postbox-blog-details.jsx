@@ -27,7 +27,7 @@ if(postId){
         categoryName: post.categoryName,
         description: post.description,
         readingTime: post.readingTime,
-        image: post.image ? `data:image/jpeg;base64,${post.image}` : null,
+        image: post.image,
         body: post.body,
         userId: post.userId,
         status: post.status,

@@ -1,7 +1,6 @@
 import React from 'react'
 import Cards from '../Cards/Cards'
 import Table from '../Table/Table'
-// import Course from '../Table/Course'
 import Courses from '../Table/Courses'
 
 const MainDash = () => {

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
@@ -5,27 +6,51 @@ import { useRouter } from 'next/router';
 import Spinner from 'react-bootstrap/Spinner';
 
 const CheckoutArea = () => {
-  const [cartData, setCartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [courseData, setCourseData] = useState({});
   const router = useRouter();
   const { idCourse } = router.query;
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-     useEffect(() => {
-        axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse}`)
-      .then((response) => {
-         setCourseData(response.data.data);
-         console.log(response.data.data)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('idCourse', JSON.stringify({
+        id: Number(idCourse)
+      }));
 
-         setLoading(false)
-      })
-      .catch((error) => {
-         console.error('Error fetching course data:', error);
-      });
-        }, [idCourse]);
+      axios
+        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse}`)
+        .then((response) => {
+          setCourseData(response.data.data);
+          console.log(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+           console.error('Error fetching course data:', error);
+        });
+    }
+     }, [idCourse]);
+     const handelPay = async (e) => {
+        e.preventDefault();
 
+        try {
+           const response = await axios.post(
+              "https://drawproject-production.up.railway.app/api/v1/pay",
+              {
+                 description: "test",
+                 courseId: courseData.courseId,
+                 price: courseData.price,
+                 totalPrice: courseData.price,
+                 url: "http://localhost:3000"
+              },
+              { headers: {"Authorization" : `Bearer ${accessToken}`} });
+
+            await  router.push(response.data);
+
+        } catch (error) {
+           console.error('Error fetching course data:', error);
+        }
+     };
 
   return (
     <>
@@ -74,9 +99,9 @@ const CheckoutArea = () => {
                                                <span className="amount">${courseData.price}</span>
                                             </td>
                                             <td className="product-remove">
-                                               <a href="#">
+                                               <Link href={`course-details?id=${idCourse}`}>
                                                   <i className="fa fa-times"></i>
-                                               </a>
+                                               </Link>
                                             </td>
                                          </tr>
                                          {/*))}*/}
@@ -171,7 +196,7 @@ const CheckoutArea = () => {
                              </div>
                           </div>
                           <div className="order-button-payment mt-20">
-                             <button type="submit" className="tp-btn">
+                             <button type="submit" className="tp-btn" onClick={handelPay}>
                                 Place order
                              </button>
                           </div>

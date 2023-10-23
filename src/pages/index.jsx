@@ -1,16 +1,16 @@
 
 import SEO from "../common/seo";
 import Home from "../components/homes/home";
-import Wrapper from "../layout/wrapper";
+import WrapperFour from "../layout/wrapper-4";
 
 
 const index = () => {
   return (
 
-    <Wrapper>
+    <WrapperFour>
       <SEO pageTitle={'Epora'} />
       <Home />
-    </Wrapper>
+    </WrapperFour>
   );
 };
 

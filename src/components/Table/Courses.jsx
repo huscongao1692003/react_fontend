@@ -1,158 +1,123 @@
-import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-
-function createCourseData(name,instructor, trackingId, date, price) {
-    return { name,instructor, trackingId, date, price };
-  }
-  
-  const rows = [
-    createCourseData("Lasania Chiken Fri","John", 18908424, "2 March 2022", "69.96$"),
-    createCourseData("Big Baza Bang ","Dory", 18908424, "2 March 2022", "69.96$"),
-    createCourseData("Mouth Freshner","Ron", 18908424, "2 March 2022", "69.96$"),
-    createCourseData("Cupcake","Tom", 18908421, "2 March 2022", "69.96$"),
-  ];
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import {
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Paper,
+  Button,
+} from '@mui/material';
+import Spinner from 'react-bootstrap/Spinner';
+import { useRouter } from 'next/router';
+import Dropdown from 'react-bootstrap/Dropdown'; // Import Bootstrap Dropdown
+import Modal from 'react-bootstrap/Modal';
+import { ListGroup } from 'react-bootstrap';
 
 export default function CourseTable() {
-    const [selectedCourse, setSelectedCourse] = React.useState(null);
-  
-    const handleDetailsClick = (Course) => {
-      setSelectedCourse(Course);
-    };
-  
-    const handleCloseForm = () => {
-      setSelectedCourse(null);
-    };
-  
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Control the dropdown visibility
+  const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const router = useRouter();
+
+  useEffect(() => {
+    axios
+      .get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        setCourses(response.data.data);
+        setLoading(false);
+      });
+  }, [accessToken]);
+
+  const handleStudentOfCourseClick = (course) => {
+    // Fetch the list of students for the selected course
+    axios
+      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${course.courseId}/student`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        setStudents(response.data.data); // Update with the response data property
+        setSelectedCourse(course);
+        setDropdownOpen(true); // Open the Bootstrap dropdown
+      });
+  };
+
+  if (loading) {
     return (
-      <div className="Table">
-        <h3>Courses</h3>
-        <TableContainer
-          component={Paper}
-          style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
-        >
-          {/* Table code... */}
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+        <Spinner animation="grow" variant="light" size="lg" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="Table">
+      <h3>Courses</h3>
+      <TableContainer component={Paper} style={{ boxShadow: '0px 13px 20px 0px #80808029' }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="left">Instructor</TableCell>
-              <TableCell align="left">Tracking ID</TableCell>
-              <TableCell align="left">Date</TableCell>
-              <TableCell align="left">Price</TableCell>
-              <TableCell align="left">Details</TableCell>
-              
+              <TableCell>Course Title</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Course ID</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Number of Lessons</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody style={{ color: "white" }}>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+          <TableBody>
+            {courses.map((course) => (
+              <TableRow key={course.courseId}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {course.courseTitle}
                 </TableCell>
-                <TableCell align="left">{row.instructor}</TableCell>
-                <TableCell align="left">{row.trackingId}</TableCell>
-                <TableCell align="left">{row.date}</TableCell>
-                <TableCell align="left">
-                  <span className="status">
-                    {row.price}
-                  </span>
-                </TableCell>
-                <TableCell align="left">
-                  <button
-                    onClick={() => handleDetailsClick(row)}
-                    className="Details"
+                <TableCell>{course.price}</TableCell>
+                <TableCell>{course.courseId}</TableCell>
+                <TableCell>{course.status}</TableCell>
+                <TableCell>{course.numLesson}</TableCell>
+                <TableCell>
+                  <Button variant="outlined" color="secondary" onClick={() => handleStudentOfCourseClick(course)}>
+                    Student Of Course
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => router.push(`/edit-course/${course.courseId}`)} // Example route for editing the course
                   >
-                    Details
-                    <module/>
-                  </button>
+                    Edit Course
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        </TableContainer>
-        {selectedCourse && (
-          <div className="popup-form" style={{ marginTop: "1rem" }}>
-            <h3>Order Details</h3>
-            <div
-              style={{
-                background: "#FFFFFF",
-                padding: "1rem",
-                borderRadius: "5px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              <form onSubmit={handleCloseForm}>
-                <div style={{ marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block", fontWeight: "bold" }}>
-                    Name:
-                  </label>
-                  <input
-                    type="text"
-                    value={selectedCourse.name}
-                    readOnly
-                    style={{ width: "100%", padding: "0.25rem" }}
-                  />
-                </div>
-                <div style={{ marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block", fontWeight: "bold" }}>
-                    Tracking ID:
-                  </label>
-                  <input
-                    type="text"
-                    value={selectedCourse.trackingId}
-                    readOnly
-                    style={{ width: "100%", padding: "0.25rem" }}
-                  />
-                </div>
-                <div style={{ marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block", fontWeight: "bold" }}>
-                    Date:
-                  </label>
-                  <input
-                    type="text"
-                    value={selectedCourse.date}
-                    readOnly
-                    style={{ width: "100%", padding: "0.25rem" }}
-                  />
-                </div>
-                <div style={{ marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block", fontWeight: "bold" }}>
-                    Price:
-                  </label>
-                  <input
-                    type="text"
-                    value={selectedCourse.price}
-                    readOnly
-                    style={{ width: "100%", padding: "0.25rem" }}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  style={{
-                    background: "#59bfff",
-                    color: "white",
-                    border: "none",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Close
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
+      </TableContainer>
+
+      <Dropdown show={dropdownOpen} onToggle={(isOpen) => setDropdownOpen(isOpen)}>
+        <Dropdown.Toggle id="dropdown-menu-align-responsive-1" variant="secondary" >
+          Students of {selectedCourse ? selectedCourse.courseTitle : ''}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {students.map((student) => (
+            <Dropdown.Item key={student.userID}>
+              <ListGroup>
+                <ListGroup.Item>{student.fullName}</ListGroup.Item>
+                <ListGroup.Item>Email: {student.email}</ListGroup.Item>
+                <ListGroup.Item>Status: {student.status}</ListGroup.Item>
+                <ListGroup.Item>Progress: {student.progressDTO.progress}</ListGroup.Item>
+                <ListGroup.Item>Status: {student.progressDTO.status}</ListGroup.Item>
+              </ListGroup>
+            </Dropdown.Item>
+            ))}
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
     );
-  }
+}

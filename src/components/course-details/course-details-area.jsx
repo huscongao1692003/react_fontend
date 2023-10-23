@@ -262,9 +262,17 @@ const CourseDetailsArea = () => {
                                  )}
                               {isLoggedIn === "true"  && storedUserRole === "ROLE_CUSTOMER" ? (
 
-                              <Link className="tp-vp-btn-green" href="/course-details">
-                                 Enroll Now
+                              <> <Link
+                                  className="tp-btn"
+                                  href={`/course-create-topic?id=${id}`}
+                                >
+                                  Create New Topic
+                                </Link>
+                              <Link className="tp-vp-btn-green" href={`/course</>{}`}>
+                                 Create Lesson
                               </Link>
+                              </>
+                              
                               ) : (
                                  <p>Your role cant access this course</p>
                                  )}

@@ -1,3 +1,4 @@
+
 const menu_data = [
   {
     id: 1,
@@ -37,6 +38,7 @@ const menu_data = [
     link: "/course-list",
     has_dropdown: true,
     sub_menus: [
+      { link: "/course-create", title: "Create Course" },
       // { link: "/course-grid", title: "Course Grid" },
       // { link: "/course", title: "Course List" },
       // { link: "/course-details", title: "Course Details" },
@@ -52,15 +54,6 @@ const menu_data = [
       // { link: "/blog-grid", title: "Blog Grid" },
       // { link: "/blog-masonry", title: "Blog Masonry" },
       // { link: "/blog-details", title: "Blog Details" },
-    ],
-  },
-  {
-    id: 5,
-    title: "Login",
-    link: "/sign-in",
-    has_dropdown: true,
-    sub_menus: [
-      
     ],
   },
   
