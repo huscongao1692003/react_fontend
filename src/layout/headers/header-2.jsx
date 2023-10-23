@@ -132,7 +132,8 @@ const Header = () => {
                                                         <Dropdown.Item href="/create-post">Create Post</Dropdown.Item>
                                                         <Dropdown.Item href="/view-post">View Your Post</Dropdown.Item>
                                                         <Dropdown.Item href="/study">Study</Dropdown.Item>
-                                                        <Dropdown.Item href="/orders">View Payment Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/my-courses">View My Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/my-orders">View Orders</Dropdown.Item>
                                                       </Dropdown.Menu>
                                                     </Dropdown>
                                                   </button>
