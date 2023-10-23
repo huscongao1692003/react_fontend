@@ -6,6 +6,7 @@ import Sidebar from "./sidebar";
 import {useRouter} from 'next/router';
 import { UilSignOutAlt } from '@iconscout/react-unicons'
 import { UilUserSquare } from '@iconscout/react-unicons'
+import Dropdown from 'react-bootstrap/Dropdown';
 
 
 const Header = () => {
@@ -69,30 +70,71 @@ const Header = () => {
                                                 ) : null}
                                               {role === "ROLE_ADMIN" ? (
                                                 <li>
-                                                  <Link href="/dashboard" className="d-none d-md-block">
-                                                    <UilUserSquare></UilUserSquare>
-                                                  </Link>
+                                                  <button className="d-none d-md-block">
+                                                    <Dropdown >
+                                                      <Dropdown.Toggle variant={"success"}>
+                                                        <UilUserSquare></UilUserSquare>
+                                                      </Dropdown.Toggle>
+
+                                                      <Dropdown.Menu>
+                                                        <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
+                                                        <Dropdown.Item href="/dashboard">Dashboard</Dropdown.Item>
+                                                      </Dropdown.Menu>
+                                                    </Dropdown>
+                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_STAFF" ? (
                                                 <li>
-                                                  <Link href="/dashboard-staff" className="d-none d-md-block">
-                                                    <UilUserSquare ></UilUserSquare>
-                                                  </Link>
+                                                  <button className="d-none d-md-block">
+                                                    <Dropdown >
+                                                      <Dropdown.Toggle variant={"success"}>
+                                                        <UilUserSquare></UilUserSquare>
+                                                      </Dropdown.Toggle>
+
+                                                      <Dropdown.Menu>
+                                                        <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
+                                                        <Dropdown.Item href="/dashboard-staff">Dashboard</Dropdown.Item>
+                                                      </Dropdown.Menu>
+                                                    </Dropdown>
+                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_INSTRUCTOR" ? (
                                                 <li>
-                                                  <Link href="/Settings" className="d-none d-md-block">
-                                                    <UilUserSquare></UilUserSquare>
-                                                  </Link>
+                                                  <button className="d-none d-md-block">
+                                                    <Dropdown >
+                                                      <Dropdown.Toggle variant={"success"}>
+                                                        <UilUserSquare></UilUserSquare>
+                                                      </Dropdown.Toggle>
+
+                                                      <Dropdown.Menu>
+                                                        <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
+                                                        <Dropdown.Item href="/create-post">CreatePost</Dropdown.Item>
+                                                        <Dropdown.Item href="/create-course">Create Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/dashboard-instructor">Create Course</Dropdown.Item>
+
+                                                      </Dropdown.Menu>
+                                                    </Dropdown>
+                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_CUSTOMER" ? (
                                                 <li>
-                                                  <Link href="/Settings" className="d-none d-md-block">
-                                                    <UilUserSquare></UilUserSquare>
-                                                  </Link>
+                                                  <button className="d-none d-md-block">
+                                                    <Dropdown >
+                                                      <Dropdown.Toggle variant={"success"}>
+                                                        <UilUserSquare></UilUserSquare>
+                                                      </Dropdown.Toggle>
+
+                                                      <Dropdown.Menu>
+                                                        <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
+                                                        <Dropdown.Item href="/create-post">Create Post</Dropdown.Item>
+                                                        <Dropdown.Item href="/study">Study</Dropdown.Item>
+                                                        <Dropdown.Item href="/orders">View Payment Course</Dropdown.Item>
+                                                      </Dropdown.Menu>
+                                                    </Dropdown>
+                                                  </button>
                                                 </li>
                                                 ) : null}
 
