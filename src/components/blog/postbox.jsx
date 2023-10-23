@@ -19,7 +19,7 @@ const Postbox = () => {
       .then((response) => {
         const decodedData = response.data.data.map((post) => ({
           ...post,
-          image: post.image ? `data:image/jpeg;base64,${post.image}` : null,
+          image: post.image,
           created_at: new Date(post.created_at).toLocaleString(),
 
         }));

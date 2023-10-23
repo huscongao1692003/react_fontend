@@ -6,15 +6,17 @@ import {
   UilUsersAlt,
   UilPackage,
   UilChart,
-  UilSignOutAlt,
-  UilMoneyWithdrawal,
-  UilUsdSquare
+  UilSignOutAlt
 } from "@iconscout/react-unicons";
-import MainDash from "../MainDash/MainDash";
-import Table from '../Table/Table';
-import User from '../Table/User'
-import Courses from "../Table/Courses"
-import Cards from "../Cards/Cards";
+import MainDash from "./MainDash";
+import Table from './Table/Table';
+import Courses from '../Table/Courses';
+import Post from "../Table/Post";
+import Instructor from "./Table/Instructor"
+
+
+
+
 const MenuItems = [
   {
     icon: UilEstate,
@@ -28,8 +30,8 @@ const MenuItems = [
   },
   {
     icon: UilUsersAlt,
-    heading: "Customers",
-    content: <User/>,
+    heading: "Instructor",
+    content: <Instructor/>,
   },
   {
     icon: UilPackage,
@@ -38,12 +40,12 @@ const MenuItems = [
   },
   {
     icon: UilChart,
-    heading: 'Analytics',
-    content: <Cards/>,
+    heading: 'Post Manager',
+    content: <Post/>,
   },
 ];
 
-const Sidebar = () => {
+const SidebarStaff = () => {
   const [selected, setSelected] = useState(0);
 
   return (
@@ -78,4 +80,4 @@ const Sidebar = () => {
   );
 }
 
-export default Sidebar;
+export default SidebarStaff;
