@@ -9,6 +9,18 @@ import Spinner from 'react-bootstrap/Spinner';
 const BlogArea = () => {
   const router = useRouter();
   const [blogData, setBlogData] = useState(null);
+
+  function formatCreatedAt(createdAtArray) {
+    if (!createdAtArray || createdAtArray.length !== 6) {
+      return "Invalid Date";
+    }
+
+    const [year, month, day, hours, minutes, seconds] = createdAtArray;
+    const date = new Date(year, month - 1, day, hours, minutes, seconds); // Month is 0-based, so we subtract 1
+    return date.toLocaleString();
+  }
+
+
   useEffect(() => {
   axios
       .get('https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=3')
@@ -16,7 +28,6 @@ const BlogArea = () => {
         const decodedData = response.data.data.map((post) => ({
           ...post,
           image: post.image,
-          created_at: new Date(post.created_at).toLocaleString(),
 
         }));
         setBlogData(decodedData);
@@ -68,7 +79,7 @@ const BlogArea = () => {
                   <div className="tp-blog__content">
                     <div className="tp-blog__meta mb-10">
                       <div>Date</div>
-                      <div>{post.created_at}</div>
+                      <div>{formatCreatedAt(post.createdAt)}</div>
                     </div>
                     <h3 className="tp-blog__title mb-15">
                       <Link href={`/blog-details?postId=${post.postId}`}>{post.title}</Link>
