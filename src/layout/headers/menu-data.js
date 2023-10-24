@@ -36,9 +36,9 @@ const menu_data = [
     id: 4,
     title: "Course",
     link: "/course-list",
-    has_dropdown: true,
+    has_dropdown: false,
     sub_menus: [
-      { link: "/course-create", title: "Create Course" },
+//      { link: "/course-create", title: "Create Course" },
       // { link: "/course-grid", title: "Course Grid" },
       // { link: "/course", title: "Course List" },
       // { link: "/course-details", title: "Course Details" },
