@@ -9,3 +9,20 @@
         border-radius: 50%;
         object-fit: cover;
     }
+
+.circular-avatar {width: 150px; /* Set the width and height as needed for your design */
+  height: 150px;
+  border-radius: 50%; /* Makes it a circle */
+  overflow: hidden;
+  display: block;
+  margin: 0 auto;
+
+}
+
+.circular-avatar img {
+    width: 100%; /* Ensures the image fills the circular container */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Removes any extra spacing */
+  margin: 0 auto;
+
+}

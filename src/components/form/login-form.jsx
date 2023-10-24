@@ -13,6 +13,7 @@ const LoginForm = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userRole, setUserRole] = useState("");
     const [err, setErr] = useState("");
+    const [successMsg, setSuccessMsg] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,7 +43,8 @@ const LoginForm = () => {
             setShowAlert(true);
             localStorage.setItem("isLoggedIn", true.toString());
             setIsLoggedIn(true);
-            setErr("You have successfully logged in.");
+            setErr("");
+            setSuccessMsg("You have successfully logged in.");
 
             if (rolesString === "ROLE_ADMIN") {
                 router.push("/dashboard");
@@ -65,6 +67,7 @@ const LoginForm = () => {
             } else {
                 setErr("An error occurred during login.");
             }
+            setSuccessMsg("");
         }
     };
 
@@ -72,12 +75,15 @@ const LoginForm = () => {
         <>
             <Alert
                 variant={err ? "danger" : "success"}
-                show={showAlert || err !== ""}
-                onClose={() => setShowAlert(false)}
+                show={showAlert || err || successMsg}
+                onClose={() => {
+                    setShowAlert(false);
+                    setSuccessMsg("");
+                }}
                 dismissible
             >
                 <Alert.Heading>{err ? "Login Failed" : "Login Successful"}</Alert.Heading>
-                <p>{err || "You have successfully logged in."}</p>
+                <p>{err || successMsg || "You have successfully logged in."}</p>
             </Alert>
 
             <section className="login-area pt-100 pb-100 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".5s">

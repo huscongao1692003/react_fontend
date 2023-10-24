@@ -131,7 +131,7 @@ const MyCourseListArea = () => {
                             </li>
                             <li>
                               <img src="/assets/img/icon/c-meta-02.png" alt="meta-icon" />
-                              <span>291 Students</span>
+                              <span>{course.numStudent} Students</span>
                             </li>
                           </ul>
                         </div>
