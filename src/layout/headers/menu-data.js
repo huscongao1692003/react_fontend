@@ -56,6 +56,6 @@ const menu_data = [
       // { link: "/blog-details", title: "Blog Details" },
     ],
   },
-  
+
 ];
 export default menu_data;

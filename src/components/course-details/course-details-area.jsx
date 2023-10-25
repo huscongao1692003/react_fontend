@@ -170,7 +170,7 @@ const CourseDetailsArea = () => {
                         <p>{courseData.description}</p>
                         <p>{courseData.information}</p>
                      </div>
-                     <div className="cor-details-instructor mb-40">
+                     {/* <div className="cor-details-instructor mb-40">
                         <h4 className="tp-c-details-title mb-40">Instructor</h4>
                         <div className="course-instructor-details d-flex f-wrap align-items-center">
                            <div className="course-avata mr-30 mb-20">
@@ -213,7 +213,7 @@ const CourseDetailsArea = () => {
                            installed base products before interactive results. Collaboratively restore corporate experiences
                            and open-source applications. Proactively mesh cooperative growth strategies.
                         </p>
-                     </div>
+                     </div> */}
                      <div className="c-details-review pb-15">
                         <div className="c-review-title-wrapper">
                            <h5 className="c-review-title mb-40">Review</h5>
