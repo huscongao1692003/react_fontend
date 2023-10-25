@@ -9,6 +9,8 @@
   .Table td,
   th {
     border: none !important;
+    border-radius: 1rem;
+
   }
   
   .Table:first-child {
@@ -27,6 +29,8 @@
     .Table {
       width: 170%;
       margin-top: 2rem;
+      border-radius: 1rem;
+
     }
   }
   
@@ -38,5 +42,19 @@
       flex-direction: column;
       align-items: center;
       width: 23rem;
+      border-radius: 1rem;
+
     }
   }
+  .chart-container{
+    display: flex;
+  }
+  .LineChart{
+    flex: 1;
+  }
+  .RadarChart{
+    flex: 1;
+  }
+.ComposedChart{
+  flex: 1;
+}

@@ -39,6 +39,11 @@ const MenuItems = [
     content: <User/>,
   },
   {
+    icon: UilUsersAlt,
+    heading: "Order",
+    content: <Table/>,
+  },
+  {
     icon: UilPackage,
     heading: 'Courses',
     content: <Courses/>,
@@ -61,6 +66,7 @@ const Sidebar = () => {
         </Link>
         <span></span>
       </div>
+      <div className="columnView">
       <div className='menu'>
         {MenuItems.map((item, index) => {
           return (
@@ -80,7 +86,7 @@ const Sidebar = () => {
       </div>
       <div className="content">
         {MenuItems[selected] && MenuItems[selected].content}
-      </div>
+      </div></div>
     </div>
   );
 }

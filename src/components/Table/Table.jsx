@@ -8,40 +8,56 @@ import {
   TableRow,
   TableCell,
   Paper,
+  TablePagination,
 } from '@mui/material';
 import Spinner from 'react-bootstrap/Spinner';
-
 
 export default function CustomerTable() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
   useEffect(() => {
-
-
     // Make an API request to fetch orders
-    axios.get('https://drawproject-production.up.railway.app/api/v1/admin/orders',
-              { headers: {"Authorization" : `Bearer ${accessToken}`} }
-    ).then((response) => {
-      setOrders(response.data);
-      setLoading(false)
-    });
-    }, [accessToken]);
+    axios
+      .get('https://drawproject-production.up.railway.app/api/v1/admin/orders', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        setOrders(response.data);
+        setLoading(false);
+      });
+  }, [accessToken]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   if (loading) {
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
-        <Spinner animation="grow" variant="light" size="lg"/>
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ paddingTop: '300px', paddingBottom: '300px' }}
+      >
+        <Spinner animation="grow" variant="light" size="lg" />
       </div>
-      );
+    );
   }
+
+  const filteredOrders = orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
   return (
     <div className="Table">
       <h3>Orders</h3>
-      <TableContainer
-        component={Paper}
-        style={{ boxShadow: '0px 13px 20px 0px #80808029' }}
-        >
+      <TableContainer component={Paper} style={{ boxShadow: '0px 13px 20px 0px #80808029' }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -52,7 +68,7 @@ export default function CustomerTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <TableRow key={order.username}>
                 <TableCell component="th" scope="row">
                   {order.fullName}
@@ -63,10 +79,19 @@ export default function CustomerTable() {
                   <span className="status">{order.price}</span>
                 </TableCell>
               </TableRow>
-              ))}
+            ))}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={orders.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
-    );
+  );
 }

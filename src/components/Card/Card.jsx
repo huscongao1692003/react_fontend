@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { AnimateSharedLayout } from 'framer-motion'
-import { CircularProgressbar } from 'react-circular-progressbar'
-import { motion } from 'framer-motion'
-import { UilTimes } from '@iconscout/react-unicons'
+import React, { useState } from 'react';
+import { AnimateSharedLayout } from 'framer-motion';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import { motion } from 'framer-motion';
+import { UilTimes } from '@iconscout/react-unicons';
 
 const Card = (props) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
   return (
     <div>
       {expanded ? (
@@ -14,8 +14,8 @@ const Card = (props) => {
         <CompactCard param={props} setExpanded={() => setExpanded(false)} />
       )}
     </div>
-  )
-}
+  );
+};
 
 function CompactCard({ param, setExpanded }) {
   const Png = param.png;
@@ -26,14 +26,12 @@ function CompactCard({ param, setExpanded }) {
         background: param.color.backGround,
         boxShadow: param.color.boxShadow,
       }}
-      layoutId="expandableCard"
+      layoutid="expandableCard"
       onClick={setExpanded}
+      key={param.title} // Add a unique key prop here
     >
       <div className="radialBar">
-        <CircularProgressbar
-          value={param.barValue}
-          text={`${param.barValue}%`}
-        />
+        <CircularProgressbar value={param.barValue} text={`${param.barValue}%`} />
         <span>{param.title}</span>
       </div>
       <div className="detail">
@@ -47,23 +45,23 @@ function CompactCard({ param, setExpanded }) {
 
 function ExpandedCard({ param, setExpanded }) {
   return (
-    <motion.div className='ExpandedCard'
+    <motion.div
+      className="ExpandedCard"
       style={{
         background: param.color.backGround,
-        boxShadow: param.color.boxShadow
+        boxShadow: param.color.boxShadow,
       }}
-      layoutId='expandedCard'
+      layoutid="expandedCard"
+      key={param.title} // Add a unique key prop here
     >
       <div>
-        <UilTimes onClick={setExpanded}/>
+        <UilTimes onClick={setExpanded} />
       </div>
       <span>{param.title}</span>
-      <div className='chartContainer'>
-        Chart
-      </div>
+      <div className="chartContainer">Chart</div>
       <span>Last 24 hours</span>
     </motion.div>
-  )
+  );
 }
 
-export default Card
+export default Card;
