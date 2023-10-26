@@ -109,6 +109,7 @@ const Header = () => {
 
                                                       <Dropdown.Menu>
                                                         <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
+                                                        <Dropdown.Item href="/my-collection">Edit Collection</Dropdown.Item>
                                                         <Dropdown.Item href="/create-post">Create Post</Dropdown.Item>
                                                         <Dropdown.Item href="/view-post">View Your Post</Dropdown.Item>
                                                           <Dropdown.Item href="/course-create">Create Course</Dropdown.Item>

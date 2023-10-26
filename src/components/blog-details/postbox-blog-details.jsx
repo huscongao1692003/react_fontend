@@ -16,6 +16,18 @@ const PostboxBlogDetails = () => {
   const router = useRouter();
   const { postId } = router.query;
   const [blogData, setBlogData] = useState(null);
+
+
+  function formatCreatedAt(createdAtArray) {
+    if (!createdAtArray || createdAtArray.length !== 6) {
+      return "Invalid Date";
+    }
+
+    const [year, month, day, hours, minutes, seconds] = createdAtArray;
+    const date = new Date(year, month - 1, day, hours, minutes, seconds);
+    return date.toLocaleString();
+  }
+
 if(postId){
   axios
     .get(`https://drawproject-production.up.railway.app/api/v1/post/${postId}`)
@@ -32,8 +44,8 @@ if(postId){
         userId: post.userId,
         status: post.status,
         userName: post.userName,
-        created_at: new Date(post.created_at).toLocaleString(),
         avatar: post.avatar,
+        ...post
       };
       setBlogData([decodedPost]);
     })
@@ -75,7 +87,7 @@ if(postId){
                   <div className="postbox__content">
                     <div className="postbox__meta">
                       <span>
-                        <i className="fi fi-rr-calendar"></i> {post.created_at}
+                        <i className="fi fi-rr-calendar"></i> {formatCreatedAt(post.createdAt)}
                       </span>
                       <span>
                         <a href="#">

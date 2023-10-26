@@ -11,20 +11,30 @@ const  CourseListArea = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const [selectedStar, setSelectedStar] = useState(0);
 
-  useEffect(() => {
-    axios
-      .get('https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=4&star=0')
-      .then((response) => {
+ useEffect(() => {
+    // Function to fetch courses based on the selected star rating
+    const fetchCoursesByStar = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=4&star=${selectedStar}`
+        );
         const data = response.data.data;
         setCourses(data);
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
+      } catch (error) {
+        console.error("Error fetching data:", error);
         setLoading(false);
-      });
-    }, []);
+      }
+    };
+   fetchCoursesByStar();
+   }, [selectedStar]);
+
+ const handleStarFilter = (star) => {
+   setSelectedStar(star);
+ };
 
   const renderStarIcons = (averageStar) => {
     const starIcons = [];
@@ -45,11 +55,7 @@ const  CourseListArea = () => {
 
   return starIcons;
   };
-  if (loading) {
-    return  <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
-      <Spinner animation="grow" variant="success" size="lg"/>
-    </div>;
-  }
+
   return (
     <>
       <section
@@ -147,174 +153,147 @@ const  CourseListArea = () => {
                   </div>
                 </div>
                 <div className="course-sidebar__widget mb-50">
-                  <div className="course-sidebar__info c-info-list">
-                    <h4 className="course-sidebar__title mb-30">
-                      Course Price
-                    </h4>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault5"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckDefault5"
+                <div className="course-sidebar__info c-info-list">
+                  <h4 className="course-sidebar__title mb-35">
+                    Course Star
+                  </h4>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault5"
+                      onClick={() => handleStarFilter(0)} // Add onClick event for star filter
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckDefault5"
                       >
-                        Free Courses
-                      </label>
-                      <span className="f-right">13</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked6"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked6"
+                      All Star
+                    </label>
+                    <span className="f-right">13</span>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault5"
+                      onClick={() => handleStarFilter(3)} // Add onClick event for star filter
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckDefault5"
+                    >
+                      3 Star
+                    </label>
+                    <span className="f-right">13</span>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckChecked6"
+                      onClick={() => handleStarFilter(4)} // Add onClick event for star filter
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckChecked6"
+                    >
+                      4 Star
+                    </label>
+                    <span className="f-right">25</span>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckChecked7"
+                      onClick={() => handleStarFilter(5)} // Add onClick event for star filter
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckChecked7"
                       >
-                        Paid Courses
-                      </label>
-                      <span className="f-right">25</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked7"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked7"
-                      >
-                        Subscription Only
-                      </label>
+                      5 Star
+                    </label>
                       <span className="f-right">99</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="course-sidebar__widget mb-50">
-                  <div className="course-sidebar__info c-info-list">
-                    <h4 className="course-sidebar__title mb-35">
-                      Class Duration
-                    </h4>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault12"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckDefault12"
-                      >
-                        Less Than 2 hours
-                      </label>
-                      <span className="f-right">96</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked13"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked13"
-                      >
-                        3-5 hours
-                      </label>
-                      <span className="f-right">27</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked14"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked14"
-                      >
-                        4-7 hours
-                      </label>
-                      <span className="f-right">88</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <div className="col-lg-8 col-md-12 course-item-width ml-30">
-              {courses.map((course, i) => (
-                <div key={i} className="tpcourse tp-list-course mb-40">
-                  <div className="row g-0">
-                    <div className="col-xl-4 course-thumb-width">
-                      <div className="tpcourse__thumb p-relative w-img fix">
-                          <Link href={`/course-details?id=${course.courseId}`}>
-                          <img src={course.image} alt="course-thumb" />
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="col-xl-8  course-text-width">
-                      <div className="course-list-content">
-                        <div className="tpcourse__category mb-10">
-                          <ul className="tpcourse__price-list d-flex align-items-center">
-                            <li>
-                              <Link className={course.ct_color} href="/course-details">
-                                {course.skill}
-                              </Link>
-                            </li>
-                            <li>
-                              <Link className={course.cn_color} href="/course-details">
-                                {course.category}
-                              </Link>
-
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="tpcourse__ava-title mb-15">
-                          <h4 className="tpcourse__title tp-cours-title-color">
-                            <Link href={`/course-details?id=${course.courseId}`}>
-                              {course.courseTitle}
-                            </Link>
-                          </h4>
-                        </div>
-                        <div className="tpcourse__meta tpcourse__meta-gap pb-15 mb-15">
-                          <ul className="d-flex align-items-center">
-                            <li>
-                              <img src="/assets/img/icon/c-meta-01.png" alt="meta-icon" />
-                              <span>{course.numLesson} Lessons</span>
-                            </li>
-                            <li>
-                              <img src="/assets/img/icon/c-meta-02.png" alt="meta-icon" />
-                              <span>291 Students</span>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="tpcourse__rating d-flex align-items-center justify-content-between">
-                          <div className="tpcourse__rating-icon">
-                            {renderStarIcons(course.averageStar)}
-                            <span>{course.averageStar.toFixed(1)}</span>
-                            <p>({course.numReviews})</p>
-                          </div>
-                          <div className="tpcourse__pricing">
-                            <h5 className="price-title">${course.price}</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              {loading ? (
+                <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+                  <Spinner animation="grow" variant="success" size="lg" />
                 </div>
-                ))}
+                ) : (
+                  courses.map((course, i) => (
+                    <div key={i} className="tpcourse tp-list-course mb-40">
+                      <div className="row g-0">
+                        <div className="col-xl-4 course-thumb-width">
+                          <div className="tpcourse__thumb p-relative w-img fix">
+                            <Link href={`/course-details?id=${course.courseId}`}>
+                              <img src={course.image} alt="course-thumb" />
+                            </Link>
+                          </div>
+                        </div>
+                        <div className="col-xl-8  course-text-width">
+                          <div className="course-list-content">
+                            <div className="tpcourse__category mb-10">
+                              <ul className="tpcourse__price-list d-flex align-items-center">
+                                <li>
+                                  <Link className={course.ct_color} href="/course-details">
+                                    {course.skill}
+                                  </Link>
+                                </li>
+                                <li>
+                                  <Link className={course.cn_color} href="/course-details">
+                                    {course.category}
+                                  </Link>
+
+                                </li>
+                              </ul>
+                            </div>
+                            <div className="tpcourse__ava-title mb-15">
+                              <h4 className="tpcourse__title tp-cours-title-color">
+                                <Link href={`/course-details?id=${course.courseId}`}>
+                                  {course.courseTitle}
+                                </Link>
+                              </h4>
+                            </div>
+                            <div className="tpcourse__meta tpcourse__meta-gap pb-15 mb-15">
+                              <ul className="d-flex align-items-center">
+                                <li>
+                                  <img src="/assets/img/icon/c-meta-01.png" alt="meta-icon" />
+                                  <span>{course.numLesson} Lessons</span>
+                                </li>
+                                <li>
+                                  <img src="/assets/img/icon/c-meta-02.png" alt="meta-icon" />
+                                  <span>291 Students</span>
+                                </li>
+                              </ul>
+                            </div>
+                            <div className="tpcourse__rating d-flex align-items-center justify-content-between">
+                              <div className="tpcourse__rating-icon">
+                                {renderStarIcons(course.averageStar)}
+                                <span>{course.averageStar.toFixed(1)}</span>
+                                <p>({course.numReviews})</p>
+                              </div>
+                              <div className="tpcourse__pricing">
+                                <h5 className="price-title">${course.price}</h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    ))
+                    )}
             </div>
           </div>
           <div className="basic-pagination text-center">

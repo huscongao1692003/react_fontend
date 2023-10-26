@@ -10,7 +10,7 @@ import {
 } from "@iconscout/react-unicons";
 import MainDash from "./MainDash";
 import Table from './Table/Table';
-import Courses from '../Table/Courses';
+import Courses from './Table/Courses';
 import Post from "../Table/Post";
 import Orders from "./Table/Orders"
 import CreateCourse from "../course-create"
