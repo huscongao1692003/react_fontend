@@ -22,15 +22,6 @@
   text-align: center;
 }
 
-.logo > span > span {
-  color: var(--pink);
-}
-
-.logo > img {
-  /* width: 3rem;
-  height: 3rem; */
-}
-
 /* menu */
 .menu {
   margin-top: 4rem;
@@ -50,6 +41,7 @@
   transition: all 300ms ease;
   border-radius: 0.7rem;
   font-size: 14px;
+  position: sticky;
 }
 
 
@@ -75,8 +67,15 @@
   .menuItem > span {
     display: none;
   }
+  .chart-container{
+    flex-direction: column;
+  }
 }
-
+@media screen and (max-width: 1024px) {
+  .columnView{
+    grid-template-columns: 30% 70% !important;
+  }
+}
 @media screen and (max-width: 768px) {
   .sidebar{
     position: fixed;
@@ -85,6 +84,7 @@
     width: 55%;
     padding-right: 1rem;
     height: 100%;
+    
   }
   .menuItem>span{
     display: block;
@@ -92,16 +92,32 @@
   .bars{
     display: flex;
     position: fixed;
-    top: 2rem;
+    top: 170px;
     left:60%;
     background:#ffe0e0;
     padding:10px;
     border-radius: 10px;
     z-index: 9;
   }
-  .close{
-    left: -60%;
+  .menu{
+    position: fixed;
+    z-index: 9;
+    background: #ffe0e0;
+    width: 55%;
+    padding-right: 1rem;
+    height: 100%;
+    border-radius: 10px;
   }
+  .menuItem{
+    padding-top: 2px;
+  }
+  .columnView{
+    flex-direction: column;
+  }
+  .dataTable{
+    width: 100%;
+  }
+
 }
 .columnView{
   display: flex;

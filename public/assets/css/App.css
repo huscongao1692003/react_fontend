@@ -36,14 +36,17 @@
   border-radius: 2rem;
   gap: 16px;
   grid-template-rows: 30rem auto 20rem;
-  overflow: hidden;
-  overflow-y: hidden;
+  overflow-y: scroll;
+}
+.AppGlass::-webkit-scrollbar{
+  display: none;
 }
 
 @media screen and (max-width: 1200px) {
   .AppGlass{
     grid-template-columns: 100%;
     overflow-y: scroll;
+
   } 
 }
 

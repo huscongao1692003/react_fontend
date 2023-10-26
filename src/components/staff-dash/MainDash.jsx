@@ -6,9 +6,12 @@ import Courses from '../Table/Courses'
 const DashStaff = () => {
   return (
     <div className='DashStaff'>
+      <div className="staffDashContainer">
         <h1>Dashboard</h1>
         <Table/>
         <Courses/>
+      </div>
+        
     </div>
   )
 }
