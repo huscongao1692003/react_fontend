@@ -19,34 +19,6 @@ const CourseDetailsArea = () => {
   const [avatar,setAvatar] = useState("/assets/img/icon/course-avata-05.png");
   console.log(accessToken)
 
-//  const addToCart = async () => {
-//    try {
-//      if (isLoggedIn !== "true") {
-//        const delayDuration = 1000; // 1 second (adjust as needed)
-//        setTimeout(() => {
-//          router.push('/sign-in');
-//        }, delayDuration);
-//        return;
-//      }
-//
-//      const response = await axios.post(
-//        `https://drawproject-production.up.railway.app/api/v1/cart/${id}`,
-//        null,
-//        {
-//          headers: { Authorization: `Bearer ${accessToken}` },
-//        }
-//      );
-//
-//      if (response.status === 200) {
-//         alert('Course added to the cart!');
-//         console.log(response)
-//      } else {
-//         alert('Failed to add the course to the cart.');
-//      }
-//    } catch (error) {
-//       console.error('Error adding the course to the cart:', error);
-//    }
-//  };
 
   useEffect(() => {
     axios
