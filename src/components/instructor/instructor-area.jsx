@@ -10,6 +10,8 @@ import InstructorPortfolioArea from "../instructor-profile/instructor-portfolio-
 const InstructorArea = () => {
   const [instructorData, setInstructorData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const placeholderImage = "/assets/img/zdJeuso-_400x400.jpg";
+
   useEffect(() => {
     axios
       .get("https://drawproject-production.up.railway.app/api/v1/instructor")
@@ -50,8 +52,13 @@ const InstructorArea = () => {
                 >
                   <div className="tp-instructor text-center p-relative mb-40">
                     <div className="tp-instructor__thumb mb-25">
-                      <img src={item.avatar} alt="instructor-profile" />
-                    </div>
+                    <img
+                    src={item.avatar && item.avatar !== "null" ? item.avatar : placeholderImage}
+                    alt="instructor-thumb"
+                    onError={(e) => {
+                      e.target.src = placeholderImage;
+                    }}
+                  />                    </div>
                     <div className="tp-instructor__content">
                       <span>{item.username}</span>
                       <h4 className="tp-instructor__title tp-instructor__title-info p-relative mb-35 mt-5">

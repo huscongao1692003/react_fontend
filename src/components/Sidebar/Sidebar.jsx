@@ -5,10 +5,8 @@ import {
   UilClipboardAlt,
   UilUsersAlt,
   UilPackage,
-  UilChart,
   UilAt,
-  UilMoneyWithdrawal,
-  UilUsdSquare
+  UilShoppingCartAlt,
 } from "@iconscout/react-unicons";
 import MainDash from "../MainDash/MainDash";
 import Table from '../Table/Table';
@@ -39,7 +37,7 @@ const MenuItems = [
     content: <User/>,
   },
   {
-    icon: UilUsersAlt,
+    icon: UilShoppingCartAlt,
     heading: "Order",
     content: <Table/>,
   },
@@ -64,7 +62,6 @@ const Sidebar = () => {
         <Link href="/">
           <img src='/assets/img/logo/logo-black.png' alt='logo' />
         </Link>
-        <span></span>
       </div>
       <div className="columnView">
       <div className='menu'>

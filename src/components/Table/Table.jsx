@@ -11,11 +11,14 @@ import {
   TablePagination,
 } from '@mui/material';
 import Spinner from 'react-bootstrap/Spinner';
+import Typography from '@mui/material/Typography';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';  
 
 export default function CustomerTable() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
@@ -53,7 +56,9 @@ export default function CustomerTable() {
   }
 
   const filteredOrders = orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
   return (
     <div className="Table">
       <h3>Orders</h3>
@@ -82,15 +87,10 @@ export default function CustomerTable() {
             ))}
           </TableBody>
         </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={orders.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        <Stack spacing={2}>
+      <Typography>Page: {page}</Typography>
+      <Pagination count={10} page={page} onChange={handleChange} />
+    </Stack>
       </TableContainer>
     </div>
   );
