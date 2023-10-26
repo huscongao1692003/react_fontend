@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Count from "@/src/common/count.jsx";
@@ -7,6 +6,9 @@ import Link from "next/link";
 import { Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useRouter } from "next/router.js";
+
+// Placeholder image URL
+const placeholderImage = "/assets/img/among-us.gif";
 
 const InstructorPortfolioArea = () => {
   const [instructorData, setInstructorData] = useState(null);
@@ -75,8 +77,11 @@ const InstructorPortfolioArea = () => {
               <div className="instruc-sidebar mb-40">
                 <div className="isntruc-side-thumb mb-30">
                   <img
-                    src="/assets/img/bg/instruc-sibedar-thumb-01.jpg"
+                    src={instructorData.avatar ? instructorData.avatar : placeholderImage}
                     alt="instructor-thumb"
+                    onError={(e) => {
+                      e.target.src = placeholderImage;
+                    }}
                   />
                 </div>
                 <div className="instructor-sidebar-widget">
@@ -145,11 +150,6 @@ const InstructorPortfolioArea = () => {
                             <Link href="/course-details">
                               <img src={item.image} alt="course-thumb" />
                             </Link>
-                            <div className="tpcourse__tag">
-                              <Link href="#">
-                                <i className="fi fi-rr-heart"></i>
-                              </Link>
-                            </div>
                             <div className="tpcourse__img-icon">
                               <img src={item.icon} alt="course-avata" />
                             </div>
@@ -229,4 +229,3 @@ const InstructorPortfolioArea = () => {
 };
 
 export default InstructorPortfolioArea;
-

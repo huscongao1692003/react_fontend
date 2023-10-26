@@ -35,8 +35,9 @@
   background: var(--glass);
   border-radius: 2rem;
   gap: 16px;
-  grid-template-rows: 11rem auto 20rem;
+  grid-template-rows: 30rem auto 20rem;
   overflow: hidden;
+  overflow-y: hidden;
 }
 
 @media screen and (max-width: 1200px) {
