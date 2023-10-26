@@ -56,7 +56,7 @@ export default function LineChart() {
     <h3 style={{ marginTop: "2rem", marginBottom: "2rem" }}>Line Chart</h3>
     
     <AreaChart
-      width={800}
+      width={600}
       height={375}
       data={data}
 

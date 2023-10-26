@@ -1,0 +1,4 @@
+.staffDashContainer{
+    display: flex;
+    flex-direction: column;
+}

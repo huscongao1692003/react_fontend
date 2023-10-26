@@ -90,7 +90,7 @@ const User = () => {
         <>
         <h3>Posts</h3>
         <div className='dataTable'>
-            <Box sx={{ height: 400, width: '100%' }}>
+            <Box>
                 <DataGrid
                     rows={posts}
                     columns={columns}
