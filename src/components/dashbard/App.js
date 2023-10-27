@@ -1,7 +1,7 @@
 import MainDash from "../MainDash/MainDash";
 import RightSide from "../RightSide/RightSide";
 import Sidebar from "../Sidebar/Sidebar";
-
+import dynamic from "next/dynamic";
 
 function App() {
   return (
@@ -13,4 +13,5 @@ function App() {
   );
 }
 
-export default App;
+export default dynamic (() => Promise.resolve(App), {ssr: false})
+

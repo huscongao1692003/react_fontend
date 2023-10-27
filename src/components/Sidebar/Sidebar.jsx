@@ -89,13 +89,13 @@ const Sidebar = () => {
   }, [expanded]);
 
   return (
-    <>
-      <div className='Sidebar'>
-        <div className='logo'>
+    <><div className='logo'>
           <Link href="/">
             <img src='/assets/img/logo/logo-black.png' alt='logo' />
           </Link>
         </div>
+      <div className='Sidebar'>
+        
         <div className="columnView">
           <motion.div
             className='menu'

@@ -8,7 +8,6 @@ const DashStaff = () => {
     <div className='DashStaff'>
       <div className="staffDashContainer">
         <h1>Dashboard</h1>
-        <Table/>
         <Courses/>
       </div>
         

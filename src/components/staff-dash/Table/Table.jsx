@@ -36,7 +36,7 @@ export default function CustomerTable() {
       );
   }
   return (
-    <div className="Table">
+    <div className="staffTable">
       <h3>Orders</h3>
       <TableContainer
         component={Paper}
