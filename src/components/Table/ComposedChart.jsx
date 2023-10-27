@@ -54,22 +54,33 @@ const data = [
     cnt: 380
   }
 ];
+const chartStyle = {
+  fontSize: "10px", // Set your desired font size here
+};
 
+const labelStyle = {
+  fontSize: "12px", // Set the font size for axis labels
+};
+
+const tooltipStyle = {
+  fontSize: "10px", // Set the font size for tooltip content
+};
 export default function ComposedGrid() {
   return (
     <>
     <div className="ComposedChart">
     <h3 style={{ marginTop: "2rem", marginBottom: "2rem" }}>Composed Chart</h3>
     <ComposedChart
-      width={400}
+      width={430}
       height={400}
       data={data}
 
     >
       <CartesianGrid stroke="#f5f5f5" />
-      <XAxis dataKey="name" scale="band" />
-      <YAxis />
-      <Tooltip />
+      
+      <XAxis dataKey="name" scale="band" style={labelStyle} />
+        <YAxis style={labelStyle} />
+        <Tooltip contentStyle={tooltipStyle} />
       <Legend />
       <Bar dataKey="uv" barSize={20} fill="#413ea0" />
       <Line type="monotone" dataKey="uv" stroke="#ff7300" />

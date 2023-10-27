@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   UilEstate,
@@ -22,7 +22,6 @@ const MenuItems = [
     heading: "Dashboard",
     content: <MainDash />,
   },
-
   {
     icon: UilUsersAlt,
     heading: "Instructor",
@@ -44,6 +43,8 @@ const SidebarStaff = () => {
   const [selected, setSelected] = useState(0);
   const [expanded, setExpanded] = useState(true);
   const [animate, setAnimate] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const sidebarRef = useRef(null);
 
   const SidebarVariants = {
     true: {
@@ -53,6 +54,7 @@ const SidebarStaff = () => {
       left: '-60%'
     }
   };
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
@@ -70,26 +72,53 @@ const SidebarStaff = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [expanded]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setExpanded(false);
+        setSidebarOpen(false);
+      }
+    };
+
+    const handleExpandButtonClick = (event) => {
+      if (event.target.classList.contains("bars")) {
+        setExpanded(true);
+        setSidebarOpen(true);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("click", handleExpandButtonClick);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", handleExpandButtonClick);
+    };
+  }, []);
+
   return (
-    <div className='Sidebar'>
-      <div className='logo'>
+    <div className={`Sidebar ${sidebarOpen ? "darkBackground" : ""}`}>
+      <div className="columnView">
+        <motion.div
+          className='menu'
+          variants={SidebarVariants}
+          animate={animate}
+          ref={sidebarRef}
+        >
+                <div className='logo'>
           <Link href="/">
             <img src='/assets/img/logo/logo-black.png' alt='logo' />
           </Link>
           <span></span>
         </div>
-      <div className="columnView">
-        
-        <motion.div className='menu'
-            variants={SidebarVariants}
-            animate={animate}>
-              <div
-              className="bars"
-              style={expanded ? { left: "60%" } : { left: "5%" }}
-              onClick={() => setExpanded(!expanded)}
-            >
-              <UilBars />
-            </div>
+          <div
+            className="bars"
+            style={expanded ? { left: "60%" } : { left: "5%" }}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <UilBars />
+          </div>
           {MenuItems.map((item, index) => {
             return (
               <div
@@ -98,13 +127,10 @@ const SidebarStaff = () => {
                 onClick={() => setSelected(index)}
               >
                 <item.icon />
-                <span>
-                  {item.heading}
-                </span>
+                <span>{item.heading}</span>
               </div>
             )
           })}
-
         </motion.div>
         <div className="content">
           {MenuItems[selected] && MenuItems[selected].content}

@@ -7,11 +7,11 @@ import Spinner from 'react-bootstrap/Spinner';
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
   useEffect(() => {
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/instructor/orders', {
+      .get('https://drawproject-production.up.railway.app/api/v1/admin/orders', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
