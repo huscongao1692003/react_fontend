@@ -1,69 +1,68 @@
 .MuiTableRow-root > * {
-    padding: 10px;
-  }
-  .dataTable{
-    padding-right: 20px;
+  padding: 10px;
+}
+
+.dataTable {
+  padding-right: 20px;
+  width: auto;
+}
+
+.MuiTableRow-root.MuiTableRow-head > * {
+  font-weight: bold !important;
+}
+
+.Table td,
+th {
+  border: none !important;
+  border-radius: 1rem;
+}
+
+.Table:first-child {
+  border-radius: 0.7rem !important;
+}
+
+.status {
+  padding: 8px;
+  border-radius: 9px;
+}
+
+.Details {
+  color: #00b5ff !important;
+}
+
+@media screen and (max-width: 768px) {
+  .Table {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: auto;
+    border-radius: 1rem;
   }
-  .MuiTableRow-root.MuiTableRow-head > * {
-    font-weight: bold !important;
-  }
-  
   .Table td,
   th {
-    border: none !important;
-    border-radius: 1rem;
+    text-align: center;
+  }
+  .dataTable {
+    width: 100%;
+  }
+}
 
-  }
-  
-  .Table:first-child {
-    border-radius: 0.7rem !important;
-  }
-  .status {
-    padding: 8px;
-    border-radius: 9px;
-  }
-  
-  .Details {
-    color: #00b5ff !important;
-  }
-  
-  @media screen and (max-width: 1200px) {
-    .Table {
-      width: 170%;
-      margin-top: 2rem;
-      border-radius: 1rem;
+.chart-container {
+  display: flex;
+}
 
-    }
-    .dataTable{
-      width: 100%;
-    }
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .Table{
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      border-radius: 1rem;
+.LineChart {
+  width: 34.63%;
+  flex: 1;
+}
 
-    }
-    .dataTable{
-      width: 100%;
-    }
-  }
-  .chart-container{
-    display: flex;
-  }
-  .LineChart{
-    flex: 1;
-  }
-  .RadarChart{
-    flex: 1;
-  }
-.ComposedChart{
+.RadarChart {
+  width: 33.33%;
+  flex: 1;
+}
+
+.ComposedChart {
+  width: 32%;
   flex: 1;
 }

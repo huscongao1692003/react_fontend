@@ -84,16 +84,15 @@ const SidebarInstructor = () => {
 
   return (
     <div className='Sidebar'>
-      <div className='logo'>
-        <Link href="/">
-          <img src='/assets/img/logo/logo-black.png' alt='logo' />
-        </Link>
-        <span></span>
-      </div>
+      
       <div className="columnView">
         <motion.div className='menu'
           variants={SidebarVariants}
-          animate={animate}>
+          animate={animate}><div className='logo'>
+        <Link href="/">
+          <img src='/assets/img/logo/logo-black.png' alt='logo' />
+        </Link>
+      </div>
           <div
             className="bars"
             style={expanded ? { left: "60%" } : { left: "5%" }}

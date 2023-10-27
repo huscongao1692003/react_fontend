@@ -10,6 +10,7 @@ import {
   UilShoppingCartAlt,
 } from "@iconscout/react-unicons";
 import { motion } from "framer-motion";
+//  import Home from "../";
 import MainDash from "../MainDash/MainDash";
 import Table from '../Table/Table';
 import User from '../Table/User'
@@ -19,6 +20,12 @@ import Postbox from "@/src/components/blog/postbox";
 import Post from "../Table/Post"
 
 const MenuItems = [
+  // {
+  //   icon: UilEstate,
+  //   heading: "Home",
+  //   content: <Home />,
+  // },
+
   {
     icon: UilEstate,
     heading: "Dashboard",
@@ -89,19 +96,20 @@ const Sidebar = () => {
   }, [expanded]);
 
   return (
-    <><div className='logo'>
-          <Link href="/">
-            <img src='/assets/img/logo/logo-black.png' alt='logo' />
-          </Link>
-        </div>
+    <>
       <div className='Sidebar'>
-        
+
         <div className="columnView">
           <motion.div
             className='menu'
             variants={SidebarVariants}
             animate={animate}
-          >
+          >      <div className='logo'>
+              <Link href="/">
+                <img src='/assets/img/logo/logo-black.png' alt='logo' />
+              </Link>
+              <span></span>
+            </div>
             <div
               className="bars"
               style={expanded ? { left: "60%" } : { left: "5%" }}

@@ -20,22 +20,21 @@
     #ffcfd1 51.55%,
     #f3c6f1 90.85%
   );
-  height: 100vh;
+  height: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
-  
+  min-height: 100vh;
 }
 
 .AppGlass {
   display: grid;
-  height: 97%;
-  width: 97%;
+  height: 97vh;
+  width: 97vw;
   background: var(--glass);
   border-radius: 2rem;
   gap: 16px;
-  grid-template-rows: 30rem auto 20rem;
   overflow-y: scroll;
 }
 .AppGlass::-webkit-scrollbar{
@@ -54,4 +53,5 @@
   .AppGlass{
     grid-template-columns: 1fr;
   } 
+  
 }
