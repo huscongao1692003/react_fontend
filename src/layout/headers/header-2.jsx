@@ -7,7 +7,7 @@ import {useRouter} from 'next/router';
 import { UilSignOutAlt } from '@iconscout/react-unicons'
 import { UilUserSquare } from '@iconscout/react-unicons'
 import Dropdown from 'react-bootstrap/Dropdown';
-
+import dynamic from "next/dynamic";
 
 const Header = () => {
     const {sticky} = useSticky()
@@ -69,7 +69,6 @@ const Header = () => {
                                                 ) : null}
                                               {role === "ROLE_ADMIN" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -80,12 +79,10 @@ const Header = () => {
                                                         <Dropdown.Item href="/dashboard">Dashboard</Dropdown.Item>
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_STAFF" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -96,12 +93,10 @@ const Header = () => {
                                                         <Dropdown.Item href="/dashboard-staff">Dashboard</Dropdown.Item>
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_INSTRUCTOR" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -117,12 +112,10 @@ const Header = () => {
 
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_CUSTOMER" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -137,7 +130,6 @@ const Header = () => {
                                                         <Dropdown.Item href="/my-orders">View Orders</Dropdown.Item>
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
 
@@ -168,4 +160,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default dynamic (() => Promise.resolve(Header), {ssr: false})

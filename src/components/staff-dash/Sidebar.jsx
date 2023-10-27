@@ -22,11 +22,7 @@ const MenuItems = [
     heading: "Dashboard",
     content: <MainDash />,
   },
-  {
-    icon: UilClipboardAlt,
-    heading: "Orders",
-    content: <Table />,
-  },
+
   {
     icon: UilUsersAlt,
     heading: "Instructor",
