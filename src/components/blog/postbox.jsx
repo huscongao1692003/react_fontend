@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BlogSearch from "./blog-search";
-import RecentPost from "./recent-post";
-import Category from "./category";
-import Tags from "./tags";
 import Link from "next/link";
-import Slider from "react-slick";
 import { useRouter } from "next/router";
 import Spinner from "react-bootstrap/Spinner";
 import { useDebounce } from "@/hooks/debounce";
+import Sidebar from "./category";
+import BlogNotFound from "./blog-not-found";
+import { Pagination } from "@mui/material";
 
 const Postbox = () => {
-  const router = useRouter();
   const [blogData, setBlogData] = useState("");
   const [searchValue, setSearchValue] = useState("");
-  const [category, setcategory] = useState("0");
-  const [categoryData, setCategoryData] = useState([]);
+  const [category, setcategory] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  
 
   const searchValueDebounce = useDebounce(searchValue);
 
@@ -29,30 +29,27 @@ const Postbox = () => {
     return date.toLocaleString();
   }
 
-  function handleCategoryClick(clickedCategoryId) {
-    setcategory(clickedCategoryId);
-  };
-
-  
+  function handlePageChange(page) {
+    setPage(page);
+  }
 
   useEffect(() => {
-    axios
-      .get("https://drawproject-production.up.railway.app/api/v1/category")
-      .then((response) => {
-        setCategoryData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  useEffect(() => {
+    if(searchValueDebounce != "" && category != "") {
+      setSearchValue("");
+    }
+    else if((searchValueDebounce != "") ) {
+      setcategory("");
+    } else if((category != "")) {
+      setSearchValue("");
+    }
     axios
       .get(
-        `https://drawproject-production.up.railway.app/api/v1/post/search?page=1&perPage=5`,
+        `https://drawproject-production.up.railway.app/api/v1/post/search?perPage=5`,
         {
           params: {
-            search: searchValueDebounce
+            search: searchValueDebounce,
+            categoryId: category,
+            page: page
           },
         }
       )
@@ -62,33 +59,14 @@ const Postbox = () => {
           image: post.image,
         }));
         setBlogData(decodedData);
+        setTotalPage(response.data.totalPage);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [searchValueDebounce]);
+      setcategory("");
+  }, [searchValueDebounce, category, page]);
 
-  useEffect(() => {
-    axios
-      .get(
-        `https://drawproject-production.up.railway.app/api/v1/post/search?page=1&perPage=5`,
-        {
-          params: {
-            categoryId: category
-          },
-        }
-      )
-      .then((response) => {
-        const decodedData = response.data.data.map((post) => ({
-          ...post,
-          image: post.image,  
-        }));
-        setBlogData(decodedData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [category]);
 
   if (!blogData) {
     // You can render a loading message or spinner here while fetching data.
@@ -113,7 +91,9 @@ const Postbox = () => {
             <div className="row">
               <div className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
                 <div className="postbox__wrapper pr-20">
-                  {Array.isArray(blogData) &&
+                  {blogData.length == 0 ? (
+                    <BlogNotFound/>
+                  ) :
                     blogData.map((post, index) => (
                       <article
                         key={index}
@@ -156,54 +136,20 @@ const Postbox = () => {
                         </div>
                       </article>
                     ))}
+
+
+                      <Pagination count={totalPage} page={page} onChange={handlePageChange} style={{float: "right"}}/>
+
+                    
+                    
                 </div>
               </div>
               <div className="col-xxl-4 col-xl-4 col-lg-5 col-md-12">
                 <div className="sidebar__wrapper">
                   {/* render sidebar components here */}
 
-                  <div className="sidebar__widget mb-55">
-                    <div className="sidebar__widget-content">
-                      <h3 className="sidebar__widget-title mb-25">Search</h3>
-                      <div className="sidebar__search">
-                        <form onSubmit={(e) => e.preventDefault()}>
-                          <div className="sidebar__search-input-2">
-                            <input
-                              type="text"
-                              placeholder="Search Anything"
-                              onChange={(e) => setSearchValue(e.target.value)}
-                              value={searchValue}
-                            />
-                            <button type="submit">
-                              <i className="far fa-search"></i>
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="sidebar__widget mb-40">
-                    <div className="row">
-                      <h3 className="sidebar__widget-title mb-10 col-md-7">
-                        Category
-                      </h3>
-                    </div>
-                    <div className="sidebar__widget-content">
-                      <ul>
-                        {categoryData.map((item) => (
-                          <li key={item.categoryId} style={{cursor: "pointer"}}>
-                            <a onClick={() =>
-                                handleCategoryClick(item.categoryId)
-                              }
-                            >
-                              {item.categoryName}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+                  <BlogSearch setSearchValue={setSearchValue} searchValue={searchValue} />
+                  <Sidebar setcategory={setcategory}/>
                   {/* <Tags /> */}
                 </div>
               </div>
