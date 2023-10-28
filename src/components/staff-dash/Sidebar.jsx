@@ -15,6 +15,7 @@ import Courses from '../Table/Courses';
 import Post from "../Table/Post";
 import Instructor from "./Table/Instructor"
 import { motion } from "framer-motion";
+import ReportUser from "../Table/ReportUser";
 
 const MenuItems = [
   {
@@ -26,6 +27,11 @@ const MenuItems = [
     icon: UilUsersAlt,
     heading: "Instructor",
     content: <Instructor />,
+  },
+  {
+    icon: UilClipboardAlt,
+    heading: "Report",
+    content: <ReportUser />,
   },
   {
     icon: UilPackage,
