@@ -3,15 +3,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { randomColor } from "utils/utils"
+import { useRouter } from 'next/router';
+
 
 const CourseListArea = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryData, setCategoryData] = useState([]);
   const [selectedStar, setSelectedStar] = useState(0);
+  const router = useRouter();
   const [styleData, setStyleData] = useState([]);
   const [skillData, setSkillData] = useState([]);
   const placeholderImage = "/assets/img/instructor.png";
+  const [page, setPage] = useState(1);
   const courseImage = "/assets/img/course/course.jpg";
 
   //
@@ -37,7 +41,7 @@ const CourseListArea = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=4`,
+          `https://drawproject-production.up.railway.app/api/v1/courses?page=${page}`,
           {
             params: {
               star: selectedStar,
@@ -53,10 +57,14 @@ const CourseListArea = () => {
       }
     };
     fetchCoursesByStar();
-  }, [selectedStar]);
+  }, [selectedStar,page]);
 
   const handleCategoryFilter = (star) => {
     setSelectedStar(star);
+  };
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+
   };
 
   const renderStarIcons = (averageStar) => {
@@ -285,30 +293,38 @@ const CourseListArea = () => {
             </div>
           </div>
           <div className="basic-pagination text-center">
-            <nav>
-              <ul>
-                <li>
-                  <Link href="/blog">
-                    <i className="far fa-angle-left"></i>
-                  </Link>
-                </li>
-                <li>
-                  <span className="current">1</span>
-                </li>
-                <li>
-                  <Link href="/blog">2</Link>
-                </li>
-                <li>
-                  <Link href="/blog">3</Link>
-                </li>
-                <li>
-                  <Link href="/blog">
-                    <i className="far fa-angle-right"></i>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
+        <nav>
+          <ul>
+            <li>
+              <a href={`/course-list?page=${page - 1}`} onClick={() => handlePageChange(page - 1)}>
+                <i className="far fa-angle-left"></i>
+              </a>
+            </li>
+          
+              <li>
+                <a href={`/course-list?page=${1}`} onClick={() => handlePageChange(1)}>
+                  2
+                </a>
+              </li>
+              <li>
+                <a href={`/course-list?page=${2}`} onClick={() => handlePageChange(2)}>
+                  2
+                </a>
+              </li>
+              <li>
+                <a href={`/course-list?page=${3}`} onClick={() => handlePageChange(3)}>
+                  2
+                </a>
+              </li>
+
+            <li>
+              <a href={`/course-list?page=${page + 1}`} onClick={() => handlePageChange(page + 1)}>
+                <i className="far fa-angle-right"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
         </div>
       </section>
     </>
