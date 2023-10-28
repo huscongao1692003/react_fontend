@@ -55,7 +55,7 @@ function Cetificate() {
         const formData = new FormData();
 
         // Append each selected image to the formData
-        certificate.images.forEach((image, index) => {
+        certificate.image.forEach((image, index) => {
           formData.append(`images[${index}]`, image);
         });
 
