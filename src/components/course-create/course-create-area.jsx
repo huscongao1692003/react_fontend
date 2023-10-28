@@ -4,16 +4,15 @@ import { headers } from "@/next.config";
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
-    price: "",
+    price: 0,
     information: "",
-    style: "",
-    skill: "",
-    status: "",
-    courseId: "",
-    image: "",
+    style: 0,
+    skill: 0,
+    courseId: 10,
+    image: null,
     description: "",
     courseTitle: "",
-    category: "",
+    category: 0,
   });
 
   const fileInputRef = useRef(null);
@@ -33,13 +32,22 @@ function CourseCreateArea() {
         const accessToken = localStorage.getItem("accessToken");
         const headers = {
           Accept: "*/*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         };
-        const url =
-          "https://drawproject-production.up.railway.app/api/v1/courses";
+        const url =`https://drawproject-production.up.railway.app/api/v1/courses`;
+        const formData = new FormData();
+          formData.append("courseTitle", courseData.courseTitle);
+          formData.append("category", courseData.category);
+          formData.append("description", courseData.description);
+          formData.append("readingTime", courseData.readingTime);
+          formData.append("image", courseData.image);
+          formData.append("style", courseData.style);
+          formData.append("information", courseData.information);
+          formData.append("courseId", courseData.courseId);
+          formData.append("price", courseData.price);
+          formData.append("skill", courseData.skill);
 
-        const response = await axios.post(url, courseData, { headers });
+        const response = await axios.post(url, formData, { headers });
         if (response.data.status != "BAD_REQUEST") {
           alert("Create course successfully");
         }

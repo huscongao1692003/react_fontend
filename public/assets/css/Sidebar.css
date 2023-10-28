@@ -126,6 +126,7 @@
 .columnView{
   display: flex;
   height: 100%;
+  width: 97vw;
 }
 .content {
   overflow-x: auto;
