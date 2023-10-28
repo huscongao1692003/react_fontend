@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useRouter } from "next/router.js";
 
 // Placeholder image URL
-const placeholderImage = "/assets/img/among-us.gif";
+const placeholderImage = "/assets/img/instructor.png";
 
 const InstructorPortfolioArea = () => {
   const [instructorData, setInstructorData] = useState(null);

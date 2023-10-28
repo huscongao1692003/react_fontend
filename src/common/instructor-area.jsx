@@ -1,6 +1,9 @@
 import Link from "next/link";
 import React, { useRef } from "react";
+import { useState, useEffect } from "react";
 import Slider from "react-slick";
+import Spinner from 'react-bootstrap/Spinner';
+import axios from "axios";
 
 // instructor_info
 const instructor_info = [
@@ -106,9 +109,29 @@ const setting = {
 };
 
 const InstructorArea = ({ style_2 }) => {
- 
+  const [instructorData, setInstructorData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const placeholderImage = "/assets/img/instructor.png";
   const sliderRef = useRef(null);
 
+  useEffect(() => {
+    axios
+      .get("https://drawproject-production.up.railway.app/api/v1/instructor")
+      .then((response) => {
+        setInstructorData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  }, []); // The empty dependency array ensures this effect runs only once
+  if (loading) {
+    return <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+      <Spinner animation="grow" variant="success" size="lg" />
+    </div>;
+  }
+  
   return (
     <>
       <section
@@ -158,17 +181,19 @@ const InstructorArea = ({ style_2 }) => {
           </div>
           <div className="intruc-active mb-15 tp-slide-space">
             <Slider {...setting}  ref={sliderRef}>
-              {instructor_info.map((item) => (
-                <div key={item.id} className="tp-instruc-item">
+              {instructorData.map((item, i) => (
+                <div key={item.userId} className="tp-instruc-item">
                   <div className="tp-instructor text-center p-relative mb-30">
                     <div className="tp-instructor__thumb mb-25">
-                      <img src={item.img} alt="instructor-profile" />
+                      <img src={item.avatar && item.avatar !== "null" ? item.avatar : placeholderImage} alt="instructor-profile" onError={(e) => {
+                        e.target.src = placeholderImage
+                      }} />
                     </div>
                     <div className="tp-instructor__content">
                       <h4 className="tp-instructor__title mb-20">
-                        <Link href="/instructor-profile">{item.name}</Link>
+                        <Link href={`/instructor-profile?userId=${item.userId}`}>{item.fullName}</Link>
                       </h4>
-                      <span>{item.title}</span>
+                      <span>Best instructor of week</span>
                       <div className="tp-instructor__social">
                         <ul>
                           {social_links.map((link, i) => (

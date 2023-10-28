@@ -11,6 +11,11 @@
   --activeItem: #f799a354;
 }
 
+.reset-element {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   /* padding: 0.5rem 3.5rem; */
   color: var(--black);
