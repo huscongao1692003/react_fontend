@@ -7,12 +7,12 @@ const MainDash = () => {
   return (
     
     <div className='MainDash'>
-      <h1>Dashboard</h1>
+      
       <Cards />
       <div class="chart-container">
         <RadarGrid />
         <LineChart />
-        <ComposedGrid />
+        {/* <ComposedGrid /> */}
       </div>
     </div>
   )

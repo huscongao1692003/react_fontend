@@ -50,21 +50,33 @@ export default function LineChart() {
   if (typeof window === 'undefined') {
     return null;
   }
+  const chartStyle = {
+    fontSize: "10px", // Set your desired font size here
+  };
 
+  const labelStyle = {
+    fontSize: "12px", // Set the font size for axis labels
+  };
+
+  const tooltipStyle = {
+    fontSize: "10px", // Set the font size for tooltip content
+  };
   return (
     <><div className="LineChart">
     <h3 style={{ marginTop: "2rem", marginBottom: "2rem" }}>Line Chart</h3>
     
     <AreaChart
-      width={600}
+    
+      width={470}
       height={375}
       data={data}
 
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
+     
+      <XAxis dataKey="name" style={labelStyle} />
+        <YAxis style={labelStyle} />
+        <Tooltip contentStyle={tooltipStyle} />
       <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
     </AreaChart></div></>
   );
