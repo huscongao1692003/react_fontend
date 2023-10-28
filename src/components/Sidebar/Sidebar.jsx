@@ -18,6 +18,7 @@ import Courses from "../Table/Courses"
 import Contact from "../Table/Contact";
 import Postbox from "@/src/components/blog/postbox";
 import Post from "../Table/Post"
+import ReportUser from "../Table/ReportUser";
 
 const MenuItems = [
   // {
@@ -33,8 +34,8 @@ const MenuItems = [
   },
   {
     icon: UilClipboardAlt,
-    heading: "Posts",
-    content: <Postbox />,
+    heading: "Report",
+    content: <ReportUser />,
   },
   {
     icon: UilClipboardAlt,
