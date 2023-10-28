@@ -33,6 +33,8 @@ const Postbox = () => {
     setcategory(clickedCategoryId);
   };
 
+  
+
   useEffect(() => {
     axios
       .get("https://drawproject-production.up.railway.app/api/v1/category")
@@ -79,7 +81,7 @@ const Postbox = () => {
       .then((response) => {
         const decodedData = response.data.data.map((post) => ({
           ...post,
-          image: post.image,
+          image: post.image,  
         }));
         setBlogData(decodedData);
       })

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { randomColor } from "@/utils/utils";
 
 const CourseArea = () => {
   const [courses, setCourses] = useState([]);
@@ -98,10 +99,10 @@ const CourseArea = () => {
                     </div>
                     <div className="tpcourse__category d-flex align-items-center justify-content-between">
                       <ul className="tpcourse__price-list d-flex align-items-center">
-                        <li>
+                        <li className = {randomColor()} >
                           <Link href={`/course-details?id=${course.courseId}`}>{course.category}</Link>
                         </li>
-                        <li>
+                        <li className = {randomColor()}>
                           <Link href={`/course-details?id=${course.courseId}`}>{course.style}</Link>
                         </li>
                         <li className="tpcourse__course-price">

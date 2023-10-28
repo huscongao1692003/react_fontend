@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
+import { randomColor } from "utils/utils"
 
 const CourseListArea = () => {
   const [courses, setCourses] = useState([]);
@@ -9,8 +10,26 @@ const CourseListArea = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [selectedStar, setSelectedStar] = useState(0);
   const [styleData, setStyleData] = useState([]);
+  const [skillData, setSkillData] = useState([]);
   const placeholderImage = "/assets/img/instructor.png";
   const courseImage = "/assets/img/course/course.jpg";
+
+  //
+  useEffect(() => {
+    axios
+      .get(
+        "https://drawproject-production.up.railway.app/api/v1/courses/feature"
+      )
+      .then((response) => {
+        setCategoryData(response.data.data.Category);
+        setStyleData(response.data.data.Style);
+        setSkillData(response.data.data.Skill);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  //
 
   useEffect(() => {
     // Function to fetch courses based on the selected star rating
@@ -21,7 +40,7 @@ const CourseListArea = () => {
           `https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=4`,
           {
             params: {
-              star: selectedStar
+              star: selectedStar,
             },
           }
         );
@@ -35,28 +54,6 @@ const CourseListArea = () => {
     };
     fetchCoursesByStar();
   }, [selectedStar]);
-
-  useEffect(() => {
-    axios
-      .get("https://drawproject-production.up.railway.app/api/v1/category")
-      .then((response) => {
-        setCategoryData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("https://drawproject-production.up.railway.app/api/v1/style")
-      .then((response) => {
-        setStyleData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   const handleCategoryFilter = (star) => {
     setSelectedStar(star);
@@ -121,66 +118,24 @@ const CourseListArea = () => {
                     <h4 className="course-sidebar__title mb-35">
                       Course Level
                     </h4>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked"
-                      >
-                        Beginner
-                      </label>
-                      <span className="f-right">63</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked3"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked3"
-                      >
-                        Intermediate
-                      </label>
-                      <span className="f-right">96</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckDefault"
-                      >
-                        Advanced
-                      </label>
-                      <span className="f-right">99</span>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked4"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked4"
-                      >
-                        Expert
-                      </label>
-                      <span className="f-right">35</span>
-                    </div>
+                    {skillData.map((item) => (
+                      <div key={item.id} className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="flexCheckChecked"
+                          onClick={() => handleCategoryFilter(item.id)}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="flexCheckChecked"
+                        >
+                          {item.name}
+                        </label>
+                        <span className="f-right">{item.courseCount}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <div className="course-sidebar__widget mb-50">
@@ -188,21 +143,21 @@ const CourseListArea = () => {
                     <h4 className="course-sidebar__title mb-35">Category</h4>
 
                     {categoryData.map((item) => (
-                      <div key={item.categoryId} className="form-check">
+                      <div key={item.id} className="form-check">
                         <input
                           className="form-check-input"
                           type="checkbox"
                           value=""
                           id="flexCheckDefault5"
-                          onClick={() => handleCategoryFilter(item.categoryId)} // Add onClick event for star filter
+                          onClick={() => handleCategoryFilter(item.id)} // Add onClick event for star filter
                         />
                         <label
                           className="form-check-label"
                           htmlFor="flexCheckDefault5"
                         >
-                          {item.categoryName}
+                          {item.name}
                         </label>
-                        <span className="f-right">13</span>
+                        <span className="f-right">{item.courseCount}</span>
                       </div>
                     ))}
                   </div>
@@ -212,21 +167,21 @@ const CourseListArea = () => {
                     <h4 className="course-sidebar__title mb-35">Style</h4>
 
                     {styleData.map((item) => (
-                      <div key={item.drawingStyleId} className="form-check">
+                      <div key={item.id} className="form-check">
                         <input
                           className="form-check-input"
                           type="checkbox"
                           value=""
                           id="flexCheckDefault5"
-                          onClick={() => handleCategoryFilter(item.drawingStyleId)} // Add onClick event for star filter
+                          onClick={() => handleCategoryFilter(item.id)} // Add onClick event for star filter
                         />
                         <label
                           className="form-check-label"
                           htmlFor="flexCheckDefault5"
                         >
-                          {item.drawingStyleName}
+                          {item.name}
                         </label>
-                        {/* <span className="f-right">13</span> */}
+                        <span className="f-right">{item.courseCount}</span>
                       </div>
                     ))}
                   </div>
@@ -268,7 +223,7 @@ const CourseListArea = () => {
                             <ul className="tpcourse__price-list d-flex align-items-center">
                               <li>
                                 <Link
-                                  className={course.ct_color}
+                                  className={randomColor()}
                                   href="/course-details"
                                 >
                                   {course.skill}
@@ -276,7 +231,7 @@ const CourseListArea = () => {
                               </li>
                               <li>
                                 <Link
-                                  className={course.cn_color}
+                                  className={randomColor()}
                                   href="/course-details"
                                 >
                                   {course.category}
@@ -315,7 +270,7 @@ const CourseListArea = () => {
                             <div className="tpcourse__rating-icon">
                               {renderStarIcons(course.averageStar)}
                               <span>{course.averageStar.toFixed(1)}</span>
-                              <p>({course.numReviews})</p>
+                              {/* <p>({course.numReviews})</p> */}
                             </div>
                             <div className="tpcourse__pricing">
                               <h5 className="price-title">${course.price}</h5>
