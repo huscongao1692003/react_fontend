@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Sidebar = ({ setcategory }) => {
+const Sidebar = ({ category, setcategory }) => {
   const [categoryData, setCategoryData] = useState([]);
+
+  const handleCategoryChange = (e, id) => {
+    if(id == category) {
+      setcategory(0);
+      return;
+    }
+    setcategory(id);
+  };
 
   useEffect(() => {
     axios
@@ -23,8 +31,10 @@ const Sidebar = ({ setcategory }) => {
       <div className="sidebar__widget-content">
         <ul>
           {categoryData.map((item) => (
-            <li key={item.categoryId} style={{ cursor: "pointer" }}>
-              <a onClick={() => setcategory(item.categoryId)}>
+            <li className={category == item.categoryId ? "selection":""} 
+              key={item.categoryId} style={{ cursor: "pointer" }}
+              onClick={(e) => handleCategoryChange(e, item.categoryId)}>
+              <a>
                 {item.categoryName}
               </a>
             </li>

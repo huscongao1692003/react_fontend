@@ -604,6 +604,15 @@
                 }
             }
         }
+        &-content {
+            li:hover {
+                background-color: #4fd899;
+            }
+            .selection {
+                background-color: #245D51;
+                color: white;
+            }
+        }
     }
     &__search{
         position: relative;

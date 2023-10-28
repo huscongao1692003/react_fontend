@@ -12,10 +12,9 @@ import { Pagination } from "@mui/material";
 const Postbox = () => {
   const [blogData, setBlogData] = useState("");
   const [searchValue, setSearchValue] = useState("");
-  const [category, setcategory] = useState("");
+  const [category, setcategory] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  
 
   const searchValueDebounce = useDebounce(searchValue);
 
@@ -34,39 +33,30 @@ const Postbox = () => {
   }
 
   useEffect(() => {
-    if(searchValueDebounce != "" && category != "") {
-      setSearchValue("");
-    }
-    else if((searchValueDebounce != "") ) {
-      setcategory("");
-    } else if((category != "")) {
-      setSearchValue("");
-    }
-    axios
-      .get(
-        `https://drawproject-production.up.railway.app/api/v1/post/search?perPage=5`,
-        {
-          params: {
-            search: searchValueDebounce,
-            categoryId: category,
-            page: page
-          },
-        }
-      )
-      .then((response) => {
-        const decodedData = response.data.data.map((post) => ({
-          ...post,
-          image: post.image,
-        }));
-        setBlogData(decodedData);
-        setTotalPage(response.data.totalPage);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      setcategory("");
-  }, [searchValueDebounce, category, page]);
+    const fetchPosts = async () => {
 
+      try {
+        const queryParams = {
+          eachPage: 4,
+          page: page,
+          search: searchValueDebounce,
+          categoryId: category
+        };
+
+        const url = `https://drawproject-production.up.railway.app/api/v1/post/search?${new URLSearchParams(
+          queryParams
+        )}`;
+
+        const response = await axios.get(url);
+        const data = response.data.data;
+        setBlogData(data);
+        setTotalPage(response.data.totalPage);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPosts();
+  }, [searchValueDebounce, category, page]);
 
   if (!blogData) {
     // You can render a loading message or spinner here while fetching data.
@@ -92,8 +82,8 @@ const Postbox = () => {
               <div className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
                 <div className="postbox__wrapper pr-20">
                   {blogData.length == 0 ? (
-                    <BlogNotFound/>
-                  ) :
+                    <BlogNotFound />
+                  ) : (
                     blogData.map((post, index) => (
                       <article
                         key={index}
@@ -135,21 +125,26 @@ const Postbox = () => {
                           </div>
                         </div>
                       </article>
-                    ))}
+                    ))
+                  )}
 
-
-                      <Pagination count={totalPage} page={page} onChange={handlePageChange} style={{float: "right"}}/>
-
-                    
-                    
+                  <Pagination
+                    count={totalPage}
+                    page={page}
+                    onChange={handlePageChange}
+                    style={{ float: "right" }}
+                  />
                 </div>
               </div>
               <div className="col-xxl-4 col-xl-4 col-lg-5 col-md-12">
                 <div className="sidebar__wrapper">
                   {/* render sidebar components here */}
 
-                  <BlogSearch setSearchValue={setSearchValue} searchValue={searchValue} />
-                  <Sidebar setcategory={setcategory}/>
+                  <BlogSearch
+                    setSearchValue={setSearchValue}
+                    searchValue={searchValue}
+                  />
+                  <Sidebar category={category} setcategory={setcategory} />
                   {/* <Tags /> */}
                 </div>
               </div>
