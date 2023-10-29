@@ -1,4 +1,3 @@
-import review_content from "@/src/data/review-data";
 import VideoPopup from "@/src/modals/video-popup";
 import Link from "next/link";
 import axios from "axios";
@@ -13,6 +12,7 @@ const CourseDetailsArea = () => {
   const [feedbackData, setFeedbackData] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [edit,setEdit] = useState(false);
+  const [isPay,setIsPay]= useState(false);
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
   const isLoggedIn =
@@ -21,6 +21,8 @@ const CourseDetailsArea = () => {
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const [avatar, setAvatar] = useState("/assets/img/icon/course-avata-05.png");
 
+  console.log(accessToken);
+
 
   useEffect(() => {
    if (storedUserRole === "ROLE_INSTRUCTOR") {
@@ -28,11 +30,25 @@ const CourseDetailsArea = () => {
         .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
-         console.log(response.data.status)
           if (response.data.status === "ACCEPTED") {
             setEdit(true);
           }else{
             setEdit(false)
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching course data:", error);
+        });
+    }
+    if (storedUserRole === "ROLE_CUSTOMER") {
+      axios
+        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+        .then((response) => {
+          if (response.data.status === "ACCEPTED") {
+            setIsPay(true);
+          }else{
+            setIsPay(false)
           }
         })
         .catch((error) => {
@@ -277,7 +293,7 @@ const CourseDetailsArea = () => {
                     </h3>
                     <div className="cd-pricing-btn text-center mb-30">
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_CUSTOMER" ? (
+                      storedUserRole === "ROLE_CUSTOMER" && isPay == false ? (
                         <Link
                           className="tp-vp-btn"
                           href={`/check-out?idCourse=${courseData.courseId}`}
@@ -285,10 +301,10 @@ const CourseDetailsArea = () => {
                           Check Out
                         </Link>
                       ) : (
-                        <p>Please log in as a customer to buy.</p>
+                       <></>
                       )}
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_CUSTOMER" ? (
+                      storedUserRole === "ROLE_CUSTOMER" && isPay == true ? (
                         <>
                           <Link
                             className="tp-vp-btn-green"
@@ -298,7 +314,7 @@ const CourseDetailsArea = () => {
                           </Link>
                         </>
                       ) : (
-                        <p>Your role cant access this course</p>
+                        <></>
                       )}
 
                       {isLoggedIn === "true" &&
