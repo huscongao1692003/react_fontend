@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 
 import { Pagination } from "@mui/material";
-import  DisplayCourse  from "./display-course"
+import DisplayCourse from "./display-course";
 
 const CourseListArea = () => {
   const [loading, setLoading] = useState(true);
@@ -15,43 +14,42 @@ const CourseListArea = () => {
   const [skillData, setSkillData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  
+
   const [selectedStar, setSelectedStar] = useState(0);
   const [selectedSkill, setSelectedSkill] = useState([]);
   const [selectedStyle, setSelectedStyle] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
-  
 
   const handlePageChange = (event, value) => {
     setPage(value);
-  }
+  };
 
   const handleSkillChange = (e, id) => {
     setPage(1);
-    if(e.target.checked) {
+    if (e.target.checked) {
       return setSelectedSkill([...selectedSkill, id]);
     }
-    setSelectedSkill(prev=>prev.filter(val=>val!==id));
+    setSelectedSkill((prev) => prev.filter((val) => val !== id));
   };
 
   const handleCategoryChange = (e, id) => {
     setPage(1);
-    if(e.target.checked) {
+    if (e.target.checked) {
       return setSelectedCategory([...selectedCategory, id]);
     }
-    setSelectedCategory(prev=>prev.filter(val=>val!==id));
+    setSelectedCategory((prev) => prev.filter((val) => val !== id));
   };
 
   const handleStyleChange = (e, id) => {
     setPage(1);
-    if(e.target.checked) {
+    if (e.target.checked) {
       return setSelectedStyle([...selectedStyle, id]);
     }
-    setSelectedStyle(prev=>prev.filter(val=>val!==id));
+    setSelectedStyle((prev) => prev.filter((val) => val !== id));
   };
-  
+
   const handleStarChange = (e) => {
-    setSelectedStar(e.target.value)
+    setSelectedStar(e.target.value);
   };
 
   useEffect(() => {
@@ -76,7 +74,7 @@ const CourseListArea = () => {
         const queryParams = {
           eachPage: 4,
           page: page,
-          star: selectedStar
+          star: selectedStar,
         };
 
         //check query
@@ -89,11 +87,11 @@ const CourseListArea = () => {
         if (selectedStyle.length > 0) {
           queryParams.style = selectedStyle;
         }
-  
-        const url = `https://drawproject-production.up.railway.app/api/v1/courses?${new URLSearchParams(queryParams)}`;
 
-        
-  
+        const url = `https://drawproject-production.up.railway.app/api/v1/courses?${new URLSearchParams(
+          queryParams
+        )}`;
+
         const response = await axios.get(url);
         const data = response.data.data;
         setCourses(data);
@@ -105,11 +103,9 @@ const CourseListArea = () => {
         setLoading(false);
       }
     };
-  
+
     fetchCoursesByStar();
   }, [page, selectedSkill, selectedStar, selectedStyle, selectedCategory]);
-
-  
 
   return (
     <>
@@ -139,7 +135,10 @@ const CourseListArea = () => {
                       Star{" "}
                     </p>
                   </div>
-                  <select style={{ width: "auto" }} onChange={(e) => handleStarChange(e)}>
+                  <select
+                    style={{ width: "auto" }}
+                    onChange={(e) => handleStarChange(e)}
+                  >
                     <option value="0">All star</option>
                     <option value="5">5 star</option>
                     <option value="4">4 star</option>
@@ -229,15 +228,26 @@ const CourseListArea = () => {
                 >
                   <Spinner animation="grow" variant="success" size="lg" />
                 </div>
+              ) : courses.length === 0 ? (
+                <div style={{ opacity: "0.5" }} className="d-flex flex-column align-items-center">
+                  <img
+                    src="../../../assets/img/course/empty-course.gif"
+                    alt=""
+                  />
+                  <div className="content">Empty Course</div>
+                </div>
               ) : (
                 <DisplayCourse courses={courses} />
               )}
             </div>
-            <div className="d-flex justify-content-center" >
-              <Pagination page={page} count={totalPage} onChange={handlePageChange} />
+            <div className="d-flex justify-content-center">
+              <Pagination
+                page={page}
+                count={totalPage}
+                onChange={handlePageChange}
+              />
             </div>
           </div>
-          
         </div>
       </section>
     </>
