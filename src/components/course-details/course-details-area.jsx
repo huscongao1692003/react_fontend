@@ -12,6 +12,7 @@ const CourseDetailsArea = () => {
   const { id } = router.query;
   const [feedbackData, setFeedbackData] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [edit,setEdit] = useState(false);
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
   const isLoggedIn =
@@ -19,13 +20,30 @@ const CourseDetailsArea = () => {
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const [avatar, setAvatar] = useState("/assets/img/icon/course-avata-05.png");
-  console.log(accessToken);
+
 
   useEffect(() => {
-    axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}`)
-      .then((response) => {
-        setCourseData(response.data.data);
+   if (storedUserRole === "ROLE_INSTRUCTOR") {
+      axios
+        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+        .then((response) => {
+         console.log(response.data.status)
+          if (response.data.status === "ACCEPTED") {
+            setEdit(true);
+          }else{
+            setEdit(false)
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching course data:", error);
+        });
+    }
+
+   axios
+     .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}`)
+     .then((response) => {
+       setCourseData(response.data.data);
 
         axios
           .get(
@@ -284,7 +302,7 @@ const CourseDetailsArea = () => {
                       )}
 
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_INSTRUCTOR" ? (
+                      storedUserRole === "ROLE_INSTRUCTOR" && edit == true ? (
                         <>
                         <Link
                           className="tp-vp-btn"
