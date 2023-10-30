@@ -4,6 +4,7 @@ import React, {useState,useEffect} from "react";
 import axios from "axios";
 import { useRouter } from 'next/router';
 import Spinner from 'react-bootstrap/Spinner';
+import CourseNotFound from "../error/course-not-found";
 
 
 
@@ -89,7 +90,10 @@ const MyCourseListArea = () => {
           <div className="row mb-20">
             
             <div className="col-lg-8 col-md-12 course-item-width ml-30">
-          {courses.map((course, i) => (
+            {courses == null ? (
+              <CourseNotFound className="" />
+            ) : (
+          courses.map((course, i) => (
             <div key={i} className="tpcourse tp-list-course mb-40">
               <div className="row g-0">
                 <div className="col-xl-4 course-thumb-width">
@@ -149,7 +153,8 @@ const MyCourseListArea = () => {
                     </div>
                   </div>
                 </div>
-                ))}
+                ))
+                )}
             </div>
           </div>
           

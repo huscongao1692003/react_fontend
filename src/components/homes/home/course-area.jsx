@@ -4,15 +4,19 @@ import React,{useState,useEffect} from "react";
 import axios from "axios";
 import { useRouter } from 'next/router';
 import Spinner from 'react-bootstrap/Spinner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { randomColor } from "@/utils/utils";
 
 const CourseArea = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const placeholderImage = "/assets/img/instructor.png";
   const router = useRouter();
   useEffect(() => {
     // Fetch data from the API when the component mounts
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=3&star=0')
+      .get('https://drawproject-production.up.railway.app/api/v1/courses/top-courses?limit=3')
       .then((response) => {
         const data = response.data.data;
         setCourses(data);
@@ -62,7 +66,11 @@ const CourseArea = () => {
                   </div>
                   <div className="tpcourse__content">
                     <div className="tpcourse__avatar d-flex align-items-center mb-20">
-                      <img src={course.icon} alt="course-avata" />
+                      <div className="circular-avatar resize-avatar-course">
+                        <img src={course.avatar && course.avatar !== "null" ? course.avatar : placeholderImage} alt="course-avatar" onError={(e) => {
+                          e.target.src = placeholderImage
+                        }} />
+                      </div>
                       <h4 className="tpcourse__title">
                         <Link href={`/course-details?id=${course.courseId}`}>{course.courseTitle}</Link>
                       </h4>
@@ -74,36 +82,33 @@ const CourseArea = () => {
                             src="/assets/img/icon/c-meta-01.png"
                             alt="meta-icon"
                           />
-                          {/*<span>{item.cls_text}</span>*/}
+                          <span>{course.numLesson} Lessons</span>
                         </li>
                         <li>
                           <img
                             src="/assets/img/icon/c-meta-02.png"
                             alt="meta-icon"
                           />
-                          {/*<span>{item.st_text}</span>*/}
+                          <span>{course.numStudent} Students</span>
                         </li>
                         <li>
-                          <img
-                            src="/assets/img/icon/c-meta-03.png"
-                            alt="meta-icon"
-                          />
-                          {/*<span>{item.start_text}</span>*/}
+                          <FontAwesomeIcon icon={faStar} style={{color: "orangered", marginRight: "0.2rem"}}/>
+                          <span>{course.averageStar.toFixed(1)}</span>
                         </li>
                       </ul>
                     </div>
                     <div className="tpcourse__category d-flex align-items-center justify-content-between">
                       <ul className="tpcourse__price-list d-flex align-items-center">
-                        <li>
-                          <Link href={`/course-details?id=${course.courseId}`}>{course.courseTitle}</Link>
+                        <li className = {randomColor()} >
+                          <Link href={`/course-details?id=${course.courseId}`}>{course.category}</Link>
                         </li>
-                        <li>
+                        <li className = {randomColor()}>
                           <Link href={`/course-details?id=${course.courseId}`}>{course.style}</Link>
                         </li>
+                        <li className="tpcourse__course-price">
+                          ${course.price}
+                        </li>
                       </ul>
-                      <h5 className="tpcourse__course-price">
-                        ${course.price}
-                      </h5>
                     </div>
                   </div>
                 </div>

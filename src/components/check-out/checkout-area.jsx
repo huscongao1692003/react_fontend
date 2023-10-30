@@ -41,7 +41,7 @@ const CheckoutArea = () => {
                  courseId: courseData.courseId,
                  price: courseData.price,
                  totalPrice: courseData.price,
-                 url: "http://localhost:3000"
+                 url: "https://react-fontend.vercel.app",
               },
               { headers: {"Authorization" : `Bearer ${accessToken}`} });
 

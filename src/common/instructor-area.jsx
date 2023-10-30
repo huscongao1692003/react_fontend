@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 
+
 const InstructorArea = ({ style_2 }) => {
   const [instructorData, setInstructorData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,25 @@ const InstructorArea = ({ style_2 }) => {
   // Limit the number of displayed instructors
   const displayedInstructors = instructorData.slice(0, 3);
 
+
+  useEffect(() => {
+    axios
+      .get("https://drawproject-production.up.railway.app/api/v1/instructor")
+      .then((response) => {
+        setInstructorData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  }, []); // The empty dependency array ensures this effect runs only once
+  if (loading) {
+    return <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+      <Spinner animation="grow" variant="success" size="lg" />
+    </div>;
+  }
+  
   return (
     <>
       <section className="instructor-area pb-110">
@@ -47,6 +67,7 @@ const InstructorArea = ({ style_2 }) => {
               </div>
             </div>
           </div>
+
           <div className="row">
             {displayedInstructors.map((instructor, index) => (
               <div key={index} className="col-lg-4 col-md-6 col-12">
@@ -71,6 +92,7 @@ const InstructorArea = ({ style_2 }) => {
                       <div className="tp-instructor__stu-info">
                         <ul className="d-flex align-items-center justify-content-center">
                           <li>Number of Courses: {instructor.numberOfCourse}</li>
+
                         </ul>
                       </div>
                     </div>
