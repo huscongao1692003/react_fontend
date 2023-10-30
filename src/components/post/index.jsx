@@ -7,9 +7,9 @@ const CourseCreate = () => {
     return (
         <>
         <Breadcrumb
-            title="Course Create"
-            subtitle="Course Create"
-            isDbbl="Course"
+            title="Post Create"
+            subtitle="Post Create"
+            isDbbl="Post"
         />
         <CourseCreateArea />
 

@@ -4,12 +4,8 @@ const answer_question_data = [
     question: "Do I receive anything after I complete a course?",
     answer: (
       <>
-        Proactively initiate corporate vortals via bricks-and-clicks
-        relationships. Dynamically envisioneer cutting-edge paradigms via
-        client-centered relationships. Globally repurpose backward-compatible
-        growth strategies and fully tested e-services. Energistically promote
-        stand-alone models whereas effective solutions. Quickly target low-risk
-        high-yield e-markets via web-enabled networks.
+        Yes, most online learning platforms allow you to preview courses. 
+        You can usually check the course description, syllabus, and sometimes even sample lessons before making a purchase.
       </>
     ),
     accordion_id: "headingOne",
@@ -24,12 +20,8 @@ const answer_question_data = [
     question: "Is there any way to preview a course?",
     answer: (
       <>
-       Proactively initiate corporate vortals via bricks-and-clicks
-        relationships. Dynamically envisioneer cutting-edge paradigms via
-        client-centered relationships. Globally repurpose backward-compatible
-        growth strategies and fully tested e-services. Energistically promote
-        stand-alone models whereas effective solutions. Quickly target low-risk
-        high-yield e-markets via web-enabled networks.
+       To check the status of your refund, you should reach out to the customer support team of the website or institution where you made the purchase. 
+       They will be able to provide you with the details you need.
       </>
     ),
     accordion_id: "headingTwo",
@@ -44,12 +36,9 @@ const answer_question_data = [
     question: "Where can I see the status of my refund?",
     answer: (
       <>
-        Proactively initiate corporate vortals via bricks-and-clicks
-        relationships. Dynamically envisioneer cutting-edge paradigms via
-        client-centered relationships. Globally repurpose backward-compatible
-        growth strategies and fully tested e-services. Energistically promote
-        stand-alone models whereas effective solutions. Quickly target low-risk
-        high-yield e-markets via web-enabled networks.
+        If you don't like a course you purchased, it depends on the policies of the platform or institution. 
+        Some may offer a refund or exchange, while others may have certain conditions or limitations. 
+        You should check their refund or cancellation policy or contact their customer support for assistance.
       </>
     ),
     accordion_id: "headingThree",
@@ -64,12 +53,9 @@ const answer_question_data = [
     question: "Do I have to start my Epora course at a certain time?",
     answer: (
       <>
-        Proactively initiate corporate vortals via bricks-and-clicks
-        relationships. Dynamically envisioneer cutting-edge paradigms via
-        client-centered relationships. Globally repurpose backward-compatible
-        growth strategies and fully tested e-services. Energistically promote
-        stand-alone models whereas effective solutions. Quickly target low-risk
-        high-yield e-markets via web-enabled networks.
+        Epora may or may not be an accredited institution. 
+        To determine its accreditation status, you can check with the relevant accreditation bodies or regulatory organizations in your region. 
+        They can provide you with verified information.
       </>
     ),
     accordion_id: "headingFour",
@@ -84,12 +70,9 @@ const answer_question_data = [
     question: "What if I don’t like a course I purchased?",
     answer: (
       <>
-        Proactively initiate corporate vortals via bricks-and-clicks
-        relationships. Dynamically envisioneer cutting-edge paradigms via
-        client-centered relationships. Globally repurpose backward-compatible
-        growth strategies and fully tested e-services. Energistically promote
-        stand-alone models whereas effective solutions. Quickly target low-risk
-        high-yield e-markets via web-enabled networks.
+        The available payment methods for a course depend on the platform or institution. 
+        Common payment options include credit/debit cards, PayPal, and sometimes alternative methods like bank transfers or digital wallets. 
+        The specific payment methods should be listed on the course purchase page.
       </>
     ),
     accordion_id: "headingFive",
@@ -104,12 +87,8 @@ const answer_question_data = [
     question: "Is Epora an accredited institution?",
     answer: (
       <>
-        Proactively initiate corporate vortals via bricks-and-clicks
-        relationships. Dynamically envisioneer cutting-edge paradigms via
-        client-centered relationships. Globally repurpose backward-compatible
-        growth strategies and fully tested e-services. Energistically promote
-        stand-alone models whereas effective solutions. Quickly target low-risk
-        high-yield e-markets via web-enabled networks.
+        If you need help regarding a course or any other issues, you can typically find a support or help center on the platform or institution's website. 
+        They may have FAQs, documentation, or a customer support team to assist you.
       </>
     ),
     accordion_id: "headingSix",
@@ -124,12 +103,8 @@ const answer_question_data = [
     question: "How can I pay for a course?",
     answer: (
       <>
-        Proactively initiate corporate vortals via bricks-and-clicks
-        relationships. Dynamically envisioneer cutting-edge paradigms via
-        client-centered relationships. Globally repurpose backward-compatible
-        growth strategies and fully tested e-services. Energistically promote
-        stand-alone models whereas effective solutions. Quickly target low-risk
-        high-yield e-markets via web-enabled networks.
+        The timeline for receiving a refund depends on the platform or institution's policies and processes. 
+        It's best to reach out to their customer support and inquire about the estimated timeframe for receiving your refund.
       </>
     ),
     accordion_id: "headingSeven",

@@ -69,6 +69,7 @@ const PostboxUser = () => {
       setDeletingPost(false);
         setStatu(200);
 
+
       // Optionally, you can update the UI or remove the deleted post from the list.
     } catch (error) {
       console.error("Failed to delete the post:", error);
@@ -76,6 +77,7 @@ const PostboxUser = () => {
     }
     fetchUpdatedData();
   };
+
 
   // Fetch initial data
   useEffect(() => {

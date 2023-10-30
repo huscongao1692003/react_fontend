@@ -52,7 +52,7 @@ export default function CourseTable() {
   if (loading) {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
-        <Spinner animation="grow" variant="light" size="lg" />
+        <Spinner animation="grow" variant="#80808029" size="lg" />
       </div>
     );
   }

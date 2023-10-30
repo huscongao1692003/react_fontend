@@ -39,11 +39,6 @@ const MenuItems = [
     content: <Courses />,
   },
   {
-    icon: UilPackage,
-    heading: 'Courses',
-    content: <Courses />,
-  },
-  {
     icon: UilChart,
     heading: 'Post Manager',
     content: <Post />,
