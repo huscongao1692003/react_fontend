@@ -51,9 +51,9 @@ const LoginForm = () => {
             } else if (rolesString === "ROLE_STAFF") {
                 router.push("/dashboard-staff");
             } else if (rolesString === "ROLE_INSTRUCTOR") {
-                router.push("/Settings");
+                router.push("/");
             } else if (rolesString === "ROLE_CUSTOMER") {
-                router.push("/Settings");
+                router.push("/");
             }
         } catch (error) {
             if (error.response) {
