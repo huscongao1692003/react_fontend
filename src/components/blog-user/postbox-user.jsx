@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios
 import Link from "next/link";
 import Slider from "react-slick";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
@@ -13,19 +13,19 @@ const PostboxUser = () => {
     const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
     function formatCreatedAt(createdAtArray) {
-      if (!createdAtArray || createdAtArray.length !== 6) {
-        return "Invalid Date";
-      }
+        if (!createdAtArray || createdAtArray.length !== 6) {
+            return "Invalid Date";
+        }
 
-      const [year, month, day, hours, minutes, seconds] = createdAtArray;
-      const date = new Date(year, month - 1, day, hours, minutes, seconds); // Month is 0-based, so we subtract 1
-      return date.toLocaleString();
+        const [year, month, day, hours, minutes, seconds] = createdAtArray;
+        const date = new Date(year, month - 1, day, hours, minutes, seconds); // Month is 0-based, so we subtract 1
+        return date.toLocaleString();
     }
 
     const fetchUpdatedData = async () => {
         try {
             const response = await axios.get("https://drawproject-production.up.railway.app/api/v1/users/posts", {
-                headers: {Authorization: `Bearer ${accessToken}`},
+                headers: { Authorization: `Bearer ${accessToken}` },
             });
 
             const decodedData = response.data.data.map((post) => ({
@@ -44,7 +44,7 @@ const PostboxUser = () => {
         try {
             setDeletingPost(true);
             const response = await axios.put(`https://drawproject-production.up.railway.app/api/v1/post/${postId}`, null, {
-                headers: {Authorization: `Bearer ${accessToken}`},
+                headers: { Authorization: `Bearer ${accessToken}` },
             });
 
             console.log("Post deleted successfully:", response.data);
@@ -68,8 +68,8 @@ const PostboxUser = () => {
         // You can render a loading message or spinner here while fetching data.
         return (
             <div className="d-flex flex-column justify-content-center align-items-center"
-                 style={{paddingTop: "300px", paddingBottom: "300px"}}>
-                <Spinner animation="grow" variant="success" size="lg"/>
+                style={{ paddingTop: "300px", paddingBottom: "300px" }}>
+                <Spinner animation="grow" variant="success" size="lg" />
             </div>
         );
     }
@@ -88,8 +88,8 @@ const PostboxUser = () => {
                                             <article className="postbox__item format-image mb-60 transition-3">
 
                                                 <div className="postbox__thumb w-img mb-30"
-                                                     href={`/blog-details?postId=${post.postId}`}>
-                                                    {post.image && <img src={post.image} alt="image"/>}
+                                                    href={`/blog-details?postId=${post.postId}`}>
+                                                    {post.image && <img src={post.image} alt="image" />}
                                                 </div>
 
                                                 {blogData.slider_img && (
@@ -114,7 +114,7 @@ const PostboxUser = () => {
                                                             <Slider {...setting} ref={sliderRef}>
                                                                 {blogData.slider_img.map((slide, i) => (
                                                                     <div key={i} className="postbox__slider-item">
-                                                                        <img src={slide.img} alt=""/>
+                                                                        <img src={slide.img} alt="" />
                                                                     </div>
                                                                 ))}
                                                             </Slider>
@@ -124,14 +124,14 @@ const PostboxUser = () => {
 
                                                 <div className="postbox__content">
                                                     <div className="postbox__meta">
-                            <span>
-                              <i className="fi fi-rr-calendar"></i> {formatCreatedAt(post.createdAt)}
-                            </span>
                                                         <span>
-                              <Link href="#">
-                                <i className="fi fi-rr-user"></i> {post.userName}
-                              </Link>
-                            </span>
+                                                            <i className="fi fi-rr-calendar"></i> {formatCreatedAt(post.createdAt)}
+                                                        </span>
+                                                        <span>
+                                                            <Link href="#">
+                                                                <i className="fi fi-rr-user"></i> {post.userName}
+                                                            </Link>
+                                                        </span>
 
                                                     </div>
                                                     <Link href={`/blog-details?postId=${post.postId}`}>
@@ -144,8 +144,8 @@ const PostboxUser = () => {
                                                     </div>
                                                     <div className="postbox__read-more">
                                                         <Button className="tp-btn"
-                                                                onClick={() => handlePostClose(post.postId)}
-                                                                disabled={deletingPost}>
+                                                            onClick={() => handlePostClose(post.postId)}
+                                                            disabled={deletingPost}>
                                                             {deletingPost ? (
                                                                 <Spinner animation="border" size="sm" role="status">
                                                                     <span className="sr-only">Closing...</span>
