@@ -8,6 +8,10 @@ import {Form, Dropdown} from "react-bootstrap";
 const RegisterhtmlForm = () => {
     const [showAlert, setShowAlert] = useState(false);
     const router = useRouter();
+    const [usernameError, setUsernameError] = useState('');
+    const [mobileNumError, setMobileNumError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+
     const [err, setErr] = useState("")
 
     const [formData, setFormData] = useState({
@@ -27,8 +31,41 @@ const RegisterhtmlForm = () => {
         setFormData({...formData, [name]: value});
     };
 
+    const validateForm = () => {
+        let isValid = true;
+
+        // Validate username
+        if (formData.username.length < 5) {
+            setUsernameError('Username must be at least 5 characters long');
+            isValid = false;
+        } else {
+            setUsernameError('');
+        }
+
+        // Validate mobile number (assuming it should be exactly 10 digits)
+        if (formData.mobileNum.length !== 10) {
+            setMobileNumError('Mobile number must be exactly 10 digits');
+            isValid = false;
+        } else {
+            setMobileNumError('');
+        }
+
+        // Validate password (assuming it must be at least 8 characters long)
+        if (formData.pwd.length < 8) {
+            setPasswordError('Password must be at least 8 characters long');
+            isValid = false;
+        } else {
+            setPasswordError('');
+        }
+
+        return isValid;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) {
+            return; 
+        }
 
         try {
             const response = await axios.post(
@@ -49,10 +86,10 @@ const RegisterhtmlForm = () => {
                     setErr(error.response.data.message || "Bad request");
                     console.log(err)
                 } else {
-                    setErr("An error occurred during login.");
+                    setErr(error.response.data.message);
                 }
             } else {
-                setErr("An error occurred during login.");
+                setErr(error.response.data.message);
             }
         }
     };
@@ -83,6 +120,7 @@ const RegisterhtmlForm = () => {
                                     <label htmlFor="username">
                                         Username <span>**</span>
                                     </label>
+                                    <div className="error-message">{usernameError}</div>
                                     <input
                                         id="username"
                                         type="text"
@@ -92,6 +130,7 @@ const RegisterhtmlForm = () => {
                                         value={formData.username}
                                         onChange={handleInputChange}
                                     />
+                                
                                     <label htmlFor="fullName">
                                         Fullname <span>**</span>
                                     </label>
@@ -107,6 +146,7 @@ const RegisterhtmlForm = () => {
                                     <label htmlFor="mobileNum">
                                         Mobile Number <span>**</span>
                                     </label>
+                                    <div className="error-message">{mobileNumError}</div>
                                     <input
                                         id="mobileNum"
                                         type="number"
@@ -116,6 +156,7 @@ const RegisterhtmlForm = () => {
                                         value={formData.mobileNum}
                                         onChange={handleInputChange}
                                     />
+                                    
                                     <label htmlFor="email">
                                         Email Address <span>**</span>
                                     </label>
@@ -143,6 +184,7 @@ const RegisterhtmlForm = () => {
                                     <label htmlFor="pwd">
                                         Password <span>**</span>
                                     </label>
+                                    <div className="error-message">{passwordError}</div>
                                     <input
                                         id="pwd"
                                         type="password"
@@ -152,6 +194,7 @@ const RegisterhtmlForm = () => {
                                         value={formData.pwd}
                                         onChange={handleInputChange}
                                     />
+                                
                                     <label htmlFor="confirmPwd">
                                         Confirm Password <span>**</span>
                                     </label>

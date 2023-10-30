@@ -322,7 +322,7 @@ const CourseDetailsArea = () => {
                         <>
                         <Link
                           className="tp-vp-btn"
-                          href={`/check-out?idCourse=${courseData.courseId}`}
+                          href={`/course-create-topic?courseId=${id}`}
                         >
                           Create Lesson
                         </Link>
