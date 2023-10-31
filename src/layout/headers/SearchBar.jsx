@@ -174,7 +174,7 @@ const SearchBar = ({ setIsSearching }) => {
       <AutoComplete
         popupClassName="certain-category-search-dropdown"
         style={{
-          width: 300,
+          width: 250,
         }}
         onSelect={onSelect}
         onSearch={onChange}

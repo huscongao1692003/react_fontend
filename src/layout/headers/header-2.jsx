@@ -9,6 +9,8 @@ import { UilUserSquare } from '@iconscout/react-unicons'
 import Dropdown from 'react-bootstrap/Dropdown';
 import dynamic from "next/dynamic";
 import SearchBar from "@/src/layout/headers/SearchBar";
+import { Avatar } from 'antd';
+
 
 const Header = () => {
     const {sticky} = useSticky()
@@ -17,7 +19,8 @@ const Header = () => {
     const isLoggedIn = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
     const role = typeof window !== 'undefined' ? localStorage.getItem("roles") : null;
     const [isSearching, setIsSearching] = useState(false);
-
+    const avatar = typeof window !== 'undefined' ? localStorage.getItem('avatar') : null;
+    const avatarDefault = "/assets/img/student.png"
 
     const handleLogout = () => {
         localStorage.clear();
@@ -75,7 +78,7 @@ const Header = () => {
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_ADMIN" ? (
-                                                <li>
+                                                <li style={{ marginLeft: "0" }}>
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -89,7 +92,7 @@ const Header = () => {
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_STAFF" ? (
-                                                <li>
+                                                <li style={{ marginLeft: "0" }}>
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -103,12 +106,18 @@ const Header = () => {
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_INSTRUCTOR" ? (
-                                                <li>
+                                                <li style={{ marginLeft: "0" }} >
                                                     <Dropdown >
-                                                      <Dropdown.Toggle variant={"success"}>
-                                                        <UilUserSquare></UilUserSquare>
+                                                      <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
+                                                      <Avatar
+                                                        src={
+                                                          avatar 
+                                                        }
+                                                        alt="course-avatar"
+                                                        size={40}
+                                                      />
                                                       </Dropdown.Toggle>
-
+                                                  
                                                       <Dropdown.Menu>
                                                         <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
                                                         <Dropdown.Item href="/my-collection">Edit Collection</Dropdown.Item>
@@ -123,7 +132,7 @@ const Header = () => {
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_CUSTOMER" ? (
-                                                <li>
+                                                <li style={{ marginLeft: "0" }}>
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -141,7 +150,7 @@ const Header = () => {
                                                 ) : null}
 
                                                 {isLoggedIn ? (
-                                                    <li>
+                                                    <li style={{ marginLeft: "0" }}>
                                                         <button onClick={handleLogout} className="d-none d-md-block">
                                                           <UilSignOutAlt size="30" color="#FFF"></UilSignOutAlt>
                                                         </button>

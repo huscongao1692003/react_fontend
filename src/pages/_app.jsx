@@ -1,7 +1,5 @@
 import "@/src/styles/index.scss";
 import { StoreProvider } from "../store";
-
-import "@/src/styles/index.scss";
 import { AuthProvider } from "@/utils/AuthContext";
 import { ProtectedRoutes } from "@/utils/ProtectedRoutes";
 if (typeof window !== "undefined") {
