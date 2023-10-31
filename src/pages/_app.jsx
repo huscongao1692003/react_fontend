@@ -1,14 +1,21 @@
 import "@/src/styles/index.scss";
 import { StoreProvider } from "../store";
 
+import "@/src/styles/index.scss";
+import { AuthProvider } from "@/utils/AuthContext";
+import { ProtectedRoutes } from "@/utils/ProtectedRoutes";
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
 }
-
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   return (
-    <StoreProvider>
-      <Component {...pageProps} />
-    </StoreProvider>
+    <AuthProvider>
+      <ProtectedRoutes>
+        <StoreProvider>
+          <Component {...pageProps} />
+        </StoreProvider>
+      </ProtectedRoutes>
+    </AuthProvider>
   );
-}
+};
+export default App;
