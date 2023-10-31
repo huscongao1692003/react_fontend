@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import PostComment from "../form/post-comment";
 import { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
+import { Pagination } from "@mui/material";
+
 
 
 const CourseDetailsArea = () => {
@@ -14,6 +16,8 @@ const CourseDetailsArea = () => {
   const { id } = router.query;
   const [feedbackData, setFeedbackData] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [edit,setEdit] = useState(false);
   const [loading,isLoading] = useState(false)
   const [isPay,setIsPay]= useState(false);
@@ -26,7 +30,13 @@ const CourseDetailsArea = () => {
   const [avatar, setAvatar] = useState("/assets/img/icon/course-avata-05.png");
 
   console.log(accessToken);
-
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+  const queryParams = {
+    eachPage: 4,
+    page: page,
+  };
 
   useEffect(() => {
     isLoading(true)
@@ -67,7 +77,9 @@ const CourseDetailsArea = () => {
        setCourseData(response.data.data);
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback?page=1&eachPage=4`
+            `https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
+              queryParams
+            )}`
           )
           .then((responseFeedback) => {
             const decodedData = responseFeedback.data.data.map((feedback) => ({
@@ -282,6 +294,11 @@ const CourseDetailsArea = () => {
                           </div>
                         </div>
                       ))}
+                      <Pagination
+                page={page}
+                count={totalPage}
+                onChange={handlePageChange}
+              />
                   </div>
                 </div>
               </div>
