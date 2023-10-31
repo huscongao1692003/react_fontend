@@ -21,6 +21,7 @@ const CourseListArea = () => {
   const [selectedCategory, setSelectedCategory] = useState([]);
 
   const [state, dispatch] = useStore();
+  const [dataSearch, setDataSearch] = useState({});
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -70,6 +71,7 @@ const CourseListArea = () => {
   }, []);
 
   useEffect(() => {
+
     const fetchCoursesByStar = async () => {
       setLoading(true);
       try {
@@ -88,14 +90,18 @@ const CourseListArea = () => {
         }
         if (selectedStyle.length > 0) {
           queryParams.style = selectedStyle;
+        } else {
+          if (state.search != "" && state.data.dataType === "category") {
+            queryParams.category = [state.data.code]
+          }
+          else if (state.search != "" && state.data.dataType === "style") {
+            queryParams.style = [state.data.code]
+          }
+          setDataSearch(state.data);
+          dispatch(actions.setValueInputGlobal(""));
         }
         
-        // if (state.search != "" && state.data.dataType === "category") {
-        //   queryParams.category = state.data.code;
-        //   dispatch(actions.setValueInputGlobal(data));
-        // } else if (state.search != "" && state.data.dataType === "style") {
-        //   queryParams.style = state.style.code;
-        // }
+        
 
         const url = `https://drawproject-production.up.railway.app/api/v1/courses?${new URLSearchParams(
           queryParams
@@ -113,7 +119,9 @@ const CourseListArea = () => {
       }
     };
 
+    
     fetchCoursesByStar();
+
   }, [page, selectedSkill, selectedStar, selectedStyle, selectedCategory]);
 
   return (
@@ -165,12 +173,13 @@ const CourseListArea = () => {
                           className="form-check-input"
                           type="checkbox"
                           value=""
-                          id={`flexCheckChecked${item.id}`}
+                          id={`flexSkillChecked${item.id}`}
                           onClick={(e) => handleSkillChange(e, item.id)}
+                          defaultChecked = { (dataSearch.dataType === "skill" && dataSearch.code === item.id) ? true : false }
                         />
                         <label
                           className="form-check-label"
-                          htmlFor={`flexCheckChecked${item.id}`}
+                          htmlFor={`flexSkillChecked${item.id}`}
                         >
                           {item.name}
                         </label>
@@ -189,12 +198,13 @@ const CourseListArea = () => {
                           className="form-check-input"
                           type="checkbox"
                           value=""
-                          id={`flexCheckChecked${item.id}`}
+                          id={`flexCategoryChecked${item.id}`}
                           onClick={(e) => handleCategoryChange(e, item.id)} // Add onClick event for star filter
+                          defaultChecked = { (dataSearch.dataType === "category" && dataSearch.code === item.id) ? true : false }
                         />
                         <label
                           className="form-check-label"
-                          htmlFor={`flexCheckChecked${item.id}`}
+                          htmlFor={`flexCategoryChecked${item.id}`}
                         >
                           {item.name}
                         </label>

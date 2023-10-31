@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { AutoComplete } from "antd";
 import { useDebounce } from "@/hooks/debounce";
@@ -11,6 +9,7 @@ const defaultCourseImage = "/assets/img/course/course.jpg";
 
 const renderCourse = (id, image, title, instructorName, type) => ({
   value: type + "" + id,
+  title: title,
   label: (
     <Link href={`/course-details?id=${id}`}>
       <div
@@ -53,6 +52,7 @@ const renderCourse = (id, image, title, instructorName, type) => ({
 
 const renderTag = (id, name, type) => ({
   value: type + "" + id,
+  title: name,
   label: (
     <Link href={`/course-list`}>
       <div
@@ -100,10 +100,13 @@ const SearchBar = ({ setIsSearching }) => {
   const [tags, setTags] = useState({});
   const searchValueDebounce = useDebounce(value);
   const [state, dispatch] = useStore();
-  console.log("search-bar: ");
-  console.log("state: ", state);
+  const [searchValue, setSearchValue] = useState("");
+  
+
+
   const onSelect = (data) => {
     dispatch(actions.setValueInputGlobal(data));
+    setSearchValue(state.search)
   };
 
   const onChange = (data) => {

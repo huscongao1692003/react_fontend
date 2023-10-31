@@ -17,13 +17,15 @@ function reducer(state, action) {
                     dataType: "category",
                     code: parseInt(action.payload.substring(2))
                 };
-            } else {
+            } else if (action.payload.substring(0, 2) === "st") {
                 value = {
                     dataType: "style",
                     code: parseInt(action.payload.substring(2))
-                };
+                }
+            } else {
+                value = {}; 
             }
-            console.log("value after setting: " + value.code + ", " + value.dataType);
+            
             return {
                 ...state,
                 data: value,
