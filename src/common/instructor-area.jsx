@@ -176,7 +176,7 @@ const InstructorArea = ({ style_2 }) => {
                           class="fa-solid fa-award"
                           style={{ fontSize: "2rem", color: "yellowgreen" }}
                         ></i>
-                        <strong>Best</strong>
+                        <Strong>Best</Strong>
                       </div>
                     </div>
                     <div className="tp-instructor__content">

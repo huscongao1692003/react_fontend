@@ -80,8 +80,14 @@ const Header = () => {
                                               {role === "ROLE_ADMIN" ? (
                                                 <li style={{ marginLeft: "0" }}>
                                                     <Dropdown >
-                                                      <Dropdown.Toggle variant={"success"}>
-                                                        <UilUserSquare></UilUserSquare>
+                                                    <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
+                                                      <Avatar
+                                                        src={
+                                                          avatar 
+                                                        }
+                                                        alt="avatar"
+                                                        size={40}
+                                                      />
                                                       </Dropdown.Toggle>
 
                                                       <Dropdown.Menu>
@@ -94,8 +100,14 @@ const Header = () => {
                                               {role === "ROLE_STAFF" ? (
                                                 <li style={{ marginLeft: "0" }}>
                                                     <Dropdown >
-                                                      <Dropdown.Toggle variant={"success"}>
-                                                        <UilUserSquare></UilUserSquare>
+                                                    <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
+                                                      <Avatar
+                                                        src={
+                                                          avatar 
+                                                        }
+                                                        alt="avatar"
+                                                        size={40}
+                                                      />
                                                       </Dropdown.Toggle>
 
                                                       <Dropdown.Menu>
@@ -113,7 +125,7 @@ const Header = () => {
                                                         src={
                                                           avatar 
                                                         }
-                                                        alt="course-avatar"
+                                                        alt="avatar"
                                                         size={40}
                                                       />
                                                       </Dropdown.Toggle>
@@ -134,8 +146,14 @@ const Header = () => {
                                               {role === "ROLE_CUSTOMER" ? (
                                                 <li style={{ marginLeft: "0" }}>
                                                     <Dropdown >
-                                                      <Dropdown.Toggle variant={"success"}>
-                                                        <UilUserSquare></UilUserSquare>
+                                                    <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
+                                                      <Avatar
+                                                        src={
+                                                          avatar 
+                                                        }
+                                                        alt="avatar"
+                                                        size={40}
+                                                      />
                                                       </Dropdown.Toggle>
 
                                                       <Dropdown.Menu>
