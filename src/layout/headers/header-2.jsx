@@ -8,7 +8,7 @@ import { UilSignOutAlt } from '@iconscout/react-unicons'
 import { UilUserSquare } from '@iconscout/react-unicons'
 import Dropdown from 'react-bootstrap/Dropdown';
 import dynamic from "next/dynamic";
-import SearchBar from "@/src/components/utils/SearchBar";
+import SearchBar from "@/src/layout/headers/SearchBar";
 
 const Header = () => {
     const {sticky} = useSticky()
@@ -61,6 +61,7 @@ const Header = () => {
                                                       }
                                                     </button>
                                                     <SearchBar setIsSearching={ setIsSearching } />
+                                                    
                                                 </div>
                                             </form>
                                         </div>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-
 import { Pagination } from "@mui/material";
 import DisplayCourse from "./display-course";
+import { useStore, actions } from "@/src/store";
 
 const CourseListArea = () => {
   const [loading, setLoading] = useState(true);
@@ -19,6 +19,8 @@ const CourseListArea = () => {
   const [selectedSkill, setSelectedSkill] = useState([]);
   const [selectedStyle, setSelectedStyle] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
+
+  const [state, dispatch] = useStore();
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -87,6 +89,13 @@ const CourseListArea = () => {
         if (selectedStyle.length > 0) {
           queryParams.style = selectedStyle;
         }
+        
+        // if (state.search != "" && state.data.dataType === "category") {
+        //   queryParams.category = state.data.code;
+        //   dispatch(actions.setValueInputGlobal(data));
+        // } else if (state.search != "" && state.data.dataType === "style") {
+        //   queryParams.style = state.style.code;
+        // }
 
         const url = `https://drawproject-production.up.railway.app/api/v1/courses?${new URLSearchParams(
           queryParams
@@ -229,7 +238,10 @@ const CourseListArea = () => {
                   <Spinner animation="grow" variant="success" size="lg" />
                 </div>
               ) : courses.length === 0 ? (
-                <div style={{ opacity: "0.5" }} className="d-flex flex-column align-items-center">
+                <div
+                  style={{ opacity: "0.5" }}
+                  className="d-flex flex-column align-items-center"
+                >
                   <img
                     src="../../../assets/img/course/empty-course.gif"
                     alt=""
