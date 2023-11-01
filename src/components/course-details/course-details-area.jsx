@@ -88,6 +88,7 @@ const CourseDetailsArea = () => {
             if (decodedData.avatar != null) {
               setAvatar(decodedData.avatar);
             }
+            setTotalPage(response.data.totalPage);
             setFeedbackData(decodedData);
             isLoading(false)
 
