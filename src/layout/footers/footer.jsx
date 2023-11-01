@@ -7,11 +7,9 @@ const footer_data = [
     cls: "col-xl-2",
     footer_col: "footer-col-1",
     links: [
-      { name: "About Us", link: "/about" },
+      { name: "Contact us", link: "/contact" },
       { name: "Blog", link: "/blog" },
-      // { name: "Careers", link: "/careers" },
-      // { name: "Jobs", link: "/" },
-      // { name: "In Press", link: "/" },
+      { name: "Support", link: "/blog" },
     ],
   },
   {
@@ -22,60 +20,16 @@ const footer_data = [
     links: [
       // { name: "Refund Policy", link: "/policy" },
       { name: "Documentation", link: "/documentation" },
-      { name: "Chat online", link: "/chat-online" },
-      { name: "Order Cancel", link: "/order-cancel" },
       { name: "Privacy Policy", link: "/privacy-policy" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Support",
-    footer_col: "footer-col-3",
-    cls: "col-xl-3",
-    links: [
-      { name: "Contact us", link: "/contact" },
-      { name: "Online Chat", link: "/online-chat" },
-      // { name: "Whatsapp", link: "/whatsapp" },
-      // { name: "Telegram", link: "/telegram" },
-      { name: "Ticketing", link: "/ticketing" },
     ],
   },
 ];
 
 
-// social_links
-// const social_links = [
-//   {
-//     link: "http://facebook.com",
-//     target: "_blank",
-//     icon: "fab fa-facebook-f",
-//     name: "Facebook",
-//   },
-//   {
-//     link: "https://www.youtube.com/",
-//     target: "_blank",
-//     icon: "fab fa-youtube",
-//     name: "Youtube",
-//   },
-//   {
-//     link: "https://www.basketball.com/",
-//     target: "_blank",
-//     icon: "fa-light fa-basketball",
-//     name: "Instagram",
-//   },
-
-//   {
-//     link: "http://whatsapp.com",
-//     target: "_blank",
-//     icon: "fa-brands fa-whatsapp",
-//     name: "Twitter",
-//   },
-// ];
-
 const copyright = {
   logo: "/assets/img/logo/logo.png",
   copyright_text: (
-    <>Copyright © Uxaction {new Date().getFullYear()}, All Rights Reserved</>
+    <>Copyright © DrawingCourses {new Date().getFullYear()}</>
   ),
 };
 
@@ -101,7 +55,7 @@ const Footer = () => {
                         <ul>
                           {item.links.map((link, i) => (
                             <li key={i}>
-                              <a href="#">{link.name}</a>
+                              <a href={link.link}>{link.name}</a>
                             </li>
                           ))}
                         </ul>
@@ -129,13 +83,6 @@ const Footer = () => {
                         </button>
                       </form>
                     </div>
-                    {/* <div className="footer-widget__social d-flex align-items-center">
-                      {social_links.map((link, i) => (
-                        <a href={link.link} target={link.target} key={i}>
-                          <i className={link.icon}></i>
-                        </a>
-                      ))}
-                    </div> */}
                   </div>
                 </div>
               </div>

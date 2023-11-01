@@ -97,7 +97,7 @@ function CourseCreateTopicArea({ courseId }) {
           data-bs-toggle="modal"
           data-bs-target="#modalLesson"
         >
-          Add New Assignment
+          Add New Lesson
         </button>
       </div>
       {TopicItemsHTML}

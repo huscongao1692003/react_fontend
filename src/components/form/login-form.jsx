@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import axios from "axios";
 import {useRouter} from 'next/router';
 import Alert from 'react-bootstrap/Alert';
+import { Spin, message, Space } from 'antd';
 
 const LoginForm = () => {
     const [username, setUsername] = useState("");
@@ -14,8 +15,27 @@ const LoginForm = () => {
     const [userRole, setUserRole] = useState("");
     const [err, setErr] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
+    const [isLoading, setIsloading] = useState(false);
+
+    const error = () => {
+        message.error("Invalid your username or password")
+        message.config({
+            maxCount: 3
+        })
+        setErr("");
+      };
+
+      const success = () => {
+        message.success("Login successful")
+        message.config({
+            maxCount: 1
+        })
+        setSuccessMsg("");
+      }
 
     const handleSubmit = async (e) => {
+        const loadingMessage = message.loading('Processing login...', 0);
+        setIsloading(true);
         e.preventDefault();
 
         try {
@@ -27,7 +47,6 @@ const LoginForm = () => {
                 }
             );
             const {data} = response;
-            console.log(data.accessToken);
             const responseRole = await axios.get(
                 "https://drawproject-production.up.railway.app/api/v1/dashboard",
                 {headers: {Authorization: `Bearer ${data.accessToken}`}}
@@ -35,11 +54,15 @@ const LoginForm = () => {
 
             const roles = responseRole.data.roles;
             const rolesString = roles.map((role) => role.authority).join(", ");
-            console.log(rolesString);
             setAccessToken(data.accessToken);
             setUserRole(rolesString);
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("roles", rolesString);
+            const responseAvatar = await axios.get (
+                "https://drawproject-production.up.railway.app/api/v1/users/avatar",
+                {headers: {Authorization: `Bearer ${data.accessToken}`}}
+            )
+            localStorage.setItem("avatar", responseAvatar.data);
             setShowAlert(true);
             localStorage.setItem("isLoggedIn", true.toString());
             setIsLoggedIn(true);
@@ -69,22 +92,16 @@ const LoginForm = () => {
             }
             setSuccessMsg("");
         }
+        loadingMessage();
+        setIsloading(false);
     };
 
     return (
-        <>
-            <Alert
-                variant={err ? "danger" : "success"}
-                show={showAlert || err || successMsg}
-                onClose={() => {
-                    setShowAlert(false);
-                    setSuccessMsg("");
-                }}
-                dismissible
-            >
-                <Alert.Heading>{err ? "Login Failed" : "Login Successful"}</Alert.Heading>
-                <p>{err || successMsg || "You have successfully logged in."}</p>
-            </Alert>
+        <>  
+            {
+                (err !== "" && successMsg === "") ? error() : (err === "" && successMsg !== "") && success()
+            }
+            
 
             <section className="login-area pt-100 pb-100 wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".5s">
                 <div className="container">
@@ -95,12 +112,14 @@ const LoginForm = () => {
                                 <form onSubmit={handleSubmit}>
                                     <label htmlFor="name">Username <span>**</span></label>
                                     <input id="name" type="text" placeholder="Enter Username"
-                                           onChange={(e) => setUsername(e.target.value)} value={username}/>
+                                           onChange={(e) => setUsername(e.target.value)} value={username} required/>
                                     <label htmlFor="pass">Password <span>**</span></label>
                                     <input id="pwd" type="password" placeholder="Enter password..." value={pwd}
-                                           onChange={(e) => setPwd(e.target.value)}/>
+                                           onChange={(e) => setPwd(e.target.value)} required />
                                     <div className="mt-10"></div>
-                                    <button className="tp-btn w-100">login Now</button>
+                                    <Spin spinning={isLoading}>
+                                        <button className="tp-btn w-100">login Now</button>
+                                    </Spin>
                                     <div className="or-divide"><span>or</span></div>
                                 </form>
                                 <Link href="/register" className="tp-border-btn w-100">Register Now</Link>
