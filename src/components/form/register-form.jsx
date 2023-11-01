@@ -5,6 +5,9 @@ import {useRouter} from 'next/router';
 import Alert from 'react-bootstrap/Alert';
 import { Button, Popover, Space } from 'antd';
 import {Form, Dropdown} from "react-bootstrap";
+import { Spin, message } from 'antd';
+import { validateConfirmPassword, validateName, validateMobilePhone, validatePassword, validateConfirmEmail } from "./validate";
+
 
 const RegisterhtmlForm = () => {
     const [showAlert, setShowAlert] = useState(false);
@@ -12,6 +15,11 @@ const RegisterhtmlForm = () => {
     const [usernameError, setUsernameError] = useState('');
     const [mobileNumError, setMobileNumError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [confirmPwdError, setConfirmPwdError] = useState('');
+    const [confirmEmailError, setConfirmEmailError] = useState('');
+    const [successMsg, setSuccessMsg] = useState("");
+    const [isLoading, setIsloading] = useState(false);
+    const [err, setErr] = useState("")
     
     const content = 
         [
@@ -32,9 +40,7 @@ const RegisterhtmlForm = () => {
                 </div>
             )
         ]
-    
-
-    const [err, setErr] = useState("")
+  
 
     const [formData, setFormData] = useState({
         username: "",
@@ -55,37 +61,78 @@ const RegisterhtmlForm = () => {
 
     const validateForm = () => {
         let isValid = true;
-
+        let dataValidate = validateName(formData.username);
         // Validate username
-        if (formData.username.length < 5) {
-            setUsernameError('Username must be at least 5 characters long');
+        if (dataValidate.isError) {
+            setUsernameError(dataValidate.message);
             isValid = false;
         } else {
             setUsernameError('');
         }
 
         // Validate mobile number (assuming it should be exactly 10 digits)
-        if (formData.mobileNum.length !== 10) {
-            setMobileNumError('Mobile number must be exactly 10 digits');
+        dataValidate = validateMobilePhone(formData.mobileNum)
+        if (dataValidate.isError) {
+            setMobileNumError(dataValidate.message);
             isValid = false;
         } else {
             setMobileNumError('');
         }
 
+        dataValidate = validateConfirmEmail(formData.email, formData.confirmEmail)
+        if (dataValidate.isError) {
+            setConfirmEmailError(dataValidate.message);
+            isValid = false;
+        } else {
+            setConfirmEmailError('');
+        }
+
         // Validate password (assuming it must be at least 8 characters long)
-        if (formData.pwd.length < 8) {
-            setPasswordError('Password must be at least 8 characters long');
+        dataValidate = validatePassword(formData.pwd);
+        if (dataValidate.isError) {
+            setPasswordError(dataValidate.message);
             isValid = false;
         } else {
             setPasswordError('');
+        }
+        
+        dataValidate = validateConfirmPassword(formData.pwd, formData.confirmPwd);
+        if(dataValidate.isError) {
+            setConfirmPwdError(dataValidate.message);
+            isValid = false;
+        } else {
+            setConfirmPwdError('');
         }
 
         return isValid;
     };
 
+    const error = () => {
+        message.error(err);
+        message.config({
+            maxCount: 3
+        })
+        setErr("");
+      };
+
+      const success = () => {
+        message.success("Register successful")
+        message.config({
+            maxCount: 1
+        })
+        setSuccessMsg("");
+      }
+
     const handleSubmit = async (e) => {
+        console.log(formData);
+        const loadingMessage = message.loading('Processing login...', 0);
+        setIsloading(true);
         e.preventDefault();
         if (!validateForm()) {
+            setErr("Invalid some fields! Please try again.");
+            setSuccessMsg("");
+            loadingMessage();
+            setIsloading(false);
             return; 
         }
 
@@ -94,11 +141,9 @@ const RegisterhtmlForm = () => {
                 "https://drawproject-production.up.railway.app/api/auth/register",
                 formData
             );
-
-            setShowAlert(true);
-            console.log("Registration successful:", response.data);
-            const delayDuration = 3000;
-            setErr("You have successfully register.");// 3 seconds (adjust as needed)
+            const delayDuration = 2000;
+            setErr("");
+            setSuccessMsg("You have successfully logged in.");
             setTimeout(() => {
                 router.push('/sign-in');
             }, delayDuration);
@@ -113,21 +158,20 @@ const RegisterhtmlForm = () => {
             } else {
                 setErr(error.response.data.message);
             }
+            setErr("Cannot register! Please try again.");
+            setSuccessMsg("");
         }
+        loadingMessage();
+        setIsloading(false);
     };
 
     return (
 
         <>
-            <Alert
-                variant={err ? "danger" : "success"}
-                show={showAlert || err !== ""}
-                onClose={() => setShowAlert(false)}
-                dismissible
-            >
-                <Alert.Heading>{err ? "Register Failed" : "Register Successful"}</Alert.Heading>
-                <p>{err || "You have successfully Register."}</p>
-            </Alert>
+            {
+                (err !== "" && successMsg === "") ? error() : (err === "" && successMsg !== "") && success()
+            }
+
             <section
                 className="login-area pt-100 pb-100 wow fadeInUp"
                 data-wow-duration=".8s"
@@ -137,7 +181,7 @@ const RegisterhtmlForm = () => {
                     <div className="row">
                         <div className="col-lg-8 offset-lg-2">
                             <div className="basic-login">
-                                <h3 className="text-center mb-60">Sign up From Here</h3>
+                                <h3 className="text-center mb-60">Sign up</h3>
                                 <Form onSubmit={handleSubmit}>
                                     <div className="fullName">
                                     <label htmlFor="fullName">
@@ -161,12 +205,14 @@ const RegisterhtmlForm = () => {
                                         </label>
                                         <input
                                             id="mobileNum"
-                                            type="number"
+                                            type="text"
                                             placeholder="Mobile..."
                                             name="mobileNum"
                                             required
                                             value={formData.mobileNum}
                                             onChange={handleInputChange}
+                                            min={0}
+                                            max={99999999999}
                                         />
                                     </div>
                                     
@@ -176,11 +222,27 @@ const RegisterhtmlForm = () => {
                                         </label>
                                         <input
                                             id="email"
-                                            type="text"
+                                            type="email"
                                             placeholder="Email address..."
                                             name="email"
                                             required
                                             value={formData.email}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div className="confirmEmail">
+                                        <label htmlFor="confirmEmail">
+                                            Confirm Email Address
+                                            <span style={{marginRight: "1rem"}}>**</span>
+                                            <span className="error-message">{confirmEmailError}</span>
+                                        </label>
+                                        <input
+                                            id="confirmEmail"
+                                            type="email"
+                                            placeholder="Email address..."
+                                            name="confirmEmail"
+                                            required
+                                            value={formData.confirmEmail}
                                             onChange={handleInputChange}
                                         />
                                     </div>
@@ -221,7 +283,7 @@ const RegisterhtmlForm = () => {
                                         <label htmlFor="confirmPwd">
                                             Confirm Password 
                                             <span style={{marginRight: "1rem"}}>**</span>
-                                            <span className="error-message">{passwordError}</span>
+                                            <span className="error-message">{confirmPwdError}</span>
                                         </label>
                                         <input
                                             id="confirmPwd"
@@ -235,13 +297,13 @@ const RegisterhtmlForm = () => {
                                     </div>
                                     <div className="feature d-flex">
                                         <div className="role" style={{marginRight: "3rem"}}>
-                                                <label htmlFor="role-name" className="mt-10" style={{ fontWeight: "bold" }}>
+                                                <label htmlFor="role-id" className="mt-10" style={{ fontWeight: "bold" }}>
                                                     Select Role
                                                     <Popover content={content[0]} title="Choosing the appropriate role " trigger="hover">
                                                         <i className="fa-regular fa-circle-question" style={{ marginLeft: "0.3rem"}}></i>
                                                     </Popover>
                                                 </label>
-                                            <Form.Control className="mt-10" as="select" name="skillId" value={formData.roleName}
+                                            <Form.Control className="mt-10" as="select" name="roleName" value={formData.roleName}
                                                         onChange={handleInputChange} required>
                                                 <option value={"CUSTOMER"}>Customer</option>
                                                 <option value={"INSTRUCTOR"}>Instructor</option>
@@ -266,7 +328,9 @@ const RegisterhtmlForm = () => {
 
                                     
                                     <div className="mt-10"></div>
-                                    <button className="tp-btn w-100" type="submit">Register Now</button>
+                                    <Spin spinning={isLoading}>
+                                        <button className="tp-btn w-100" type="submit" style={{marginTop: "2rem"}}>Register Now</button>
+                                    </Spin>
                                     <div className="or-divide">
                                         <span>or</span>
                                     </div>
