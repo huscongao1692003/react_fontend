@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { Spin, message, Space } from 'antd';
+
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
@@ -15,6 +17,26 @@ function CourseCreateArea() {
   const [descriptionError, setDescriptionError] = useState("");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [isLoading, setIsloading] = useState(false);
+
+
+  const error = () => {
+    message.error("Somethings has error")
+    message.config({
+        maxCount: 3
+    })
+    setErr("");
+  };
+
+  const success = () => {
+    message.success("Create successful")
+    message.config({
+        maxCount: 1
+    })
+    setSuccessMsg("");
+  }
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -50,6 +72,8 @@ function CourseCreateArea() {
       }, []);
 
   const submitPostData = async () => {
+    const loadingMessage = message.loading('Processing your post...', 0);
+        setIsloading(true);
     try {
       if (localStorage.getItem("accessToken")) {
           setLoading(true);
@@ -70,16 +94,25 @@ function CourseCreateArea() {
           const response = await axios.post(url, formData, { headers });
 
           if (response.status === 201) {
-              setLoading(false);
-              alert("Post created successfully");
+            setErr("");
+            setSuccessMsg("You have successfully created post.");
+              
+        setIsloading(false);
           }
       }
     } catch (e) {
         console.error(e);
     }
+    setLoading(false);
+    loadingMessage();
   };
 
   return (
+    <>
+    {
+                (err !== "" && successMsg === "") ? error() : (err === "" && successMsg !== "") && success()
+            }
+            
       <div className="container-xl px-4 mt-100 mb-100">
           <div className="row gx-4">
               {/* Your file input and image display code */}
@@ -205,6 +238,7 @@ function CourseCreateArea() {
                     }
                                       ></textarea>
                               </div>
+                              <Spin spinning={isLoading}>
                              <button
                   type="button"
                   className="tp-btn"
@@ -213,12 +247,14 @@ function CourseCreateArea() {
                 >
                   {loading ? "Submitting..." : "Submit"} {/* Show loading or Submit text */}
                 </button>
+                </Spin>
                           </form>
                       </div>
                   </div>
               </div>
           </div>
       </div>
+      </>
       );
 }
 

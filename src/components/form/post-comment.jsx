@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Typography, Rating } from "@mui/material";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { Spin, message, Space } from 'antd';
+
 
 
 const PostComment = () => {
   const [rating, setRating] = useState(5);
   const router = useRouter();
+  const [isLoading, setIsloading] = useState(false);
   const [userId, setUserId] = useState("");
   const [feedbackText, setFeedbackText] = useState("");
   const { id } = router.query;
@@ -45,11 +48,13 @@ const PostComment = () => {
     };
   
     try {
+      const loadingMessage = message.loading('Processing feedback...', 0);
+        setIsloading(true);
       const response = await axios.post(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback`, feedbackData,
       { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      alert("Feedback submitted successfully", response.data);
-  
+      loadingMessage("Feedback successfull");
+      setIsloading(false);
     } catch (error) {
      
       alert("Error submitting feedback", error);
@@ -58,6 +63,8 @@ const PostComment = () => {
   
 
   return (
+    <>
+    
     <div className="postbox__comment-form">
       <h3 className="postbox__comment-form-title">Write a feedback</h3>
       <form onSubmit={handleSubmit}>
@@ -87,14 +94,17 @@ const PostComment = () => {
           </div>
           <div className="col-xxl-12">
             <div className="postbox__comment-btn">
+            <Spin spinning={isLoading}>
               <button type="submit" className="tp-btn">
                 Feedback
               </button>
+              </Spin>
             </div>
           </div>
         </div>
       </form>
     </div>
+    </>
   );
 };
 
