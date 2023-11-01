@@ -71,7 +71,6 @@ const CourseListArea = () => {
   }, []);
 
   useEffect(() => {
-
     const fetchCoursesByStar = async () => {
       setLoading(true);
       try {
