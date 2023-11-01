@@ -45,6 +45,8 @@ const CourseDetailsArea = () => {
         .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
+          isLoading(false)
+
           if (response.data.status === "ACCEPTED") {
             setEdit(true);
           }else{
@@ -52,6 +54,8 @@ const CourseDetailsArea = () => {
           }
         })
         .catch((error) => {
+          isLoading(false)
+
           console.error("Error fetching course data:", error);
         });
     }
@@ -60,6 +64,8 @@ const CourseDetailsArea = () => {
         .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
+          isLoading(false)
+
           if (response.data.status === "ACCEPTED") {
             setIsPay(true);
           }else{
@@ -67,6 +73,8 @@ const CourseDetailsArea = () => {
           }
         })
         .catch((error) => {
+          isLoading(false)
+
           console.error("Error fetching course data:", error);
         });
     }
@@ -95,6 +103,7 @@ const CourseDetailsArea = () => {
           })
           .catch((error) => {
             console.log(error);
+            isLoading(false)
           });
 
         const instructorId = response.data.data.instructorId;
