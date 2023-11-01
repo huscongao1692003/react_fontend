@@ -5,6 +5,7 @@ import {
   TableContainer,
   TableHead,
   TableBody,
+  Button,
   TableRow,
   TableCell,
   Paper,
@@ -16,7 +17,42 @@ export default function CourseTable() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  
+
+  const handleOpenCourse = (courseId) => {
+    axios.put(`https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/open`, null, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }).then((response) => {
+      console.log(`Course with ID ${courseId} has been opened.`);
+      axios
+      .get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        setCourses(response.data.data);
+        setLoading(false);
+      });
+    }).catch((error) => {
+      console.error(`Error opening course with ID ${courseId}:`, error);
+    });
+  };
+
+  const handleDisableCourse = (courseId) => {
+    axios.put(`https://drawproject-production.up.railway.app/api/v1/admin/post/${courseId}`, null, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }).then((response) => {
+      alert(`Course with ID ${courseId} has been disabled.`);
+      axios
+      .get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        setCourses(response.data.data);
+        setLoading(false);
+      });
+    }).catch((error) => {
+      alert(`Error disabling course with ID ${courseId}:`, error);
+    });
+  };
 
   useEffect(() => {
     // Make an API request to fetch courses
@@ -47,7 +83,9 @@ export default function CourseTable() {
               <TableCell>Course Title</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Course ID</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell>Number of Lessons</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,7 +96,24 @@ export default function CourseTable() {
                 </TableCell>
                 <TableCell>{course.price}</TableCell>
                 <TableCell>{course.courseId}</TableCell>
+                <TableCell>{course.status}</TableCell>
                 <TableCell>{course.numLesson}</TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => handleOpenCourse(course.courseId)}
+                    variant="outlined"
+                    color="secondary"
+                    >
+                    Open Course
+                  </Button>
+                  <Button
+                    onClick={() => handleDisableCourse(course.courseId)}
+                    variant="outlined"
+                    color="secondary"
+                    >
+                    Disable Course
+                  </Button>
+                </TableCell>
               </TableRow>
               ))}
           </TableBody>

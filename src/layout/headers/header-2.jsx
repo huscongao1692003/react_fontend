@@ -7,7 +7,8 @@ import {useRouter} from 'next/router';
 import { UilSignOutAlt } from '@iconscout/react-unicons'
 import { UilUserSquare } from '@iconscout/react-unicons'
 import Dropdown from 'react-bootstrap/Dropdown';
-
+import dynamic from "next/dynamic";
+import SearchBar from "@/src/components/utils/SearchBar";
 
 const Header = () => {
     const {sticky} = useSticky()
@@ -15,12 +16,11 @@ const Header = () => {
     const router = useRouter();
     const isLoggedIn = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
     const role = typeof window !== 'undefined' ? localStorage.getItem("roles") : null;
-    console.log(role);
+    const [isSearching, setIsSearching] = useState(false);
 
 
     const handleLogout = () => {
         localStorage.clear();
-
         router.push('/');
     };
 
@@ -31,7 +31,7 @@ const Header = () => {
                     <div className={`main-header header-xy-spacing ${sticky ? "header-sticky" : ""}`}
                          id="header-sticky">
                         <div className="container-fluid">
-                            <div className="row align-items-center">
+                            <div className="row align-items-center justify-content-between">
                                 <div className="col-xxl-3 col-xl-3 col-lg-5 col-md-6 col-6">
                                     <div className="logo-area d-flex align-items-center">
                                         <div className="logo">
@@ -52,10 +52,15 @@ const Header = () => {
                                         <div className="header__search d-none d-lg-block">
                                             <form onSubmit={e => e.preventDefault()}>
                                                 <div className="header__search-input">
-                                                    <button className="header__search-btn">
+                                                    <button className="header__search-btn" style={{zIndex: "1", backgroundColor: "transparent"}}>
+                                                      {isSearching ? 
+                                                        <i className="fa-solid fa-spinner fa-spin"></i> 
+                                                        :
                                                         <i className="fa-regular fa-magnifying-glass"></i>
+                                                    
+                                                      }
                                                     </button>
-                                                    <input type="text" placeholder="Search Courses"/>
+                                                    <SearchBar setIsSearching={ setIsSearching } />
                                                 </div>
                                             </form>
                                         </div>
@@ -70,7 +75,6 @@ const Header = () => {
                                                 ) : null}
                                               {role === "ROLE_ADMIN" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -81,12 +85,10 @@ const Header = () => {
                                                         <Dropdown.Item href="/dashboard">Dashboard</Dropdown.Item>
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_STAFF" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -97,12 +99,10 @@ const Header = () => {
                                                         <Dropdown.Item href="/dashboard-staff">Dashboard</Dropdown.Item>
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_INSTRUCTOR" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -110,18 +110,19 @@ const Header = () => {
 
                                                       <Dropdown.Menu>
                                                         <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
-                                                        <Dropdown.Item href="/create-post">CreatePost</Dropdown.Item>
-                                                        <Dropdown.Item href="/create-course">Create Course</Dropdown.Item>
-                                                        <Dropdown.Item href="/dashboard-instructor">Create Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/my-collection">Edit Collection</Dropdown.Item>
+                                                        <Dropdown.Item href="/create-post">Create Post</Dropdown.Item>
+                                                        <Dropdown.Item href="/view-post">View Your Post</Dropdown.Item>
+                                                          <Dropdown.Item href="/course-create">Create Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/view-instructor-courses">View Your Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/dashboard-instructor">Dashboard</Dropdown.Item>
 
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
                                               {role === "ROLE_CUSTOMER" ? (
                                                 <li>
-                                                  <button className="d-none d-md-block">
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"success"}>
                                                         <UilUserSquare></UilUserSquare>
@@ -130,11 +131,11 @@ const Header = () => {
                                                       <Dropdown.Menu>
                                                         <Dropdown.Item href="/Settings">Profile</Dropdown.Item>
                                                         <Dropdown.Item href="/create-post">Create Post</Dropdown.Item>
-                                                        <Dropdown.Item href="/study">Study</Dropdown.Item>
-                                                        <Dropdown.Item href="/orders">View Payment Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/view-post">View Your Post</Dropdown.Item>
+                                                        <Dropdown.Item href="/my-courses">View My Course</Dropdown.Item>
+                                                        <Dropdown.Item href="/my-orders">View Orders</Dropdown.Item>
                                                       </Dropdown.Menu>
                                                     </Dropdown>
-                                                  </button>
                                                 </li>
                                                 ) : null}
 
@@ -165,4 +166,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default dynamic (() => Promise.resolve(Header), {ssr: false})

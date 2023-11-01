@@ -5,7 +5,7 @@ import BrandArea from "@/src/common/brand-area";
 import VideoArea from "../../common/video-area";
 import ChooseArea from "../../common/choose-area";
 import TestimonialAreaThree from "../../common/testimonial-area-2";
-import InstructorArea from "./instructor-area";
+import InstructorArea from "../../common/instructor-area";
 import SuitableArea from "@/src/common/suitable-area";
 import CounterArea from "../homes/home/counter-area";
 import Breadcrumb from "../bredcrumb/breadcrumb";

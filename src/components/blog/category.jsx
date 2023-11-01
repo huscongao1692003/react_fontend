@@ -1,9 +1,16 @@
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Category = () => {
+const Sidebar = ({ category, setcategory }) => {
   const [categoryData, setCategoryData] = useState([]);
+
+  const handleCategoryChange = (e, id) => {
+    if(id == category) {
+      setcategory(0);
+      return;
+    }
+    setcategory(id);
+  };
 
   useEffect(() => {
     axios
@@ -17,78 +24,25 @@ const Category = () => {
   }, []);
 
   return (
-    <>
-      <div className="sidebar__widget mb-40">
-        <div className="row">
-          <h3 className="sidebar__widget-title mb-10 col-md-7">Category</h3>
-        </div>
-        <div className="sidebar__widget-content">
-          <ul>
-            {categoryData.map((item) => (
-              <li key={item.categoryId}>
-                <Link href={`/blog?categoryId=${item.categoryId}`}>
-                  {item.categoryName}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <div className="sidebar__widget mb-40">
+      <div className="row">
+        <h3 className="sidebar__widget-title mb-10 col-md-7">Category</h3>
       </div>
-    </>
+      <div className="sidebar__widget-content">
+        <ul>
+          {categoryData.map((item) => (
+            <li className={category == item.categoryId ? "selection":""} 
+              key={item.categoryId} style={{ cursor: "pointer" }}
+              onClick={(e) => handleCategoryChange(e, item.categoryId)}>
+              <a>
+                {item.categoryName}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
 
-export default Category;
-
-// import Link from "next/link";
-// import React from "react";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-
-// // category_data
-// const category_data = [
-//   {
-//     category: "Business",
-//     blog_item: "14",
-//   },
-//   {
-//     category: "Cleaning",
-//     blog_item: "19",
-//   },
-//   {
-//     category: "Consultant",
-//     blog_item: "21",
-//   },
-//   {
-//     category: "Creative",
-//     blog_item: "27",
-//   },
-//   {
-//     category: "Technology",
-//     blog_item: "35",
-//   },
-// ];
-
-// const Category = () => {
-
-//   return (
-//     <>
-//       <div className="sidebar__widget mb-40">
-//         <h3 className="sidebar__widget-title mb-10">Category</h3>
-//         <div className="sidebar__widget-content">
-//           <ul>
-//             {category_data.map((item, i) => (
-//               <li key={i}>
-//                 <Link href="/blog">
-//                   {item.category} <span>({item.blog_item})</span>
-//                 </Link>
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Category;
+export default Sidebar;

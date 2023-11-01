@@ -6,14 +6,15 @@ import CourseCreateArea from "./course-create-area";
 const CourseCreate = () => {
   return (
     <>
-      <Breadcrumb
+       <Breadcrumb
         title="Course Create"
         subtitle="Course Create"
         isDbbl="Course"
-      />
+      /> 
+      
       <CourseCreateArea />
 
-      <CounterArea />
+      {/* <CounterArea /> */}
     </>
   );
 };

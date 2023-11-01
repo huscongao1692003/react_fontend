@@ -11,6 +11,11 @@
   --activeItem: #f799a354;
 }
 
+.reset-element {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   /* padding: 0.5rem 3.5rem; */
   color: var(--black);
@@ -20,30 +25,32 @@
     #ffcfd1 51.55%,
     #f3c6f1 90.85%
   );
-  height: 100vh;
+  height: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
-  
+  min-height: 100vh;
 }
 
 .AppGlass {
   display: grid;
-  height: 97%;
-  width: 97%;
+  height: 97vh;
+  width: 97vw;
   background: var(--glass);
   border-radius: 2rem;
   gap: 16px;
-  grid-template-rows: 11rem auto 20rem;
-  overflow: hidden;
   overflow-y: scroll;
+}
+.AppGlass::-webkit-scrollbar{
+  display: none;
 }
 
 @media screen and (max-width: 1200px) {
   .AppGlass{
-    grid-template-columns: 10% 50% auto;
+    grid-template-columns: 100%;
     overflow-y: scroll;
+
   } 
 }
 
@@ -51,4 +58,5 @@
   .AppGlass{
     grid-template-columns: 1fr;
   } 
+  
 }

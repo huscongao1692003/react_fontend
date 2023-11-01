@@ -1,3 +1,4 @@
+
 const menu_data = [
   {
     id: 1,
@@ -10,11 +11,11 @@ const menu_data = [
   },
   {
     id: 2,
-    title: "Contact",
+    title: "Contact Us",
     link: "/contact",
     has_dropdown: true,
     sub_menus: [
-      { link: "/about", title: "About" },
+      // { link: "/about", title: "About" },
       { link: "/contact", title: "Contact" },
       { link: "/faq", title: "FAQ" },
       // { link: "/register", title: "Register" },
@@ -35,9 +36,9 @@ const menu_data = [
     id: 4,
     title: "Course",
     link: "/course-list",
-    has_dropdown: true,
+    has_dropdown: false,
     sub_menus: [
-      { link: "/course-create", title: "Create Course" },
+//      { link: "/course-create", title: "Create Course" },
       // { link: "/course-grid", title: "Course Grid" },
       // { link: "/course", title: "Course List" },
       // { link: "/course-details", title: "Course Details" },
@@ -55,6 +56,6 @@ const menu_data = [
       // { link: "/blog-details", title: "Blog Details" },
     ],
   },
-  
+
 ];
 export default menu_data;
