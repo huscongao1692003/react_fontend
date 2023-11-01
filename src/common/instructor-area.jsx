@@ -157,7 +157,7 @@ const InstructorArea = ({ style_2 }) => {
           <div className="intruc-active mb-15 tp-slide-space">
             <Slider {...setting} ref={sliderRef}>
               {instructorData.map((item, i) => (
-                <div key={item.userId} className="tp-instruc-item">
+                <div key={item.instructorId} className="tp-instruc-item">
                   <div className="tp-instructor text-center p-relative mb-30">
                     <div className="tp-instructor__thumb mb-25 position-relative">
                       <img
@@ -173,10 +173,10 @@ const InstructorArea = ({ style_2 }) => {
                       />
                       <div className="icon position-absolute top-0 end-0 d-flex flex-column">
                         <i
-                          class="fa-solid fa-award"
+                          className="fa-solid fa-award"
                           style={{ fontSize: "2rem", color: "yellowgreen" }}
                         ></i>
-                        <Strong>Best</Strong>
+                        <strong>Best</strong>
                       </div>
                     </div>
                     <div className="tp-instructor__content">
