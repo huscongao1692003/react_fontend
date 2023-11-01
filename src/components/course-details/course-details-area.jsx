@@ -366,7 +366,7 @@ const CourseDetailsArea = () => {
                         <>
                         <Link
                           className="tp-vp-btn"
-                          href={`/create-lesson?idCourse=${courseData.courseId}`}
+                          href={`/create-lesson?idCourse=${id}`}
                         >
                           Create Lesson
                         </Link>

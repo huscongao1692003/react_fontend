@@ -243,7 +243,7 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
                         type="text"
                         placeholder="Enter url"
                         className="form-control ng-untouched ng-pristine ng-invalid"
-                        value={topicData?.url}
+                        // value={topicData?.url}
                         onChange={(e) => {
                           setLessonData({
                             ...lessonData,
