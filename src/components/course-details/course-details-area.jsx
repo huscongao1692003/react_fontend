@@ -84,10 +84,15 @@ const CourseDetailsArea = () => {
      .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}`)
      .then((response) => {
        setCourseData(response.data.data);
+       const queryParams = {
+        eachPage: 4,
+        page: page,
+        
+      };
         axios
           .get(
             `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
-              queryParams
+              queryParams 
             )}`
           )
           .then((responseFeedback) => {
