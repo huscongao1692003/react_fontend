@@ -64,7 +64,9 @@ const Settings = () => {
       formData.append("fullName", fullName);
       formData.append("mobileNumber", mobileNumber);
       formData.append("email", email);
-      formData.append("image", selectedFile);
+      if(selectedFile != null){
+        formData.append("image", selectedFile);
+      }
       if (selectedSkillId) {
         formData.append("skill", selectedSkillId);
       }

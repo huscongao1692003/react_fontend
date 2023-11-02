@@ -1,8 +1,6 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { headers } from "@/next.config";
-import { Spin, message, Space } from 'antd';
-
+import { Spin, message } from 'antd';
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
@@ -19,6 +17,9 @@ function CourseCreateArea() {
   const [err, setErr] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [styles, setStyles] = useState([]); // State variable to store styles data
+  const [categories, setCategories] = useState([]); // State variable to store categories data
+  const [skills, setSkills] = useState([]); // State variable to store skills data
 
   const error = () => {
     message.error("Something has error!!!");
@@ -48,8 +49,9 @@ function CourseCreateArea() {
   };
 
   const submitCourseData = async () => {
-    const loadingMessage = message.loading("Processing login...", 0);
+    const loadingMessage = message.loading("Processing...", 0);
     setIsloading(true);
+
     if (
       courseData.courseTitle.length < 5 ||
       courseData.description.length < 5 ||
@@ -88,7 +90,8 @@ function CourseCreateArea() {
         formData.append("skill", courseData.skill);
 
         const response = await axios.post(url, formData, { headers });
-        if (response.data.status != "BAD_REQUEST") {
+
+        if (response.data.status !== "BAD_REQUEST") {
           setErr("");
           setSuccessMsg("Create course successfully.");
         }
@@ -101,6 +104,25 @@ function CourseCreateArea() {
     loadingMessage();
     setIsloading(false);
   };
+
+  useEffect(() => {
+    // Fetch API data for styles, categories, and skills
+    const fetchData = async () => {
+      try {
+        const stylesResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/style");
+        const categoriesResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/category");
+        const skillsResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/skill");
+
+        setStyles(stylesResponse.data.data);
+        setCategories(categoriesResponse.data);
+        setSkills(skillsResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -173,24 +195,29 @@ function CourseCreateArea() {
                       <label for="inputFirstName" className="small mb-1">
                         Category
                       </label>
-                      <input
+                      <select
                         placeholder="Select your category"
                         className="form-control"
-                        type="number"
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
                             category: parseInt(e.target.value),
                           });
                         }}
-                      />
+                      >
+                        <option value={0}>Select a category</option>
+                        {categories.map((category) => (
+                          <option key={category.categoryId} value={category.categoryId}>
+                            {category.categoryName}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="mb-3 col-md-6">
                       <label for="inputLastName" className="small mb-1">
                         Style
                       </label>
-                      <input
-                        type="number"
+                      <select
                         placeholder="Select your style"
                         className="form-control"
                         onChange={(e) => {
@@ -199,7 +226,14 @@ function CourseCreateArea() {
                             style: parseInt(e.target.value),
                           });
                         }}
-                      />
+                      >
+                        <option value={0}>Select a style</option>
+                        {styles.map((style) => (
+                          <option key={style.drawingStyleId} value={style.drawingStyleId}>
+                            {style.drawingStyleName}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div className="row">
@@ -207,8 +241,7 @@ function CourseCreateArea() {
                       <label for="inputOrgName" className="small mb-1">
                         Skill
                       </label>
-                      <input
-                        type="number"
+                      <select
                         placeholder="Select your skill"
                         className="form-control"
                         onChange={(e) => {
@@ -217,14 +250,21 @@ function CourseCreateArea() {
                             skill: parseInt(e.target.value),
                           });
                         }}
-                      />
+                      >
+                        <option value={0}>Select a skill</option>
+                        {skills.map((skill) => (
+                          <option key={skill.skillId} value={skill.skillId}>
+                            {skill.skillName}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="mb-3 col-md-6">
                       <label for="inputLocation" className="small mb-1">
                         Price
                       </label>
                       <input
-                        type="integer"
+                        type="number"
                         placeholder="Enter your price"
                         className="form-control"
                         onChange={(e) => {
