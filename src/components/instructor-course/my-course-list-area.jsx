@@ -3,18 +3,26 @@ import Link from "next/link";
 import React, {useState,useEffect} from "react";
 import axios from "axios";
 import { useRouter } from 'next/router';
-import Spinner from 'react-bootstrap/Spinner';
+import { Pagination } from "@mui/material";
+import Spinner from 'react-bootstrap/Spinner'; 
 
 
 
 const MyCourseListArea = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const router = useRouter();
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
   useEffect(() => {
+    
     // First, fetch the user's ID
     axios
       .get(`https://drawproject-production.up.railway.app/api/v1/users/id`, {
@@ -22,16 +30,24 @@ const MyCourseListArea = () => {
       })
       .then((response) => {
         const userId = response.data;
-        
+        const queryParams = {
+          eachPage: 4,
+          page: page,
+        };
+        const url = `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/courses?${new URLSearchParams(
+              queryParams
+            )}`;
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/courses`,
+            url,
             {
               headers: { Authorization: `Bearer ${accessToken}` },
             }
             )
           .then((response) => {
             const dataCourse = response.data.data;
+            setPage(response.data.page);
+        setTotalPage(response.data.totalPage);
             setCourses(dataCourse);
             setLoading(false);
           })
@@ -44,7 +60,7 @@ const MyCourseListArea = () => {
         console.error("Error fetching user ID:", error);
         setLoading(false);
       });
-    }, [accessToken]);
+    }, [accessToken,page]);
 
   const renderStarIcons = (averageStar) => {
     const starIcons = [];
@@ -77,7 +93,7 @@ const MyCourseListArea = () => {
         data-wow-duration=".8s"
         data-wow-delay=".2s"
       >
-        <div className="container">
+        <div className="container-fluid">
           <div className="row text-center">
             <div className="col-lg-12">
               <div className="section-title mb-60">
@@ -86,9 +102,40 @@ const MyCourseListArea = () => {
               </div>
             </div>
           </div>
-          <div className="row mb-20">
-            
-            <div className="col-lg-8 col-md-12 course-item-width ml-30">
+          </div>
+
+          <div className="col-lg-8 col-md-12 course-item-width ml-30">
+              {loading ? (
+                <div
+                  className="d-flex flex-column justify-content-center align-items-center"
+                  style={{ paddingTop: "300px", paddingBottom: "300px" }}
+                >
+                  <Spinner animation="grow" variant="success" size="lg" />
+                </div>
+              ) : courses.length === 0 ? (
+                <div
+                  style={{ opacity: "0.5" }}
+                  className="d-flex flex-column align-items-center"
+                >
+                  <img
+                    src="../../../assets/img/course/empty-course.gif"
+                    alt=""
+                  />
+                  <div className="content">Empty Course</div>
+                </div>
+              ) : (
+                <>
+                <div className="container">
+          <div className="row text-center">
+            <div className="col-lg-12">
+              <div className="section-title mb-60">
+                {/* <span className="tp-sub-title-box mb-15">My Courses</span> */}
+                
+              </div>
+            </div>
+          </div>
+          <div className="row mb-20 col-lg-12 ">
+                 <div className="col-lg-12 col-md-12 course-item-width ml-30">
           {courses.map((course, i) => (
             <div key={i} className="tpcourse tp-list-course mb-40">
               <div className="row g-0">
@@ -151,8 +198,18 @@ const MyCourseListArea = () => {
                 </div>
                 ))}
             </div>
-          </div>
+            </div>
+            </div>
+                </>
+              )}
           
+            </div>
+            <div className="d-flex justify-content-center">
+              <Pagination
+                page={page}
+                count={totalPage}
+                onChange={handlePageChange}
+              />
         </div>
       </section>
     </>
