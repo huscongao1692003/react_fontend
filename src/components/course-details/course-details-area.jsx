@@ -21,6 +21,7 @@ const CourseDetailsArea = () => {
   const [edit,setEdit] = useState(false);
   const [loading,isLoading] = useState(false)
   const [isPay,setIsPay]= useState(false);
+  const [isVac, setVac] = useState(false)
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
   const isLoggedIn =
@@ -70,6 +71,11 @@ const CourseDetailsArea = () => {
             setIsPay(true);
           }else{
             setIsPay(false)
+          }
+          if (response.data.status === "NOT_ACCEPTABLE") {
+            setVac(true);
+          }else{
+            setVac(false)
           }
         })
         .catch((error) => {
@@ -348,7 +354,7 @@ const CourseDetailsArea = () => {
                        <></>
                       )}
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_CUSTOMER" && isPay == true ? (
+                      storedUserRole === "ROLE_CUSTOMER" && isPay == true && isVac == false ? (
                         <>
                           <Link
                             className="tp-vp-btn-green"
