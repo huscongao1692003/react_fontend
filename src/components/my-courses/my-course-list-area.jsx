@@ -31,7 +31,7 @@ const MyCourseListArea = () => {
           eachPage: 4,
           page: page,
         };
-        const url = `https://drawproject-production-012c.up.railway.app/api/v1/user/${userId}/courses?${new URLSearchParams(
+        const url = `https://drawproject-production-012c.up.railway.app/api/v1/users/${userId}/courses?${new URLSearchParams(
           queryParams
         )}`;
 
