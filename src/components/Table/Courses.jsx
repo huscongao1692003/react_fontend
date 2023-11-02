@@ -11,115 +11,156 @@ import {
   Paper,
 } from '@mui/material';
 import Spinner from 'react-bootstrap/Spinner';
-
+import { Spin, message, Space } from 'antd';
 
 export default function CourseTable() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-  const handleOpenCourse = (courseId) => {
-    axios.put(`https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/open`, null, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }).then((response) => {
-      console.log(`Course with ID ${courseId} has been opened.`);
-      axios
-      .get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((response) => {
-        setCourses(response.data.data);
-        setLoading(false);
-      });
-    }).catch((error) => {
-      console.error(`Error opening course with ID ${courseId}:`, error);
+  const error = () => {
+    message.error(err);
+    message.config({
+      maxCount: 3,
     });
+    setErr("");
   };
 
-  const handleDisableCourse = (courseId) => {
-    axios.put(`https://drawproject-production.up.railway.app/api/v1/admin/post/${courseId}`, null, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }).then((response) => {
-      alert(`Course with ID ${courseId} has been disabled.`);
-      axios
+  const success = () => {
+    message.success("Successful");
+    message.config({
+      maxCount: 1,
+    });
+    setSuccessMsg("");
+  };
+
+  const handleDelete = (courseId) => {
+    const loadingMessage = message.loading('Processing Delete...', 0);
+    setIsLoading(true);
+    axios
+      .delete(`https://drawproject-production.up.railway.app/api/v1/courses/${courseId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        setErr("");
+        setSuccessMsg("You have successfully deleted the course.");
+        fetchCourses();
+      })
+      .catch((error) => {
+        alert(`Error deleting course with ID ${courseId}:`, error);
+      });
+    loadingMessage();
+    setIsLoading(false);
+  };
+
+  const handleOpenCourse = (courseId) => {
+    setIsLoading(true);
+    axios
+      .put(`https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/open`, null, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        if (response.data.status === "NOT_ACCEPTABLE") {
+          setErr(response.data.message);
+        } else {
+          setErr("");
+          setSuccessMsg("You have successfully opened the course.");
+          fetchCourses();
+        }
+      })
+      .catch((error) => {
+        setErr("Error opening course.");
+      });
+    setIsLoading(false);
+  };
+
+  const fetchCourses = () => {
+    axios
       .get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
         setCourses(response.data.data);
         setLoading(false);
+      })
+      .catch((error) => {
+        setErr("Error fetching courses.");
       });
-    }).catch((error) => {
-      alert(`Error disabling course with ID ${courseId}:`, error);
-    });
   };
 
   useEffect(() => {
-    // Make an API request to fetch courses
-    axios.get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8',
-              { headers: {"Authorization" : `Bearer ${accessToken}`} }
-    ).then((response) => {
-      setCourses(response.data.data);
-      setLoading(false)
-    });
-    }, [accessToken]);
+    fetchCourses();
+  }, [accessToken]);
+
   if (loading) {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
-        <Spinner animation="grow" variant="light" size="lg"/>
+        <Spinner animation="grow" variant="light" size="lg" />
       </div>
-      );
-  }
-  return (
-    <div className="Table">
-      <h3>Courses</h3>
-      <TableContainer
-        component={Paper}
-        style={{ boxShadow: '0px 13px 20px 0px #80808029' }}
-        >
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Course Title</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Course ID</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Number of Lessons</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {courses.map((course) => (
-              <TableRow key={course.courseId}>
-                <TableCell component="th" scope="row">
-                  {course.courseTitle}
-                </TableCell>
-                <TableCell>{course.price}</TableCell>
-                <TableCell>{course.courseId}</TableCell>
-                <TableCell>{course.status}</TableCell>
-                <TableCell>{course.numLesson}</TableCell>
-                <TableCell>
-                  <Button
-                    onClick={() => handleOpenCourse(course.courseId)}
-                    variant="outlined"
-                    color="secondary"
-                    >
-                    Open Course
-                  </Button>
-                  <Button
-                    onClick={() => handleDisableCourse(course.courseId)}
-                    variant="outlined"
-                    color="secondary"
-                    >
-                    Disable Course
-                  </Button>
-                </TableCell>
-              </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
     );
-}
+  }
 
+  return (
+    <>
+      {err !== "" && successMsg === "" ? error() : err === "" && successMsg !== "" && success()}
+      <div className="Table">
+        <h3>Courses</h3>
+        <TableContainer
+          component={Paper}
+          style={{ boxShadow: '0px 13px 20px 0px #80808029' }}
+        >
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Course Title</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Course ID</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Number of Lessons</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {courses.map((course) => (
+                <TableRow key={course.courseId}>
+                  <TableCell component="th" scope="row">
+                    {course.courseTitle}
+                  </TableCell>
+                  <TableCell>{course.price}</TableCell>
+                  <TableCell>{course.courseId}</TableCell>
+                  <TableCell>{course.status}</TableCell>
+                  <TableCell>{course.numLesson}</TableCell>
+                  <TableCell>
+                    <Spin spinning={isLoading}>
+                      <Button
+                        onClick={() => handleOpenCourse(course.courseId)}
+                        variant="outlined"
+                        color="secondary"
+                      >
+                        Open Course
+                      </Button>
+                    </Spin>
+                  </TableCell>
+                  <TableCell>
+                    <Spin spinning={isLoading}>
+                      <Button
+                        onClick={() => handleDelete(course.courseId)}
+                        variant="outlined"
+                        color="secondary"
+                      >
+                        Delete Course
+                      </Button>
+                    </Spin>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </>
+  );
+}
