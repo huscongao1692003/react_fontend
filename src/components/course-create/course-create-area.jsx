@@ -109,9 +109,9 @@ function CourseCreateArea() {
     // Fetch API data for styles, categories, and skills
     const fetchData = async () => {
       try {
-        const stylesResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/style");
-        const categoriesResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/category");
-        const skillsResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/skill");
+        const stylesResponse = await axios.get("https://drawproject-production-012c.up.railway.app/api/v1/style");
+        const categoriesResponse = await axios.get("https://drawproject-production-012c.up.railway.app/api/v1/category");
+        const skillsResponse = await axios.get("https://drawproject-production-012c.up.railway.app/api/v1/skill");
 
         setStyles(stylesResponse.data.data);
         setCategories(categoriesResponse.data);

@@ -20,7 +20,7 @@ export default function CourseTable() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(3)
   const [students, setStudents] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Control the dropdown visibility
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
@@ -56,6 +56,7 @@ export default function CourseTable() {
       })
       .then((response) => {
         setStudents(response.data.data); // Update with the response data property
+        console.log(students);
         setSelectedCourse(course);
         setDropdownOpen(true); // Open the Bootstrap dropdown
       });
