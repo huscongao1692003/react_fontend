@@ -20,6 +20,11 @@ const RegisterhtmlForm = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const [isLoading, setIsloading] = useState(false);
     const [err, setErr] = useState("")
+    const checkLogin = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
+
+    if(checkLogin) {
+        router.push('/');
+    }
     
     const content = 
         [

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {useRouter} from 'next/router';
 import Alert from 'react-bootstrap/Alert';
@@ -16,6 +16,11 @@ const LoginForm = () => {
     const [err, setErr] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
     const [isLoading, setIsloading] = useState(false);
+    const checkLogin = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
+
+    if(checkLogin) {
+        router.push('/');
+    }
 
     const error = () => {
         message.error("Invalid your username or password")
