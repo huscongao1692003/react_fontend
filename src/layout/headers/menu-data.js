@@ -11,11 +11,11 @@ const menu_data = [
   },
   {
     id: 2,
-    title: "Contact",
+    title: "Contact Us",
     link: "/contact",
     has_dropdown: true,
     sub_menus: [
-      { link: "/about", title: "About" },
+      // { link: "/about", title: "About" },
       { link: "/contact", title: "Contact" },
       { link: "/faq", title: "FAQ" },
       // { link: "/register", title: "Register" },
@@ -58,4 +58,127 @@ const menu_data = [
   },
 
 ];
+
+const menu_role_customer = [
+  {
+    key: '1',
+    label: (
+      <a href="/Settings">
+        Profile
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a href="/create-post">
+        Create-post
+      </a>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <a href="/view-post">
+        View-post
+      </a>
+    ),
+  },
+  {
+    key: '4',
+    label: (
+      <a href="/my-courses">
+        My courses
+      </a>
+    ),
+  },
+  {
+    key: '5',
+    label: (
+      <a href="/my-orders">
+        My orders
+      </a>
+    ),
+  },
+]
+
+const menu_role_manage = [
+  {
+    key: '1',
+    label: (
+      <a href="/Settings">
+        Profile
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a href="/dashboard">
+        Dashboard
+      </a>
+    ),
+  },
+]
+
+const menu_role_instructor = [
+  {
+    key: '1',
+    label: (
+      <a href="/Settings">
+        Profile
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a href="/create-post">
+        Create-post
+      </a>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <a href="/view-post">
+        View-post
+      </a>
+    ),
+  },
+  {
+    key: '4',
+    label: (
+      <a href="/view-instructor-courses">
+        My courses
+      </a>
+    ),
+  },
+  {
+    key: '5',
+    label: (
+      <a href="/course-create">
+        Create course
+      </a>
+    ),
+  },
+  {
+    key: '6',
+    label: (
+      <a href="/my-collection">
+        Edit Collection
+      </a>
+    ),
+  },
+  {
+    key: '7',
+    label: (
+      <a href="/my-orders">
+        Dashboard
+      </a>
+    ),
+  },
+]
+
 export default menu_data;
+export { menu_role_customer, menu_role_instructor, menu_role_manage}

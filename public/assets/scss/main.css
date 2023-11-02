@@ -49750,6 +49750,14 @@ img {
 }
 
 /* pulse btn */
+.custom-dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-menu {
+  animation: dropdownFadeIn 0.5s ease-in-out;
+}
+
 .pulse-btn {
   display: inline-block;
   width: 80px;
@@ -50274,6 +50282,16 @@ img {
   }
   100% {
     transform: translateX(0px);
+  }
+}
+@keyframes dropdownFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(5);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(10);
   }
 }
 #loading {

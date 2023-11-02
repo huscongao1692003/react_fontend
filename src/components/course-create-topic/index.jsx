@@ -7,8 +7,8 @@ const CourseCreateTopic = ({ courseId }) => {
   return (
     <>
       <Breadcrumb
-        title="Create Topic"
-        subtitle="Create Topic"
+        title="Create Lesson"
+        subtitle="Create Lesson"
         isDbbl="Course"
       />
       <CourseCreateTopicArea courseId={courseId} />

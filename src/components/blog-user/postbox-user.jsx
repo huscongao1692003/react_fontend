@@ -7,6 +7,8 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { Pagination } from "@mui/material";
 import PostNotFound from "../error/post-not-found";
+import { Spin, message, Space } from 'antd';
+
 
 const PostboxUser = () => {
   const router = useRouter();
@@ -14,7 +16,26 @@ const PostboxUser = () => {
   const [deletingPost, setDeletingPost] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
   const [page, setPage] = useState(1);
+  const [err, setErr] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [isLoading, setIsloading] = useState(false);
   const [statu, setStatu] = useState(null);
+
+  const error = () => {
+    message.error("Somethings error!!!")
+    message.config({
+        maxCount: 3
+    })
+    setErr("");
+  };
+
+  const success = () => {
+    message.success("Delete post successful")
+    message.config({
+        maxCount: 1
+    })
+    setSuccessMsg("");
+  }
 
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
@@ -54,6 +75,10 @@ const PostboxUser = () => {
   };
 
   const handlePostClose = async (postId) => {
+    const loadingMessage = message.loading('Processing Deleting Post...', 0);
+        setIsloading(true);
+      
+
     try {
       setDeletingPost(true);
       const response = await axios.put(
@@ -64,17 +89,20 @@ const PostboxUser = () => {
         }
       );
 
-      console.log("Post deleted successfully:", response.data);
-      alert(response.data);
+      setErr("");
+      setSuccessMsg(response.data);
       setDeletingPost(false);
         setStatu(200);
 
 
       // Optionally, you can update the UI or remove the deleted post from the list.
     } catch (error) {
-      console.error("Failed to delete the post:", error);
+      setSuccessMsg("");
+      setErr(error);
       setDeletingPost(false);
     }
+    loadingMessage();
+    setIsloading(false);
     fetchUpdatedData();
   };
 
@@ -98,6 +126,10 @@ const PostboxUser = () => {
 
   return (
     <>
+     {
+                (err !== "" && successMsg === "") ? error() : (err === "" && successMsg !== "") && success()
+            }
+          
       <div>
         <div
           className="postbox__area pt-120 pb-120 wow fadeInUp"
@@ -143,6 +175,7 @@ const PostboxUser = () => {
                             <p>{post.description}</p>
                           </div>
                           <div className="postbox__read-more">
+                          <Spin spinning={isLoading}>
                             <Button
                               className="tp-btn"
                               onClick={() => handlePostClose(post.postId)}
@@ -160,6 +193,7 @@ const PostboxUser = () => {
                                 "Close Post"
                               )}
                             </Button>
+                            </Spin>
                           </div>
                         </div>
                       </article>

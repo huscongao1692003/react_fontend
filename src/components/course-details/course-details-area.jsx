@@ -2,7 +2,12 @@ import VideoPopup from "@/src/modals/video-popup";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
+import PostComment from "../form/post-comment";
 import { useState, useEffect } from "react";
+import Spinner from "react-bootstrap/Spinner";
+import { Pagination } from "@mui/material";
+
+
 
 const CourseDetailsArea = () => {
   const [courseData, setCourseData] = useState({});
@@ -11,7 +16,10 @@ const CourseDetailsArea = () => {
   const { id } = router.query;
   const [feedbackData, setFeedbackData] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [edit,setEdit] = useState(false);
+  const [loading,isLoading] = useState(false)
   const [isPay,setIsPay]= useState(false);
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
@@ -22,14 +30,23 @@ const CourseDetailsArea = () => {
   const [avatar, setAvatar] = useState("/assets/img/icon/course-avata-05.png");
 
   console.log(accessToken);
-
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+  const queryParams = {
+    eachPage: 4,
+    page: page,
+  };
 
   useEffect(() => {
+    isLoading(true)
    if (storedUserRole === "ROLE_INSTRUCTOR") {
       axios
         .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
+          isLoading(false)
+
           if (response.data.status === "ACCEPTED") {
             setEdit(true);
           }else{
@@ -37,6 +54,8 @@ const CourseDetailsArea = () => {
           }
         })
         .catch((error) => {
+          isLoading(false)
+
           console.error("Error fetching course data:", error);
         });
     }
@@ -45,6 +64,8 @@ const CourseDetailsArea = () => {
         .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
+          isLoading(false)
+
           if (response.data.status === "ACCEPTED") {
             setIsPay(true);
           }else{
@@ -52,6 +73,8 @@ const CourseDetailsArea = () => {
           }
         })
         .catch((error) => {
+          isLoading(false)
+
           console.error("Error fetching course data:", error);
         });
     }
@@ -60,10 +83,11 @@ const CourseDetailsArea = () => {
      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}`)
      .then((response) => {
        setCourseData(response.data.data);
-
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback?page=1&eachPage=4`
+            `https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
+              queryParams
+            )}`
           )
           .then((responseFeedback) => {
             const decodedData = responseFeedback.data.data.map((feedback) => ({
@@ -72,10 +96,14 @@ const CourseDetailsArea = () => {
             if (decodedData.avatar != null) {
               setAvatar(decodedData.avatar);
             }
+            setTotalPage(response.data.totalPage);
             setFeedbackData(decodedData);
+            isLoading(false)
+
           })
           .catch((error) => {
             console.log(error);
+            isLoading(false)
           });
 
         const instructorId = response.data.data.instructorId;
@@ -113,6 +141,16 @@ const CourseDetailsArea = () => {
 
     return starIcons;
   };
+  if(loading == true){
+    return (
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ paddingTop: "300px", paddingBottom: "300px" }}
+      >
+        <Spinner animation="grow" variant="success" size="lg" />
+      </div>
+    );
+  }
   return (
     <>
       <section
@@ -266,10 +304,16 @@ const CourseDetailsArea = () => {
                           </div>
                         </div>
                       ))}
+                      <Pagination
+                page={page}
+                count={totalPage}
+                onChange={handlePageChange}
+              />
                   </div>
                 </div>
               </div>
             </div>
+      
             <div className="col-lg-4 col-md-12">
               <div className="c-details-sidebar">
                 <div className="c-video-thumb p-relative mb-25">
@@ -322,16 +366,11 @@ const CourseDetailsArea = () => {
                         <>
                         <Link
                           className="tp-vp-btn"
-                          href={`/check-out?idCourse=${courseData.courseId}`}
+                          href={`/create-lesson?idCourse=${id}`}
                         >
                           Create Lesson
                         </Link>
-                        <Link
-                          className="tp-vp-btn"
-                          href={`/check-out?idCourse=${courseData.courseId}`}
-                        >
-                          Edit Course
-                        </Link>
+                      
                         </>
                       ) : (
                         <></>
@@ -397,6 +436,15 @@ const CourseDetailsArea = () => {
             </div>
           </div>
         </div>
+        {isLoggedIn === "true" &&
+                      storedUserRole === "ROLE_CUSTOMER" && isPay == true ? (
+                        <>
+                          <PostComment />
+                        </>
+                      ) : (
+                        <></>
+                      )}
+      
       </section>
 
       {/* video modal start */}

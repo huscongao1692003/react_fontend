@@ -1,7 +1,14 @@
 @use '../utils' as *;
 
 /* pulse btn */
+.custom-dropdown-toggle::after {
+	display: none;
+  }
 
+.dropdown-menu {
+	animation: dropdownFadeIn 0.5s ease-in-out ;
+}
+  
 .pulse-btn{
 	display: inline-block;
 	width: 80px;
