@@ -22,7 +22,7 @@ const CheckoutArea = () => {
       }));
 
       axios
-        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse}`)
+        .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${idCourse}`)
         .then((response) => {
           setCourseData(response.data.data);
           console.log(response.data.data);
@@ -40,7 +40,7 @@ const CheckoutArea = () => {
 
         try {
            const response = await axios.post(
-              "https://drawproject-production.up.railway.app/api/v1/pay",
+              "https://drawproject-production-012c.up.railway.app/api/v1/pay",
               {
                  description: "test",
                  courseId: courseData.courseId,

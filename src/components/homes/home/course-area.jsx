@@ -16,7 +16,7 @@ const CourseArea = () => {
   useEffect(() => {
     // Fetch data from the API when the component mounts
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/courses/top-courses?limit=3')
+      .get('https://drawproject-production-012c.up.railway.app/api/v1/courses/top-courses?limit=3')
       .then((response) => {
         const data = response.data.data;
         setCourses(data);

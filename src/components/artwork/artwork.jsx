@@ -11,12 +11,10 @@ function Artwork() {
 
   const fileInputRef = useRef(null);
   const router = useRouter();
-  const { userId } = router.query;
+  const { id } = router.query;
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [artworkData, setArtworkData] = useState([]); // State for artwork data
-
-  const { id } = router.query;
+  const [artworkData, setArtworkData] = useState([]);
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -38,21 +36,20 @@ function Artwork() {
         console.error("Error fetching categories:", error);
       }
     };
-
-    const fetchArtworkData = async () => {
-      try {
-        const response = await axios.get(
-          `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/artworks?page=1&eachPage=5&categoryId=0`
-        );
-        setArtworkData(response.data.data);
-      } catch (error) {
-        console.error("Error fetching artwork data:", error);
+    async function fetchArtworkData() {
+        try {
+          const response = await axios.get(
+            `https://drawproject-production.up.railway.app/api/v1/instructor/${id}/artworks`
+          );
+          setArtworkData(response.data.data);
+        } catch (error) {
+          console.error("Error fetching artwork data:", error);
+        }
       }
-    };
-
-    fetchArtworkData();
+  
+      fetchArtworkData();
     fetchCategories();
-  }, [userId]);
+  }, [id]);
 
   const submitPostData = async () => {
     try {
@@ -99,7 +96,7 @@ function Artwork() {
               />
 
               <img
-                src={artwork?.requestImage ? URL.createObjectURL(artwork.requestImage) : "https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"}
+                src="https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"
                 alt=""
                 className="img-account-profile rounded-circle mb-2"
               />
@@ -164,16 +161,17 @@ function Artwork() {
           </div>
           <h2>My Artwork</h2>
           <div className="row">
-            {artworkData.map((item, i) => (
-              <div key={i} className="col-xl-6 col-lg-12 col-md-6">
-                <div className="tpcourse mb-40">
-                  <div className="tpcourse__thumb p-relative w-img fix">
-                    <img src={item.image} alt="artwork-thumb" />
-                  </div>
-                  <div className="tpcourse__content-2">
-                    <div className="tpcourse__category mb-10">
-                      {item.categoryName}
-                    </div>
+            {artworkData.map((artwork) => (
+              <div key={artwork.artworkId} className="col-md-4 mb-4">
+                <div className="card">
+                  <img
+                    src={artwork.image}
+                    alt={`Artwork ${artwork.artworkId}`}
+                    className="card-img-top"
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{artwork.categoryName}</h5>
+                    <p className="card-text">{artwork.status}</p>
                   </div>
                 </div>
               </div>

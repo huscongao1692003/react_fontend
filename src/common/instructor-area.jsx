@@ -86,7 +86,7 @@ const InstructorArea = ({ style_2 }) => {
 
   useEffect(() => {
     axios
-      .get("https://drawproject-production.up.railway.app/api/v1/instructor/top-instructors")
+      .get("https://drawproject-production-012c.up.railway.app/api/v1/instructor/top-instructors")
       .then((response) => {
         setInstructorData(response.data.data);
         setLoading(false);

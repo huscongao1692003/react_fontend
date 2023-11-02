@@ -7,8 +7,6 @@ import { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { Pagination } from "@mui/material";
 
-
-
 const CourseDetailsArea = () => {
   const [courseData, setCourseData] = useState({});
   const [instructorData, setInstructorData] = useState("");
@@ -18,10 +16,10 @@ const CourseDetailsArea = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [edit,setEdit] = useState(false);
-  const [loading,isLoading] = useState(false)
-  const [isPay,setIsPay]= useState(false);
-  const [isVac, setVac] = useState(false)
+  const [edit, setEdit] = useState(false);
+  const [loading, isLoading] = useState(false);
+  const [isPay, setIsPay] = useState(false);
+  const [isVac, setVac] = useState(false);
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
   const isLoggedIn =
@@ -31,68 +29,70 @@ const CourseDetailsArea = () => {
   const [avatar, setAvatar] = useState("/assets/img/icon/course-avata-05.png");
 
   console.log(accessToken);
+
   const handlePageChange = (event, value) => {
-    setPage(value);
-  };
-  const queryParams = {
-    eachPage: 4,
-    page: page,
+    setPage(value); // This should update the page state
   };
 
   useEffect(() => {
-    isLoading(true)
-   if (storedUserRole === "ROLE_INSTRUCTOR") {
+    isLoading(true);
+    if (storedUserRole === "ROLE_INSTRUCTOR") {
       axios
-        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
+        .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
-          isLoading(false)
+          isLoading(false);
 
           if (response.data.status === "ACCEPTED") {
             setEdit(true);
-          }else{
-            setEdit(false)
+          } else {
+            setEdit(false);
           }
         })
         .catch((error) => {
-          isLoading(false)
+          isLoading(false);
 
           console.error("Error fetching course data:", error);
         });
     }
     if (storedUserRole === "ROLE_CUSTOMER") {
       axios
-        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
+        .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
-          isLoading(false)
+          isLoading(false);
 
           if (response.data.status === "ACCEPTED") {
             setIsPay(true);
-          }else{
-            setIsPay(false)
+          } else {
+            setIsPay(false);
           }
           if (response.data.status === "NOT_ACCEPTABLE") {
             setVac(true);
-          }else{
-            setVac(false)
+          } else {
+            setVac(false);
           }
         })
         .catch((error) => {
-          isLoading(false)
+          isLoading(false);
 
           console.error("Error fetching course data:", error);
         });
     }
 
    axios
-     .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}`)
+     .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}`)
      .then((response) => {
        setCourseData(response.data.data);
+       const queryParams = {
+        eachPage: 4,
+        page: page,
+        
+      };
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
-              queryParams
+            `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
+              queryParams 
             )}`
           )
           .then((responseFeedback) => {
@@ -102,20 +102,20 @@ const CourseDetailsArea = () => {
             if (decodedData.avatar != null) {
               setAvatar(decodedData.avatar);
             }
-            setTotalPage(response.data.totalPage);
+            setTotalPage(responseFeedback.data.totalPage);
+            console.log(responseFeedback.data.totalPage)
             setFeedbackData(decodedData);
-            isLoading(false)
-
+            isLoading(false);
           })
           .catch((error) => {
             console.log(error);
-            isLoading(false)
+            isLoading(false);
           });
 
         const instructorId = response.data.data.instructorId;
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/instructor/${instructorId}`
+            `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${instructorId}`
           )
           .then((instructorResponse) => {
             setInstructorData(instructorResponse.data);
@@ -127,7 +127,7 @@ const CourseDetailsArea = () => {
       .catch((error) => {
         console.error("Error fetching course data:", error);
       });
-  }, [id]);
+  }, [id, page]);
   const renderStarIcons = (averageStar) => {
     const starIcons = [];
     const roundedAverageStar = Math.round(averageStar); // Round to the nearest whole number
@@ -147,7 +147,7 @@ const CourseDetailsArea = () => {
 
     return starIcons;
   };
-  if(loading == true){
+  if (loading == true) {
     return (
       <div
         className="d-flex flex-column justify-content-center align-items-center"
@@ -241,50 +241,7 @@ const CourseDetailsArea = () => {
                   <p>{courseData.description}</p>
                   <p>{courseData.information}</p>
                 </div>
-                {/* <div className="cor-details-instructor mb-40">
-                        <h4 className="tp-c-details-title mb-40">Instructor</h4>
-                        <div className="course-instructor-details d-flex f-wrap align-items-center">
-                           <div className="course-avata mr-30 mb-20">
-                              <img src="/assets/img/course/c-details-ava-thumb-01.jpg" alt="avata-thumb" />
-                           </div>
-                           <div className="course-avatar-details mb-20">
-                              <h5 className="c-avata-title mb-10">Hossain Mahmud</h5>
-                              <p>Award Winning Chemical & User Interface Design Training</p>
-                              <div className="c-details-list mb-5">
-                                 <ul className="d-flex align-items-center">
-                                    <li>
-                                       <div className="rating-gold d-flex align-items-center">
-                                          <p>4.7</p>
-                                          <i className="fi fi-ss-star"></i>
-                                          <i className="fi fi-ss-star"></i>
-                                          <i className="fi fi-ss-star"></i>
-                                          <i className="fi fi-ss-star"></i>
-                                          <i className="fi fi-rs-star"></i>
-                                          <span>(125)</span>
-                                       </div>
-                                    </li>
-                                    <li>
-                                       <img src="/assets/img/icon/c-details-01.png" alt="meta-icon" />
-                                       <span>35 Classes</span>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <div className="c-details-stu">
-                                 <ul>
-                                    <li className="d-flex align-items-center">
-                                       <img src="/assets/img/icon/c-details-02.png" alt="meta-icon" />{' '}
-                                       <span>2,395,687 Students</span>
-                                    </li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
-                        <p>
-                           Synergistically foster 24/7 leadership rather than scalable platforms. Conveniently visualize
-                           installed base products before interactive results. Collaboratively restore corporate experiences
-                           and open-source applications. Proactively mesh cooperative growth strategies.
-                        </p>
-                     </div> */}
+
                 <div className="c-details-review pb-15">
                   <div className="c-review-title-wrapper">
                     <h5 className="c-review-title mb-40">Review</h5>
@@ -308,18 +265,20 @@ const CourseDetailsArea = () => {
                             </div>
                             <p>{feedback.feedbackInformation}</p>
                           </div>
+                          
                         </div>
+                        
                       ))}
-                      <Pagination
-                page={page}
-                count={totalPage}
-                onChange={handlePageChange}
-              />
+                    <Pagination
+                      page={page}
+                      count={totalPage}
+                      onChange={handlePageChange}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-      
+
             <div className="col-lg-4 col-md-12">
               <div className="c-details-sidebar">
                 <div className="c-video-thumb p-relative mb-25">
@@ -343,7 +302,8 @@ const CourseDetailsArea = () => {
                     </h3>
                     <div className="cd-pricing-btn text-center mb-30">
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_CUSTOMER" && isPay == false ? (
+                      storedUserRole === "ROLE_CUSTOMER" &&
+                      isPay == false ? (
                         <Link
                           className="tp-vp-btn"
                           href={`/check-out?idCourse=${courseData.courseId}`}
@@ -351,10 +311,12 @@ const CourseDetailsArea = () => {
                           Check Out
                         </Link>
                       ) : (
-                       <></>
+                        <></>
                       )}
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_CUSTOMER" && isPay == true && isVac == false ? (
+                      storedUserRole === "ROLE_CUSTOMER" &&
+                      isPay == true &&
+                      isVac == false ? (
                         <>
                           <Link
                             className="tp-vp-btn-green"
@@ -368,15 +330,15 @@ const CourseDetailsArea = () => {
                       )}
 
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_INSTRUCTOR" && edit == true ? (
+                      storedUserRole === "ROLE_INSTRUCTOR" &&
+                      edit == true ? (
                         <>
-                        <Link
-                          className="tp-vp-btn"
-                          href={`/create-lesson?idCourse=${id}`}
-                        >
-                          Create Lesson
-                        </Link>
-                      
+                          <Link
+                            className="tp-vp-btn"
+                            href={`/create-lesson?idCourse=${id}`}
+                          >
+                            Create Lesson
+                          </Link>
                         </>
                       ) : (
                         <></>
@@ -443,14 +405,16 @@ const CourseDetailsArea = () => {
           </div>
         </div>
         {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_CUSTOMER" && isPay == true ? (
-                        <>
-                          <PostComment />
-                        </>
-                      ) : (
-                        <></>
-                      )}
-      
+        storedUserRole === "ROLE_CUSTOMER" &&
+        isPay == true ? (
+          <>
+          <div className="container">
+            <PostComment />
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </section>
 
       {/* video modal start */}

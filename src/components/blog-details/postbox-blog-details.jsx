@@ -30,7 +30,7 @@ const PostboxBlogDetails = () => {
 
 if(postId){
   axios
-    .get(`https://drawproject-production.up.railway.app/api/v1/post/${postId}`)
+    .get(`https://drawproject-production-012c.up.railway.app/api/v1/post/${postId}`)
     .then((response) => {
       const post = response.data; // Assuming it returns a single post
       const decodedPost = {
@@ -73,7 +73,6 @@ if(postId){
       >
         <div className="container">
           <div className="row">
-            <div className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
               <div className="postbox__wrapper pr-20">
 
 
@@ -158,15 +157,12 @@ if(postId){
  */}
 
               </div>
-            </div>
-            <div className="col-xxl-4 col-xl-4 col-lg-5 col-md-12">
+            {/* <div className="col-xxl-4 col-xl-4 col-lg-5 col-md-12">
               <div className="sidebar__wrapper">
                 <BlogSearch />
-                <RecentPost />
                 <Category />
-                {/* <Tags /> */}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ const Sidebar = ({ category, setcategory }) => {
 
   useEffect(() => {
     axios
-      .get("https://drawproject-production.up.railway.app/api/v1/category")
+      .get("https://drawproject-production-012c.up.railway.app/api/v1/category")
       .then((response) => {
         setCategoryData(response.data);
       })

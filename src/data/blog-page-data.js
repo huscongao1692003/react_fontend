@@ -2,7 +2,7 @@
 // import React from "react";
 
 // const blog_page_data = async (blog_page_data, limit) => {
-//   const res = await axios.get('https://drawproject-production.up.railway.app/api/v1/post', {
+//   const res = await axios.get('https://drawproject-production-012c.up.railway.app/api/v1/post', {
 //     params: {
 //       limit,
 //     },

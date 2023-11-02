@@ -19,7 +19,7 @@ const InstructorPortfolioArea = () => {
     const fetchInstructorData = async () => {
       try {
         const response = await axios.get(
-          `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}`
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}`
         );
         setInstructorData(response.data);
       } catch (error) {
@@ -30,7 +30,7 @@ const InstructorPortfolioArea = () => {
     const fetchCoursesData = async () => {
       try {
         const response = await axios.get(
-          `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=4`
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=4`
         );
         setCoursesData(response.data.data);
       } catch (error) {

@@ -27,7 +27,7 @@ const PostComment = () => {
   
     if (accessToken) {
       axios
-        .get(`https://drawproject-production.up.railway.app/api/v1/users/id`, {
+        .get(`https://drawproject-production-012c.up.railway.app/api/v1/users/id`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
@@ -50,7 +50,7 @@ const PostComment = () => {
     try {
       const loadingMessage = message.loading('Processing feedback...', 0);
         setIsloading(true);
-      const response = await axios.post(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback`, feedbackData,
+      const response = await axios.post(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/feedback`, feedbackData,
       { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       loadingMessage("Feedback successfull");

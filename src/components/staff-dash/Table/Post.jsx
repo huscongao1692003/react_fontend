@@ -11,11 +11,11 @@ const User = () => {
 
     
     const handleDisablePost = (postId) => {
-        axios.put(`https://drawproject-production.up.railway.app/api/v1/admin/post/${postId}`,null, {
+        axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/admin/post/${postId}`,null, {
             headers: { "Authorization": `Bearer ${accessToken}` },
         })
   .then((response) => {
-      axios.get('https://drawproject-production.up.railway.app/api/v1/admin/posts', {
+      axios.get('https://drawproject-production-012c.up.railway.app/api/v1/admin/posts', {
           headers: { "Authorization": `Bearer ${accessToken}` }
       })
    .then((response) => {
@@ -39,7 +39,7 @@ const User = () => {
     useEffect(() => {
         // Update the endpoint and request method to POST
         axios
-      .post('https://drawproject-production.up.railway.app/api/v1/admin/posts', {
+      .post('https://drawproject-production-012c.up.railway.app/api/v1/admin/posts', {
           // You can provide request data here, if needed
       }, {
           headers: { "Authorization": `Bearer ${accessToken}` }

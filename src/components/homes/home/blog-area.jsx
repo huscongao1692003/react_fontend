@@ -23,7 +23,7 @@ const BlogArea = () => {
 
   useEffect(() => {
   axios
-      .get('https://drawproject-production.up.railway.app/api/v1/post?page=1&perPage=3')
+      .get('https://drawproject-production-012c.up.railway.app/api/v1/post?page=1&perPage=3')
       .then((response) => {
         const decodedData = response.data.data.map((post) => ({
           ...post,

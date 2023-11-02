@@ -10,11 +10,11 @@ const User = () => {
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
     const handleDisablePost = (postId) => {
-        axios.put(`https://drawproject-production.up.railway.app/api/v1/admin/post/${postId}`, null, {
+        axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/admin/post/${postId}`, null, {
             headers: { "Authorization": `Bearer ${accessToken}` },
         })
             .then((response) => {
-                axios.get('https://drawproject-production.up.railway.app/api/v1/admin/posts', {
+                axios.get('https://drawproject-production-012c.up.railway.app/api/v1/admin/posts', {
                     headers: { "Authorization": `Bearer ${accessToken}` }
                 })
                     .then((response) => {
@@ -37,7 +37,7 @@ const User = () => {
 
     useEffect(() => {
         axios
-            .get('https://drawproject-production.up.railway.app/api/v1/admin/posts', {
+            .get('https://drawproject-production-012c.up.railway.app/api/v1/admin/posts', {
                 headers: { "Authorization": `Bearer ${accessToken}` }
             })
             .then((response) => {

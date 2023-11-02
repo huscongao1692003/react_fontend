@@ -1,5 +1,5 @@
 import axios, {isCancel, AxiosError} from 'axios';
-axios.get('https://drawproject-production.up.railway.app/api/v1/post')
+axios.get('https://drawproject-production-012c.up.railway.app/api/v1/post')
   .then(function (response) {
      var result = response.data;
     console.log(result);

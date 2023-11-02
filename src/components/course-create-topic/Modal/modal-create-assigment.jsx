@@ -30,7 +30,7 @@ function CreateAssignment({ courseData, setCourseData }) {
       newLessons.push(lesson);
     });
 
-    const url = `https://drawproject-production.up.railway.app/api/v1/assignments`;
+    const url = `https://drawproject-production-012c.up.railway.app/api/v1/assignments`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
       "Content-Type": "application/json",

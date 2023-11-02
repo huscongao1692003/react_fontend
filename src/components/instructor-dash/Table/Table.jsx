@@ -21,7 +21,7 @@ export default function CustomerTable() {
 
 
     // Make an API request to fetch orders
-    axios.get('https://drawproject-production.up.railway.app/api/v1/instructor/orders',
+    axios.get('https://drawproject-production-012c.up.railway.app/api/v1/instructor/orders',
               { headers: {"Authorization" : `Bearer ${accessToken}`} }
     ).then((response) => {
       setOrders(response.data);

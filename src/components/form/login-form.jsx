@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {useRouter} from 'next/router';
 import { Spin, message, Space } from 'antd';
@@ -14,7 +14,12 @@ const LoginForm = () => {
     const [userRole, setUserRole] = useState("");
     const [err, setErr] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
-    const [isLoading, setIsloading] = useState(false); 
+    const [isLoading, setIsloading] = useState(false);
+    const checkLogin = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
+
+    if(checkLogin) {
+        router.push('/');
+    }
 
     const error = () => {
         message.error("Invalid your username or password")
@@ -39,7 +44,7 @@ const LoginForm = () => {
 
         try {
             const response = await axios.post(
-                "https://drawproject-production.up.railway.app/api/auth/login",
+                "https://drawproject-production-012c.up.railway.app/api/auth/login",
                 {
                     username: username,
                     pwd: pwd,
@@ -47,7 +52,7 @@ const LoginForm = () => {
             );
             const {data} = response;
             const responseRole = await axios.get(
-                "https://drawproject-production.up.railway.app/api/v1/dashboard",
+                "https://drawproject-production-012c.up.railway.app/api/v1/dashboard",
                 {headers: {Authorization: `Bearer ${data.accessToken}`}}
             );
 
@@ -58,7 +63,7 @@ const LoginForm = () => {
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("roles", rolesString);
             const responseAvatar = await axios.get (
-                "https://drawproject-production.up.railway.app/api/v1/users/avatar",
+                "https://drawproject-production-012c.up.railway.app/api/v1/users/avatar",
                 {headers: {Authorization: `Bearer ${data.accessToken}`}}
             )
             localStorage.setItem("avatar", responseAvatar.data);

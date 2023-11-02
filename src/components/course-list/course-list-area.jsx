@@ -58,7 +58,7 @@ const CourseListArea = () => {
   useEffect(() => {
     axios
       .get(
-        "https://drawproject-production.up.railway.app/api/v1/courses/feature"
+        "https://drawproject-production-012c.up.railway.app/api/v1/courses/feature"
       )
       .then((response) => {
         setCategoryData(response.data.data.Category);
@@ -102,7 +102,7 @@ const CourseListArea = () => {
         
         
 
-        const url = `https://drawproject-production.up.railway.app/api/v1/courses?${new URLSearchParams(
+        const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses?${new URLSearchParams(
           queryParams
         )}`;
 

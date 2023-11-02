@@ -12,7 +12,7 @@ const CourseArea = () => {
 
   useEffect(() => {
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/courses?page=1&eachPage=4&star=0')
+      .get('https://drawproject-production-012c.up.railway.app/api/v1/courses?page=1&eachPage=4&star=0')
       .then((response) => {
         const data = response.data.data;
         setCourses(data);

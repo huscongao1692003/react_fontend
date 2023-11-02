@@ -17,7 +17,7 @@ function CourseCreateArea() {
 
   const submitReportData = async () => {
     try {
-      const url = "https://drawproject-production.up.railway.app/api/v1/courses/student/report";
+      const url = "https://drawproject-production-012c.up.railway.app/api/v1/courses/student/report";
       const formData = new FormData();
       formData.append("studentId", reportData.studentId);
       formData.append("courseId", reportData.courseId);

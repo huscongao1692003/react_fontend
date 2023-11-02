@@ -10,7 +10,7 @@ const RecentPost = () => {
 
   useEffect(() => {
     axios
-      .get("https://drawproject-production.up.railway.app/api/v1/instructor/1")
+      .get("https://drawproject-production-012c.up.railway.app/api/v1/instructor/1")
       .then((response) => {
         setBlogData(response.data.data);
       })

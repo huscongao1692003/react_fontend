@@ -56,7 +56,7 @@ const PostboxUser = () => {
   const fetchUpdatedData = async () => {
     try {
       const response = await axios.get(
-        "https://drawproject-production.up.railway.app/api/v1/users/posts",
+        "https://drawproject-production-012c.up.railway.app/api/v1/users/posts",
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -82,7 +82,7 @@ const PostboxUser = () => {
     try {
       setDeletingPost(true);
       const response = await axios.put(
-        `https://drawproject-production.up.railway.app/api/v1/post/${postId}`,
+        `https://drawproject-production-012c.up.railway.app/api/v1/post/${postId}`,
         null,
         {
           headers: { Authorization: `Bearer ${accessToken}` },

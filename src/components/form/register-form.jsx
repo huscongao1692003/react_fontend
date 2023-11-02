@@ -20,6 +20,11 @@ const RegisterhtmlForm = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const [isLoading, setIsloading] = useState(false);
     const [err, setErr] = useState("")
+    const checkLogin = typeof window !== 'undefined' ? localStorage.getItem('isLoggedIn') : null;
+
+    if(checkLogin) {
+        router.push('/');
+    }
     
     const content = 
         [
@@ -138,7 +143,7 @@ const RegisterhtmlForm = () => {
 
         try {
             const response = await axios.post(
-                "https://drawproject-production.up.railway.app/api/auth/register",
+                "https://drawproject-production-012c.up.railway.app/api/auth/register",
                 formData
             );
             const delayDuration = 2000;

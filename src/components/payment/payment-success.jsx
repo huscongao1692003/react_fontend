@@ -27,7 +27,7 @@ const PaymentSuccess = () => {
 
         try {
             (async () => {
-                const courseResponse = await axios.get(`https://drawproject-production.up.railway.app/api/v1/courses/${idCourse.id}`, {
+                const courseResponse = await axios.get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${idCourse.id}`, {
                     headers: { "Authorization": `Bearer ${accessToken}` }
                 });
 
@@ -39,7 +39,7 @@ const PaymentSuccess = () => {
                     totalPrice: courseResponse.data.data.price,
                 };
                 const paymentResponse = await axios
-                .post(`https://drawproject-production.up.railway.app/api/v1/pay/success?paymentId=${paymentId}&token=${token}&PayerID=${PayerID}`,
+                .post(`https://drawproject-production-012c.up.railway.app/api/v1/pay/success?paymentId=${paymentId}&token=${token}&PayerID=${PayerID}`,
                      paymentData,
                     {headers: { "Authorization": `Bearer ${accessToken}` }
                 });

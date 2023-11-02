@@ -43,7 +43,7 @@ const Postbox = () => {
           categoryId: category
         };
 
-        const url = `https://drawproject-production.up.railway.app/api/v1/post/search?${new URLSearchParams(
+        const url = `https://drawproject-production-012c.up.railway.app/api/v1/post/search?${new URLSearchParams(
           queryParams
         )}`;
 
