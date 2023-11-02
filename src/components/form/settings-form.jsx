@@ -124,7 +124,7 @@ const Settings = () => {
                 
                     {previewImage && (
                       <img
-                        src={previewImage|| avatar}
+                        src={previewImage|| avatar || "/assets/img/zdJeuso-_400x400.jpg"}
                         alt="Avatar Preview"
                         style={{ scale: 2, width:"100%", height:"100%" }}
                       />
