@@ -13,7 +13,7 @@ const Settings = () => {
   const [selectedSkillId, setSelectedSkillId] = useState(1);
   const [skills, setSkills] = useState([]); // State to store skills fetched from the API
   const [selectedFile, setSelectedFile] = useState(null);
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -122,9 +122,9 @@ const Settings = () => {
                   <label>Profile Picture</label>
                   <div className="circular-avatar">
                 
-                    {previewImage && (
+                    {previewImage != null && (
                       <img
-                        src={previewImage|| avatar}
+                        src={previewImage || avatar || "/assets/img/zdJeuso-_400x400.jpg"}
                         alt="Avatar Preview"
                         style={{ scale: 2, width:"100%", height:"100%" }}
                       />

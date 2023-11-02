@@ -14,7 +14,7 @@ const LoginForm = () => {
     const [userRole, setUserRole] = useState("");
     const [err, setErr] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
-    const [isLoading, setIsloading] = useState(false);
+    const [isLoading, setIsloading] = useState(false); 
 
     const error = () => {
         message.error("Invalid your username or password")

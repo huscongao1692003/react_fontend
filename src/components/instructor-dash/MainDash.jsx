@@ -1,7 +1,7 @@
 import React from 'react'
 import Cards from '../Cards/Cards'
 import Table from './Table/Table'
-import Courses from '../Table/Courses'
+import Courses from './Table/Courses'
 
 const DashStaff = () => {
   return (

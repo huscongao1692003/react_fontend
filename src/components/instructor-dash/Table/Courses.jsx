@@ -20,6 +20,7 @@ export default function CourseTable() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [userId, setUserId] = useState(null)
   const [students, setStudents] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Control the dropdown visibility
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
@@ -27,14 +28,25 @@ export default function CourseTable() {
 
   useEffect(() => {
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
+        .get(`https://drawproject-production.up.railway.app/api/v1/users/id`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((response) => {
+          setUserId(response.data);
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.error("Error fetching user ID:", error);
+        });
+    axios
+      .get(`https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=8`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
         setCourses(response.data.data);
         setLoading(false);
       });
-  }, [accessToken]);
+  }, [accessToken, userId]);
 
   const handleStudentOfCourseClick = (course) => {
     // Fetch the list of students for the selected course

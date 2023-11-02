@@ -83,7 +83,7 @@ const Header = () => {
                                                     <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
                                                       <Avatar
                                                         src={
-                                                          avatar 
+                                                          avatar || "/assets/img/zdJeuso-_400x400.jpg"
                                                         }
                                                         alt="avatar"
                                                         size={40}
@@ -103,7 +103,7 @@ const Header = () => {
                                                     <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
                                                       <Avatar
                                                         src={
-                                                          avatar 
+                                                          avatar || "/assets/img/zdJeuso-_400x400.jpg"
                                                         }
                                                         alt="avatar"
                                                         size={40}
@@ -123,9 +123,9 @@ const Header = () => {
                                                       <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
                                                       <Avatar
                                                         src={
-                                                          avatar 
+                                                          avatar || "/assets/img/zdJeuso-_400x400.jpg"
                                                         }
-                                                        alt="avatar"
+                                                        alt="avatar" 
                                                         size={40}
                                                       />
                                                       </Dropdown.Toggle>
@@ -149,7 +149,7 @@ const Header = () => {
                                                     <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
                                                       <Avatar
                                                         src={
-                                                          avatar 
+                                                          avatar || "/assets/img/zdJeuso-_400x400.jpg"
                                                         }
                                                         alt="avatar"
                                                         size={40}
