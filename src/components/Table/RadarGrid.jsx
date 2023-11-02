@@ -9,41 +9,36 @@ import {
 
 const data = [
   {
-    subject: "Math",
+    subject: "Pop Art",
     A: 120,
     B: 110,
     fullMark: 150
   },
   {
-    subject: "Chinese",
+    subject: "Simplify",
     A: 98,
     B: 130,
     fullMark: 150
   },
   {
-    subject: "English",
+    subject: "Abstract",
     A: 86,
     B: 130,
     fullMark: 150
   },
   {
-    subject: "Geography",
+    subject: "Realistic",
     A: 99,
     B: 100,
     fullMark: 150
   },
   {
-    subject: "Physics",
+    subject: "Surreal",
     A: 85,
     B: 90,
     fullMark: 150
   },
-  {
-    subject: "History",
-    A: 65,
-    B: 85,
-    fullMark: 150
-  }
+
 ];
 
 export default function RadarGrid() {

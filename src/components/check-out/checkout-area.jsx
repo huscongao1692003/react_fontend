@@ -4,11 +4,14 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Spinner from 'react-bootstrap/Spinner';
+import { Spin, message, Space } from 'antd';
+
 
 const CheckoutArea = () => {
   const [loading, setLoading] = useState(true);
   const [courseData, setCourseData] = useState({});
   const router = useRouter();
+  const [isLoading, setIsloading] = useState(false);
   const { idCourse } = router.query;
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
@@ -31,6 +34,8 @@ const CheckoutArea = () => {
     }
      }, [idCourse]);
      const handelPay = async (e) => {
+      const loadingMessage = message.loading('Processing Payment...', 0);
+        setIsloading(true);
         e.preventDefault();
 
         try {
@@ -50,6 +55,8 @@ const CheckoutArea = () => {
         } catch (error) {
            console.error('Error fetching course data:', error);
         }
+        loadingMessage();
+        setIsloading(false);
      };
 
   return (
@@ -196,9 +203,11 @@ const CheckoutArea = () => {
                              </div>
                           </div>
                           <div className="order-button-payment mt-20">
+                          <Spin spinning={isLoading}>
                              <button type="submit" className="tp-btn" onClick={handelPay}>
                                 Place order
                              </button>
+                             </Spin>
                           </div>
                        </div>
                     </div>

@@ -16,12 +16,18 @@ import Post from "../Table/Post";
 import Orders from "./Table/Orders"
 import CreateCourse from "../course-create"
 import { motion } from "framer-motion";
+import InstructorReport from "../Table/InstructorReport";
 
 const MenuItems = [
   {
     icon: UilEstate,
     heading: "Dashboard",
     content: <MainDash />,
+  },
+  {
+    icon: UilEstate,
+    heading: "Report",
+    content: <InstructorReport />,
   },
   {
     icon: UilClipboardAlt,

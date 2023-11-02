@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {useRouter} from 'next/router';
-import Alert from 'react-bootstrap/Alert';
 import { Spin, message, Space } from 'antd';
 
 const LoginForm = () => {
@@ -21,6 +20,7 @@ const LoginForm = () => {
     if(checkLogin) {
         router.push('/');
     }
+    const [isLoading, setIsloading] = useState(false); 
 
     const error = () => {
         message.error("Invalid your username or password")

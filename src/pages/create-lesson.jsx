@@ -5,10 +5,10 @@ import { useRouter } from "next/router";
 
 function index() {
   const router = useRouter();
-  const courseId = router.query.id;
+  const courseId = router.query.idCourse;
   return (
     <WrapperFour>
-      <SEO pageTitle={"Create Topic"} />
+      <SEO pageTitle={"Create Lesson"} />
       <CourseCreateTopic courseId={courseId} />
     </WrapperFour>
   );

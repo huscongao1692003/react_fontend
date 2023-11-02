@@ -11,7 +11,7 @@ const Order = () => {
 
   useEffect(() => {
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/admin/orders', {
+      .get('https://drawproject-production.up.railway.app/api/v1/instructor/orders', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {

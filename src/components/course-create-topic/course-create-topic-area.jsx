@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import TopicItem from "./topic-item";
-import { ModalCreateLesson, ModalCreateTopic } from "./Modal";
+import { ModalCreateLesson, ModalCreateAssignment } from "./Modal";
 
 function CourseCreateTopicArea({ courseId }) {
   const [courseData, setCourseData] = useState({
@@ -13,7 +13,6 @@ function CourseCreateTopicArea({ courseId }) {
     topicTitle: "",
     topicId: "",
   });
-
 
   const getCourseData = async () => {
     const url = `https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/topic`;
@@ -74,8 +73,12 @@ function CourseCreateTopicArea({ courseId }) {
 
   return (
     <div style={{ minHeight: "50vh" }}>
-      <ModalCreateTopic courseData={courseData} setCourseData={setCourseData} />
       <ModalCreateLesson
+        courseData={courseData}
+        setCourseData={setCourseData}
+        courseId={courseId}
+      />
+      <ModalCreateAssignment
         courseData={courseData}
         setCourseData={setCourseData}
       />
@@ -86,7 +89,7 @@ function CourseCreateTopicArea({ courseId }) {
           data-bs-toggle="modal"
           data-bs-target="#modalTopic"
         >
-          Add New Topic
+          Add New Lesson
         </button>
         <button
           type="button"
@@ -98,12 +101,6 @@ function CourseCreateTopicArea({ courseId }) {
         </button>
       </div>
       {TopicItemsHTML}
-      <div
-        className="d-flex justify-content-center mb-4"
-        onClick={handleSubmit}
-      >
-        <button className="btn btn-success">Submit</button>
-      </div>
     </div>
   );
 }

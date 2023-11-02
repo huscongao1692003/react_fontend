@@ -21,6 +21,7 @@ const CourseDetailsArea = () => {
   const [edit,setEdit] = useState(false);
   const [loading,isLoading] = useState(false)
   const [isPay,setIsPay]= useState(false);
+  const [isVac, setVac] = useState(false)
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
   const isLoggedIn =
@@ -45,6 +46,8 @@ const CourseDetailsArea = () => {
         .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
+          isLoading(false)
+
           if (response.data.status === "ACCEPTED") {
             setEdit(true);
           }else{
@@ -52,6 +55,8 @@ const CourseDetailsArea = () => {
           }
         })
         .catch((error) => {
+          isLoading(false)
+
           console.error("Error fetching course data:", error);
         });
     }
@@ -60,13 +65,22 @@ const CourseDetailsArea = () => {
         .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
+          isLoading(false)
+
           if (response.data.status === "ACCEPTED") {
             setIsPay(true);
           }else{
             setIsPay(false)
           }
+          if (response.data.status === "NOT_ACCEPTABLE") {
+            setVac(true);
+          }else{
+            setVac(false)
+          }
         })
         .catch((error) => {
+          isLoading(false)
+
           console.error("Error fetching course data:", error);
         });
     }
@@ -95,6 +109,7 @@ const CourseDetailsArea = () => {
           })
           .catch((error) => {
             console.log(error);
+            isLoading(false)
           });
 
         const instructorId = response.data.data.instructorId;
@@ -339,7 +354,7 @@ const CourseDetailsArea = () => {
                        <></>
                       )}
                       {isLoggedIn === "true" &&
-                      storedUserRole === "ROLE_CUSTOMER" && isPay == true ? (
+                      storedUserRole === "ROLE_CUSTOMER" && isPay == true && isVac == false ? (
                         <>
                           <Link
                             className="tp-vp-btn-green"
@@ -357,7 +372,7 @@ const CourseDetailsArea = () => {
                         <>
                         <Link
                           className="tp-vp-btn"
-                          href={`/course-create-topic?courseId=${id}`}
+                          href={`/create-lesson?idCourse=${id}`}
                         >
                           Create Lesson
                         </Link>

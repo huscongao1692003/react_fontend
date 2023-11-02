@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import { headers } from "@/next.config";
+import { Spin, message, Space } from 'antd';
+
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
@@ -14,6 +16,25 @@ function CourseCreateArea() {
     courseTitle: "",
     category: 0,
   });
+  const [err, setErr] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [isLoading, setIsloading] = useState(false);
+
+  const error = () => {
+    message.error("Something has error!!!");
+    message.config({
+      maxCount: 3,
+    });
+    setErr("");
+  };
+
+  const success = () => {
+    message.success("Create Course successful");
+    message.config({
+      maxCount: 1,
+    });
+    setSuccessMsg("");
+  };
 
   const fileInputRef = useRef(null);
 
@@ -27,6 +48,25 @@ function CourseCreateArea() {
   };
 
   const submitCourseData = async () => {
+    const loadingMessage = message.loading("Processing login...", 0);
+    setIsloading(true);
+    if (
+      courseData.courseTitle.length < 5 ||
+      courseData.description.length < 5 ||
+      courseData.information.length < 5 ||
+      courseData.description.length > 255 ||
+      !courseData.category ||
+      !courseData.style ||
+      !courseData.skill ||
+      !courseData.price ||
+      !courseData.image
+    ) {
+      setErr("Validation error: Please check your inputs.");
+      setSuccessMsg("");
+      loadingMessage();
+      setIsloading(false);
+      return;
+    }
     try {
       if (localStorage.getItem("accessToken")) {
         const accessToken = localStorage.getItem("accessToken");
@@ -34,31 +74,39 @@ function CourseCreateArea() {
           Accept: "*/*",
           Authorization: `Bearer ${accessToken}`,
         };
-        const url =`https://drawproject-production.up.railway.app/api/v1/courses`;
+        const url = `https://drawproject-production.up.railway.app/api/v1/courses`;
         const formData = new FormData();
-          formData.append("courseTitle", courseData.courseTitle);
-          formData.append("category", courseData.category);
-          formData.append("description", courseData.description);
-          formData.append("readingTime", courseData.readingTime);
-          formData.append("image", courseData.image);
-          formData.append("style", courseData.style);
-          formData.append("information", courseData.information);
-          formData.append("courseId", courseData.courseId);
-          formData.append("price", courseData.price);
-          formData.append("skill", courseData.skill);
+        formData.append("courseTitle", courseData.courseTitle);
+        formData.append("category", courseData.category);
+        formData.append("description", courseData.description);
+        formData.append("readingTime", courseData.readingTime);
+        formData.append("image", courseData.image);
+        formData.append("style", courseData.style);
+        formData.append("information", courseData.information);
+        formData.append("courseId", courseData.courseId);
+        formData.append("price", courseData.price);
+        formData.append("skill", courseData.skill);
 
         const response = await axios.post(url, formData, { headers });
         if (response.data.status != "BAD_REQUEST") {
-          alert("Create course successfully");
+          setErr("");
+          setSuccessMsg("Create course successfully.");
         }
       }
     } catch (e) {
+      setErr("Something error!!!.");
+      setSuccessMsg("");
       console.error(e);
     }
+    loadingMessage();
+    setIsloading(false);
   };
 
   return (
     <>
+      {err !== "" && successMsg === ""
+        ? error()
+        : err === "" && successMsg !== "" && success()}
       <div className="container-xl px-4 mt-100 mb-100">
         <div className="row gx-4">
           <div className="col-xl-4">
@@ -220,13 +268,15 @@ function CourseCreateArea() {
                       }}
                     ></textarea>
                   </div>
-                  <button
-                    type="button"
-                    className="tp-btn"
-                    onClick={submitCourseData}
-                  >
-                    Submit
-                  </button>
+                  <Spin spinning={isLoading}>
+                    <button
+                      type="button"
+                      className="tp-btn"
+                      onClick={submitCourseData}
+                    >
+                      Submit
+                    </button>
+                  </Spin>
                 </form>
               </div>
             </div>

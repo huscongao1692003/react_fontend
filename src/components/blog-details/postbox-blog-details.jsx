@@ -164,7 +164,7 @@ if(postId){
                 <BlogSearch />
                 <RecentPost />
                 <Category />
-                <Tags />
+                {/* <Tags /> */}
               </div>
             </div>
           </div>
