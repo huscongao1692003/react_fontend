@@ -11,7 +11,7 @@ const MyComponent = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://drawproject-production.up.railway.app/api/v1/staff/reportstudent?page=1&eachPage=10&studentId=0&courseId=0');
+      const response = await axios.get('https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent?page=1&eachPage=10&studentId=0&courseId=0');
       setData(response.data.data);
     } catch (error) {
       console.error(error);
@@ -20,7 +20,7 @@ const MyComponent = () => {
 
   const handleReject = async (studentId, courseId, message) => {
     try {
-      await axios.put(`https://drawproject-production.up.railway.app/api/v1/staff/reportstudent/reject?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(message)}`);
+      await axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/reject?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(message)}`);
       fetchData();
     } catch (error) {
       console.error(error);
@@ -29,7 +29,7 @@ const MyComponent = () => {
 
   const handleAccept = async (studentId, courseId, message) => {
     try {
-      await axios.put(`https://drawproject-production.up.railway.app/api/v1/staff/reportstudent/accept?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(message)}`);
+      await axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/accept?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(message)}`);
       fetchData();
     } catch (error) {
       console.error(error);

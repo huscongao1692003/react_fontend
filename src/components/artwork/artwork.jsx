@@ -29,7 +29,7 @@ function Artwork() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://drawproject-production.up.railway.app/api/v1/category"
+          "https://drawproject-production-012c.up.railway.app/api/v1/category"
         );
         setCategories(response.data);
       } catch (error) {
@@ -39,7 +39,7 @@ function Artwork() {
     async function fetchArtworkData() {
         try {
           const response = await axios.get(
-            `https://drawproject-production.up.railway.app/api/v1/instructor/${id}/artworks`
+            `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks`
           );
           setArtworkData(response.data.data);
         } catch (error) {
@@ -62,7 +62,7 @@ function Artwork() {
           Authorization: `Bearer ${accessToken}`,
         };
         const url =
-          "https://drawproject-production.up.railway.app/api/v1/instructor/artworks";
+          "https://drawproject-production-012c.up.railway.app/api/v1/instructor/artworks";
         const formData = new FormData();
         formData.append("categoryId", artwork.categoryId);
         formData.append("status", artwork.status);

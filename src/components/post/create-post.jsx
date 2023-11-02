@@ -58,7 +58,7 @@ function CourseCreateArea() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("https://drawproject-production.up.railway.app/api/v1/category");
+        const response = await axios.get("https://drawproject-production-012c.up.railway.app/api/v1/category");
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -110,7 +110,7 @@ function CourseCreateArea() {
           Accept: "application/json",
           Authorization: `Bearer ${accessToken}`,
         };
-        const url = "https://drawproject-production.up.railway.app/api/v1/post";
+        const url = "https://drawproject-production-012c.up.railway.app/api/v1/post";
         const formData = new FormData();
         formData.append("title", courseData.title);
         formData.append("categoryId", courseData.categoryId);

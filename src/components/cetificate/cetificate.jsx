@@ -28,7 +28,7 @@ function Cetificate() {
     async function fetchCertificateData() {
       try {
         const response = await axios.get(
-          `https://drawproject-production.up.railway.app/api/v1/instructor/${id}/certificates`
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/certificates`
         );
         setCertificateData(response.data.data);
       } catch (error) {
@@ -49,7 +49,7 @@ function Cetificate() {
           Authorization: `Bearer ${accessToken}`,
         };
         const url =
-          "https://drawproject-production.up.railway.app/api/v1/instructor/certificates";
+          "https://drawproject-production-012c.up.railway.app/api/v1/instructor/certificates";
 
         // Create a new FormData object
         const formData = new FormData();

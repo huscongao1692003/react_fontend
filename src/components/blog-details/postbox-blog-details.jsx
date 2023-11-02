@@ -30,7 +30,7 @@ const PostboxBlogDetails = () => {
 
 if(postId){
   axios
-    .get(`https://drawproject-production.up.railway.app/api/v1/post/${postId}`)
+    .get(`https://drawproject-production-012c.up.railway.app/api/v1/post/${postId}`)
     .then((response) => {
       const post = response.data; // Assuming it returns a single post
       const decodedPost = {

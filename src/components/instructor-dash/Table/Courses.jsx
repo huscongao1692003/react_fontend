@@ -28,7 +28,7 @@ export default function CourseTable() {
 
   useEffect(() => {
     axios
-        .get(`https://drawproject-production.up.railway.app/api/v1/users/id`, {
+        .get(`https://drawproject-production-012c.up.railway.app/api/v1/users/id`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
@@ -39,7 +39,7 @@ export default function CourseTable() {
           console.error("Error fetching user ID:", error);
         });
     axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=8`, {
+      .get(`https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=8`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -51,7 +51,7 @@ export default function CourseTable() {
   const handleStudentOfCourseClick = (course) => {
     // Fetch the list of students for the selected course
     axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/courses/${course.courseId}/student`, {
+      .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${course.courseId}/student`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {

@@ -143,7 +143,7 @@ const RegisterhtmlForm = () => {
 
         try {
             const response = await axios.post(
-                "https://drawproject-production.up.railway.app/api/auth/register",
+                "https://drawproject-production-012c.up.railway.app/api/auth/register",
                 formData
             );
             const delayDuration = 2000;

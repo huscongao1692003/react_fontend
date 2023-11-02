@@ -20,7 +20,7 @@ export default function ContactTable() {
 
   useEffect(() => {
     // Make an API request to fetch contact data
-    axios.get('https://drawproject-production.up.railway.app/api/v1/admin/contact', {
+    axios.get('https://drawproject-production-012c.up.railway.app/api/v1/admin/contact', {
       headers: { "Authorization": `Bearer ${accessToken}` }
     }).then((response) => {
       setContacts(response.data);
@@ -37,10 +37,10 @@ export default function ContactTable() {
         "Authorization": `Bearer ${accessToken}`
       };
 
-      await axios.put(`https://drawproject-production.up.railway.app/api/v1/admin/contact/${id}`, null, { headers });
+      await axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/admin/contact/${id}`, null, { headers });
       alert("Close contact msg successfully");
       setLoading(false);
-      axios.get('https://drawproject-production.up.railway.app/api/v1/admin/contact', { headers }).then((response) => {
+      axios.get('https://drawproject-production-012c.up.railway.app/api/v1/admin/contact', { headers }).then((response) => {
         setContacts(response.data);
         setLoading(false);
       });

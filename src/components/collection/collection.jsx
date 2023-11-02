@@ -22,7 +22,7 @@ const Collection = () => {
   useEffect(() => {
     // Fetch instructor data and set the initial state
     axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/users/id`, {
+      .get(`https://drawproject-production-012c.up.railway.app/api/v1/users/id`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -31,7 +31,7 @@ const Collection = () => {
 
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}`,
+            `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}`,
             {
               headers: { Authorization: `Bearer ${accessToken}` },
             }
@@ -45,7 +45,7 @@ const Collection = () => {
             setLoading(false);
             axios
               .get(
-                `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/experiences`,
+                `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/experiences`,
                 {
                   headers: { Authorization: `Bearer ${accessToken}` },
                 }
@@ -55,7 +55,7 @@ const Collection = () => {
                 setExperiences(experienceData);
                 axios
                   .get(
-                    `https://drawproject-production.up.railway.app/api/v1/style`
+                    `https://drawproject-production-012c.up.railway.app/api/v1/style`
                   )
                   .then((response) => {
                     const stylesData = response.data.data;
@@ -106,7 +106,7 @@ const Collection = () => {
       };
 
       await axios.put(
-        `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}`,
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}`,
         updatedInstructorData,
         {
           headers: {

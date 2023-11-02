@@ -74,7 +74,7 @@ function CourseCreateArea() {
           Accept: "*/*",
           Authorization: `Bearer ${accessToken}`,
         };
-        const url = `https://drawproject-production.up.railway.app/api/v1/courses`;
+        const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses`;
         const formData = new FormData();
         formData.append("courseTitle", courseData.courseTitle);
         formData.append("category", courseData.category);

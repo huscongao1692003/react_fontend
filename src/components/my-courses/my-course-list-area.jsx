@@ -18,7 +18,7 @@ const MyCourseListArea = () => {
   useEffect(() => {
     // First, fetch the user's ID
     axios
-      .get(`https://drawproject-production.up.railway.app/api/v1/users/id`, {
+      .get(`https://drawproject-production-012c.up.railway.app/api/v1/users/id`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -26,7 +26,7 @@ const MyCourseListArea = () => {
         
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/users/${userId}/courses`,
+            `https://drawproject-production-012c.up.railway.app/api/v1/users/${userId}/courses`,
             {
               headers: { Authorization: `Bearer ${accessToken}` },
             }

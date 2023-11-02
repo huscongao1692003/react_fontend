@@ -41,7 +41,7 @@ export default function CourseTable() {
     const loadingMessage = message.loading('Processing Delete...', 0);
     setIsLoading(true);
     axios
-      .delete(`https://drawproject-production.up.railway.app/api/v1/courses/${courseId}`, {
+      .delete(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -59,7 +59,7 @@ export default function CourseTable() {
   const handleOpenCourse = (courseId) => {
     setIsLoading(true);
     axios
-      .put(`https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/open`, null, {
+      .put(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/open`, null, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -79,7 +79,7 @@ export default function CourseTable() {
 
   const fetchCourses = () => {
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
+      .get('https://drawproject-production-012c.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {

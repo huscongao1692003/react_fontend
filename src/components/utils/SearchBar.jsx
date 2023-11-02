@@ -111,7 +111,7 @@ const SearchBar = ( {setIsSearching} ) => {
           search: searchValueDebounce,
         };
 
-        const url = `https://drawproject-production.up.railway.app/api/v1/courses/search?${new URLSearchParams(
+        const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/search?${new URLSearchParams(
           queryParams
         )}`;
         options = [];

@@ -43,7 +43,7 @@ const CourseDetailsArea = () => {
     isLoading(true)
    if (storedUserRole === "ROLE_INSTRUCTOR") {
       axios
-        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
+        .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
           isLoading(false)
@@ -62,7 +62,7 @@ const CourseDetailsArea = () => {
     }
     if (storedUserRole === "ROLE_CUSTOMER") {
       axios
-        .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}/check-enroll`,
+        .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
         .then((response) => {
           isLoading(false)
@@ -86,12 +86,12 @@ const CourseDetailsArea = () => {
     }
 
    axios
-     .get(`https://drawproject-production.up.railway.app/api/v1/courses/${id}`)
+     .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}`)
      .then((response) => {
        setCourseData(response.data.data);
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
+            `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
               queryParams
             )}`
           )
@@ -115,7 +115,7 @@ const CourseDetailsArea = () => {
         const instructorId = response.data.data.instructorId;
         axios
           .get(
-            `https://drawproject-production.up.railway.app/api/v1/instructor/${instructorId}`
+            `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${instructorId}`
           )
           .then((instructorResponse) => {
             setInstructorData(instructorResponse.data);

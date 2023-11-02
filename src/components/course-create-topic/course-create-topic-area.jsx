@@ -15,7 +15,7 @@ function CourseCreateTopicArea({ courseId }) {
   });
 
   const getCourseData = async () => {
-    const url = `https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/topic`;
+    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
       headers: {
@@ -39,7 +39,7 @@ function CourseCreateTopicArea({ courseId }) {
   };
 
   const handleSubmit = async () => {
-    const url = `https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/topic`;
+    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
       headers: {

@@ -25,7 +25,7 @@ export default function CustomerTable() {
   useEffect(() => {
     // Make an API request to fetch orders
     axios
-      .get('https://drawproject-production.up.railway.app/api/v1/admin/orders', {
+      .get('https://drawproject-production-012c.up.railway.app/api/v1/admin/orders', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {

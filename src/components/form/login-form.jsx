@@ -20,7 +20,6 @@ const LoginForm = () => {
     if(checkLogin) {
         router.push('/');
     }
-    const [isLoading, setIsloading] = useState(false); 
 
     const error = () => {
         message.error("Invalid your username or password")
@@ -45,7 +44,7 @@ const LoginForm = () => {
 
         try {
             const response = await axios.post(
-                "https://drawproject-production.up.railway.app/api/auth/login",
+                "https://drawproject-production-012c.up.railway.app/api/auth/login",
                 {
                     username: username,
                     pwd: pwd,
@@ -53,7 +52,7 @@ const LoginForm = () => {
             );
             const {data} = response;
             const responseRole = await axios.get(
-                "https://drawproject-production.up.railway.app/api/v1/dashboard",
+                "https://drawproject-production-012c.up.railway.app/api/v1/dashboard",
                 {headers: {Authorization: `Bearer ${data.accessToken}`}}
             );
 
@@ -64,7 +63,7 @@ const LoginForm = () => {
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("roles", rolesString);
             const responseAvatar = await axios.get (
-                "https://drawproject-production.up.railway.app/api/v1/users/avatar",
+                "https://drawproject-production-012c.up.railway.app/api/v1/users/avatar",
                 {headers: {Authorization: `Bearer ${data.accessToken}`}}
             )
             localStorage.setItem("avatar", responseAvatar.data);

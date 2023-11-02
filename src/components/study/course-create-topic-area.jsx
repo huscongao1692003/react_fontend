@@ -17,7 +17,7 @@ function CourseCreateTopicArea() {
   const [url, setUrl] = useState("");
 
   const getCourseData = async () => {
-    const url = `https://drawproject-production.up.railway.app/api/v1/courses/${id}/topic`;
+    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
       headers: {

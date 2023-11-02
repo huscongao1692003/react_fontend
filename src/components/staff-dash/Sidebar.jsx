@@ -51,6 +51,7 @@ const SidebarStaff = () => {
   const [animate, setAnimate] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const sidebarRef = useRef(null);
+ 
 
   const SidebarVariants = {
     true: {

@@ -20,7 +20,7 @@ const Settings = () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "https://drawproject-production.up.railway.app/api/v1/profile",
+          "https://drawproject-production-012c.up.railway.app/api/v1/profile",
           {
             headers: { Authorization: `Bearer ${accessToken}` },
           }
@@ -42,7 +42,7 @@ const Settings = () => {
     const fetchSkills = async () => {
       try {
         const response = await axios.get(
-          "https://drawproject-production.up.railway.app/api/v1/skill"
+          "https://drawproject-production-012c.up.railway.app/api/v1/skill"
         );
         const { data } = response;
         setSkills(data);
@@ -70,7 +70,7 @@ const Settings = () => {
       }
 
       await axios.post(
-        "https://drawproject-production.up.railway.app/api/v1/profile",
+        "https://drawproject-production-012c.up.railway.app/api/v1/profile",
         formData,
         {
           headers: {

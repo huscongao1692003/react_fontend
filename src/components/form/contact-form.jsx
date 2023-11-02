@@ -23,7 +23,7 @@ const ContactForm = () => {
     try {
       console.log(data);
       const response = await axios.post(
-        "https://drawproject-production.up.railway.app/api/v1/contact",
+        "https://drawproject-production-012c.up.railway.app/api/v1/contact",
         data
         );
 

@@ -28,7 +28,7 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
   });
 
   const handleSubmitCreateNewTopic = async () => {
-    const url = `https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/topic`;
+    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
       "Content-Type":
