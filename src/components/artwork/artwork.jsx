@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
+import axios from "axios"; 
+import { Spin, message, Space } from 'antd';
+
 
 function Artwork() {
   const [artwork, setArtwork] = useState({
@@ -15,6 +17,26 @@ function Artwork() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [artworkData, setArtworkData] = useState([]);
+  const [err, setErr] = useState("");
+    const [successMsg, setSuccessMsg] = useState("");
+    const [isLoading, setIsloading] = useState(false);
+
+    const error = () => {
+      message.error("Something has error!!!")
+      message.config({
+          maxCount: 3
+      })
+      setErr("");
+    };
+
+    const success = () => {
+      message.success("Create successful")
+      message.config({
+          maxCount: 1
+      })
+      setSuccessMsg("");
+    }
+
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -52,6 +74,8 @@ function Artwork() {
   }, [id]);
 
   const submitPostData = async () => {
+    const loadingMessage = message.loading('Processing...', 0);
+        setIsloading(true);
     try {
       if (localStorage.getItem("accessToken")) {
         setLoading(true);
@@ -72,13 +96,20 @@ function Artwork() {
 
         if (response.status === 200) {
           setLoading(false);
+          setErr("");
+          setSuccessMsg("Success.");
           fetchArtworkData();
-          alert("Artwork created successfully");
+        
         }
       }
     } catch (e) {
+      setErr(e);
+      setSuccessMsg("");
       console.error(e);
     }
+    loadingMessage();
+    setIsloading(false);
+    
   };
 
   return (

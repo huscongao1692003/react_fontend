@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { Spin, message } from 'antd';
+import { useRouter } from "next/router";
+import { Spin, message } from "antd";
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
@@ -15,6 +16,7 @@ function CourseCreateArea() {
     category: 0,
   });
   const [err, setErr] = useState("");
+  const router = useRouter();
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [styles, setStyles] = useState([]); // State variable to store styles data
@@ -94,6 +96,10 @@ function CourseCreateArea() {
         if (response.data.status !== "BAD_REQUEST") {
           setErr("");
           setSuccessMsg("Create course successfully.");
+          const delayDuration = 1500; // 3 seconds (adjust as needed)
+          setTimeout(() => {
+            window.location.reload();
+          }, delayDuration);
         }
       }
     } catch (e) {
@@ -109,9 +115,15 @@ function CourseCreateArea() {
     // Fetch API data for styles, categories, and skills
     const fetchData = async () => {
       try {
-        const stylesResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/style");
-        const categoriesResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/category");
-        const skillsResponse = await axios.get("https://drawproject-production.up.railway.app/api/v1/skill");
+        const stylesResponse = await axios.get(
+          "https://drawproject-production.up.railway.app/api/v1/style"
+        );
+        const categoriesResponse = await axios.get(
+          "https://drawproject-production.up.railway.app/api/v1/category"
+        );
+        const skillsResponse = await axios.get(
+          "https://drawproject-production.up.railway.app/api/v1/skill"
+        );
 
         setStyles(stylesResponse.data.data);
         setCategories(categoriesResponse.data);
@@ -207,7 +219,10 @@ function CourseCreateArea() {
                       >
                         <option value={0}>Select a category</option>
                         {categories.map((category) => (
-                          <option key={category.categoryId} value={category.categoryId}>
+                          <option
+                            key={category.categoryId}
+                            value={category.categoryId}
+                          >
                             {category.categoryName}
                           </option>
                         ))}
@@ -229,7 +244,10 @@ function CourseCreateArea() {
                       >
                         <option value={0}>Select a style</option>
                         {styles.map((style) => (
-                          <option key={style.drawingStyleId} value={style.drawingStyleId}>
+                          <option
+                            key={style.drawingStyleId}
+                            value={style.drawingStyleId}
+                          >
                             {style.drawingStyleName}
                           </option>
                         ))}
