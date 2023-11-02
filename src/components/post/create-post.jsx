@@ -124,6 +124,10 @@ function CourseCreateArea() {
         if (response.status === 201) {
           setErr("");
           setSuccessMsg("You have successfully created a post.");
+          const delayDuration = 1500; 
+          setTimeout(() => {
+            window.location.reload();
+            }, delayDuration);
         }
       }
     } catch (e) {
