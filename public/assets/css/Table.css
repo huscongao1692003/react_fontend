@@ -66,33 +66,3 @@ th {
   width: 32%;
   flex: 1;
 }
-
-.report-students {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.report-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.student-id, .course-id, .message, .image {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.student-id {
-  background-color: #f2f2f2;
-}
-
-.report-image {
-  max-width: 100%;
-  height: auto;
-}
