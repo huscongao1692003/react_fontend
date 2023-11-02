@@ -50,6 +50,23 @@ function CourseCreateArea() {
   const submitCourseData = async () => {
     const loadingMessage = message.loading("Processing login...", 0);
     setIsloading(true);
+    if (
+      courseData.courseTitle.length < 5 ||
+      courseData.description.length < 5 ||
+      courseData.information.length < 5 ||
+      courseData.description.length > 255 ||
+      !courseData.category ||
+      !courseData.style ||
+      !courseData.skill ||
+      !courseData.price ||
+      !courseData.image
+    ) {
+      setErr("Validation error: Please check your inputs.");
+      setSuccessMsg("");
+      loadingMessage();
+      setIsloading(false);
+      return;
+    }
     try {
       if (localStorage.getItem("accessToken")) {
         const accessToken = localStorage.getItem("accessToken");
