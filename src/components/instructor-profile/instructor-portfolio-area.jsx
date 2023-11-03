@@ -6,7 +6,7 @@ import { useRouter } from "next/router.js";
 
 // Placeholder image URL
 const placeholderImage = "/assets/img/instructor.png";
-
+const placeholderCertificate = "/assets/img/C5xB9.jpg";
 const InstructorPortfolioArea = () => {
   const [instructorData, setInstructorData] = useState(null);
   const [coursesData, setCoursesData] = useState([]);
@@ -127,12 +127,12 @@ const InstructorPortfolioArea = () => {
                         <label>Language</label>{" "}
                         <span>English</span>
                       </li>
-                      <li>
+                      {/* <li>
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Artwork</label>{" "}
                         <Link href="/artwork">
                           <span>See more</span></Link>
-                      </li>
+                      </li> */}
                       <li>
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Education</label>{" "}
@@ -159,20 +159,30 @@ const InstructorPortfolioArea = () => {
                     </div>
                   </div>
                   <div className="row">
-                    {artworkData.map((item, i) => (
-                      <div key={i} className="col-xl-6 col-lg-12 col-md-6">
-                        <div className="tpcourse mb-40">
-                          <div className="tpcourse__thumb p-relative w-img fix">
-                            <img src={item.image} alt="artwork-thumb" style={{ height: "200px", objectFit: "cover" }}/>
-                          </div>
-                          <div className="tpcourse__content-2">
-                            <div className="tpcourse__category mb-10">
-                              {item.categoryName}
+                    {artworkData.length === 0 ? (
+                      <div className="col-md-12">
+                        <p>No artwork was added.</p>
+                      </div>
+                    ) : (
+                      artworkData.map((item, i) => (
+                        <div key={i} className="col-xl-6 col-lg-12 col-md-6">
+                          <div className="tpcourse mb-40">
+                            <div className="tpcourse__thumb p-relative w-img fix">
+                              <img
+                                src={item.image}
+                                alt="artwork-thumb"
+                                style={{ height: "200px", objectFit: "cover" }}
+                              />
+                            </div>
+                            <div className="tpcourse__content-2">
+                              <div className="tpcourse__category mb-10">
+                                {item.categoryName}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </div>
                 <div className="instructor-tp-Certificate">
@@ -188,7 +198,7 @@ const InstructorPortfolioArea = () => {
                       <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                         <div className="tpcourse mb-40">
                           <div className="tpcourse__thumb p-relative w-img fix">
-                            <img src={item.image} alt="certificate-thumb" />
+                            <img src={item.image ? item.image : placeholderCertificate} alt="certificate-thumb" onError={(e)=>{e.target.src=placeholderCertificate}}/>
                           </div>
                         </div>
                       </div>
@@ -209,7 +219,19 @@ const InstructorPortfolioArea = () => {
                         <div className="tpcourse mb-40">
                           <div className="tpcourse__thumb p-relative w-img fix">
                             <Link href="/course-details">
-                              <img src={item.image} alt="course-thumb" style={{ height: "300px", objectFit: "cover" }}/>
+                              {item.image ? (
+                                <img
+                                  src={item.image}
+                                  alt="course-thumb"
+                                  style={{ height: "300px", objectFit: "cover" }}
+                                />
+                              ) : (
+                                <img
+                                  src={placeholderImage}
+                                  alt="placeholder-course-thumb"
+                                  style={{ height: "300px", objectFit: "cover" }}
+                                />
+                              )}
                             </Link>
                             <div className="tpcourse__img-icon">
                               <img src={item.icon} alt="course-avata" />
