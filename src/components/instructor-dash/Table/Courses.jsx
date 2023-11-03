@@ -13,23 +13,28 @@ import {
 import { useRouter } from 'next/router';
 import { message } from 'antd';
 import StudentOfCourse from './Student-Course';
+import { useStore, actions } from "@/src/store";
 
-const CourseTable = () => {
+const CourseTable = ({ setSelected }) => {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [userId, setUserId] = useState(3)
+  const [userId, setUserId] = useState(0)
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courseId, setCourseId] = useState(0);
+  const [state, dispatch] = useStore();
 
   message.config({
     maxCount: 1
   })
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  //get course data and save it to context
+  const onSelect = (id) => {
+    const course = courses.find(object => object.courseId === id);
+    dispatch(actions.setValueCourse(course));
+    setSelected(3);
   };
 
   useEffect(() => {
@@ -101,7 +106,7 @@ const CourseTable = () => {
                   <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => router.push(`/edit-course/${course.courseId}`)} // Example route for editing the course
+                    onClick={() => {onSelect(course.courseId)}} // Example route for editing the course
                   >
                     Edit
                   </Button>

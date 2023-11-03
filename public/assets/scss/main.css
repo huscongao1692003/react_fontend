@@ -48353,6 +48353,11 @@ img {
   }
 }
 
+.color-border-form-dashboard {
+  border-color: #7497bb;
+  resize: none;
+}
+
 /*--
     - Spacing
 -----------------------------------------*/
@@ -49976,6 +49981,25 @@ img {
 .link-btn-2.link-prev:hover i:last-child {
   left: -10%;
   right: auto;
+}
+
+.custom-input-price-course {
+  position: relative;
+}
+.custom-input-price-course input {
+  padding-left: 1.3rem;
+}
+.custom-input-price-course span {
+  position: absolute;
+  font-size: 1.1rem;
+  bottom: 15.2%;
+  left: 0.4rem;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .section-title p {
