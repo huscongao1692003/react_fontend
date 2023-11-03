@@ -7,6 +7,17 @@ import { Image } from 'antd';
 import Backdrop from '@mui/material/Backdrop';
 
 function CourseCreateArea() {
+  const resetData = {
+    price: 0,
+    information: "",
+    style: 1,
+    skill: 1,
+    courseId: 0,
+    image: null,
+    description: "",
+    courseTitle: "",
+    category: 1,
+  };
   const [courseData, setCourseData] = useState({
     price: 0,
     information: "",
@@ -20,7 +31,6 @@ function CourseCreateArea() {
   });
 
   const [err, setErr] = useState("");
-  const router = useRouter();
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [styles, setStyles] = useState([]); // State variable to store styles data
@@ -29,6 +39,8 @@ function CourseCreateArea() {
   const [state, dispatch] = useStore();
   const [imagePre, setImagePre] = useState("");
   const [isOverlay, setIsOverlay] = useState(true);
+  const [courseId, setCourseId] = useState(0);
+  const [status, setStatus] = useState("");
 
   const error = (notifi) => {
     message.error(err);
@@ -69,6 +81,13 @@ function CourseCreateArea() {
     reader.readAsDataURL(file);
   };
 
+  const handleResetData = () => {
+    setCourseData(resetData);
+    setImagePre("");
+    setCourseId(0);
+    setStatus("");
+  }
+
   const submitCourseData = async () => {
     const loadingMessage = message.loading("Processing...", 0);
     setIsloading(true);
@@ -102,7 +121,6 @@ function CourseCreateArea() {
       
     
     try {
-      console.log(courseData);
       if (localStorage.getItem("accessToken")) {
         const accessToken = localStorage.getItem("accessToken");
         const headers = {
@@ -121,8 +139,12 @@ function CourseCreateArea() {
         formData.append("courseId", courseData.courseId);
         formData.append("price", courseData.price);
         formData.append("skill", courseData.skill);
+        if(courseId != 0) {
+          formData.append("courseId", courseId);
+          formData.append("status", status);
+        }
 
-        const response = await axios.post(url, formData, { headers });
+        const response = await (courseId == 0) ? (axios.post(url, formData, { headers })) : (await axios.put(url, formData, { headers }));
 
         if (response.data.status !== "BAD_REQUEST") {
           setErr("");
@@ -163,6 +185,8 @@ function CourseCreateArea() {
             image: state.data.image,
           });
           setImagePre(state.data.image);
+          setCourseId(state.data.courseId);
+          setStatus(state.data.status);
           dispatch(actions.setValueCourse({}));
         }
 
@@ -226,6 +250,7 @@ function CourseCreateArea() {
                                       message.error("Error loading image", 2))}
                     alt=""
                     width={290}
+                    height={310}
                   />
                   
                 <div className="small font-italic text-muted mb-4">
@@ -247,11 +272,18 @@ function CourseCreateArea() {
             <Spin spinning={isLoading}>
               <div className="submit-course mt-4 mb-3" style={{textAlign: "center"}}>
                 <button
+                  type="reset"
+                  className="tp-btn" style={{marginRight: "2rem"}}
+                  onClick={handleResetData}
+                >
+                  Reset
+                </button>
+                <button
                   type="button"
                   className="tp-btn"
                   onClick={submitCourseData}
                 >
-                  Submit
+                  Save
                 </button>
               </div>
             </Spin>
