@@ -60,7 +60,7 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
           ...courseData,
           lessons: [...courseData?.lessons, topicData],
         });
-        getCourseData();
+      // getCourseData();
        
       } else {
         console.error(response);

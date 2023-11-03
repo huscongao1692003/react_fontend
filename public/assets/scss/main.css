@@ -53367,6 +53367,10 @@ div.choose-sub-color {
 /*----------------------------------------*/
 /*  11. INSTRUCTOR CSS START
 /*----------------------------------------*/
+.ArtworkModal {
+  width: 1200px !important;
+}
+
 .tp-instructor {
   border: 1px solid rgba(119, 124, 144, 0.1);
   padding: 20px 20px 22px;
