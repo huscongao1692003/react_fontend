@@ -1,11 +1,46 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 
 function CreateLesson({ courseData, setCourseData, courseId }) {
+ 
   const [topicData, setTopicData] = useState({
     topicTitle: "",
-    number: 1, // Assuming number is a default value you want to start with
+    number: 0, // Assuming number is a default value you want to start with
   });
+  const[topicIdData,setTopicIdData] = useState(0)
+
+  useEffect(() => {
+    const getTopics = async () => {
+      const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
+      const accessToken = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+  
+      try {
+        const response = await axios.get(url, config);
+        if (response.data.status === "OK") {
+          setTopicIdData(response.data.data);
+          const maxNumber = response.data.data.reduce(
+            (max, topic) => Math.max(max, topic.number), 0
+          );
+          setTopicData({ ...topicData, number: maxNumber + 1 });
+        } else {
+          console.error(response);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    
+    if (courseId) {
+      getTopics();
+    }
+  }, [courseId]); // Only re-run the effect if courseId changes
 
   const handleSubmitCreateNewTopic = async () => {
     const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
@@ -16,22 +51,17 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-    const maxNumber = courseData.lessons.reduce((max, lesson) => Math.max(max, lesson.number), 0);
-  const newNumber = maxNumber + 1;
-  const newTopicData = {
-    ...topicData,
-    number: newNumber,
-  };
+       
     try {
-      const response = await axios.post(url, newTopicData, config);
+      const response = await axios.post(url, topicData, config);
       if (response.data.status === "OK") {
         alert("success");
         setCourseData({
           ...courseData,
-          lessons: [...courseData?.lessons, newTopicData],
+          lessons: [...courseData?.lessons, topicData],
         });
-        // Reset the form
-        setTopicData({ topicTitle: "", number: newNumber + 1 });
+        getCourseData();
+       
       } else {
         console.error(response);
       }

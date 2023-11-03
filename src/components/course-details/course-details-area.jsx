@@ -283,7 +283,7 @@ const CourseDetailsArea = () => {
               <div className="c-details-sidebar">
                 <div className="c-video-thumb p-relative mb-25">
                   <img
-                    src="/assets/img/bg/c-details-video-bg.jpg"
+                    src={courseData.image}
                     alt="video-bg"
                   />
                   <div className="c-video-icon">
