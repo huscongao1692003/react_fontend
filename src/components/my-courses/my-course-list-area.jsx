@@ -100,7 +100,7 @@ const MyCourseListArea = () => {
             </div>
           </div>
 
-          <div className="col-lg-8 col-md-12 course-item-width ml-30">
+          
             {loading ? (
               <div
                 className="d-flex flex-column justify-content-center align-items-center"
@@ -191,7 +191,7 @@ const MyCourseListArea = () => {
                 </div>
               </>
             )}
-          </div>
+         
           <div className="d-flex justify-content-center">
             <Pagination page={page} count={totalPage} onChange={handlePageChange} />
           </div>

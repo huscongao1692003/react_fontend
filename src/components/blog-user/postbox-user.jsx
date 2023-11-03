@@ -138,7 +138,7 @@ const PostboxUser = () => {
         >
           <div className="container">
             <div className="row">
-              <div className="col-xxl-8 col-xl-8 col-lg-7 col-md-12">
+              
                 <div className="postbox__wrapper pr-20">
                   {blogData == null ? (
                     <PostNotFound />
@@ -207,7 +207,7 @@ const PostboxUser = () => {
                     style={{ float: "right" }}
                   />
                 </div>
-              </div>
+            
             </div>
           </div>
         </div>
