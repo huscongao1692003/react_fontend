@@ -3,6 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router.js";
+import { Button, Modal } from 'antd';
 
 // Placeholder image URL
 const placeholderImage = "/assets/img/instructor.png";
@@ -14,6 +15,10 @@ const InstructorPortfolioArea = () => {
   const [certificateData, setCertificateData] = useState([]);
   const router = useRouter();
   const { userId } = router.query;
+  const [isArtworkModalOpen, setIsArtworkModalOpen] = useState(false);
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
+
+
 
   useEffect(() => {
     const fetchInstructorData = async () => {
@@ -76,6 +81,27 @@ const InstructorPortfolioArea = () => {
     );
   }
 
+  const showArtworkModal = () => {
+    setIsArtworkModalOpen(true);
+  };
+  const handleArtworkOk = () => {
+    setIsArtworkModalOpen(false);
+  };
+  const handleArtworkCancel = () => {
+    setIsArtworkModalOpen(false);
+  };
+
+  const showCertificateModal = () => {
+    setIsCertificateModalOpen(true);
+  };
+  const handleCertificateOk = () => {
+    setIsCertificateModalOpen(false);
+  };
+  const handleCertificateCancel = () => {
+    setIsCertificateModalOpen(false);
+  };
+  
+
   return (
     <>
       <section
@@ -127,18 +153,80 @@ const InstructorPortfolioArea = () => {
                         <label>Language</label>{" "}
                         <span>English</span>
                       </li>
-                      {/* <li>
+                      <li>
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Artwork</label>{" "}
-                        <Link href="/artwork">
-                          <span>See more</span></Link>
-                      </li> */}
+                        <span>
+                          <Button type="link" onClick={showArtworkModal}>
+                            show Artwork
+                          </Button>
+                          <Modal className="ArtworkModal" title="Artwork" open={isArtworkModalOpen} onOk={handleArtworkOk} onCancel={handleArtworkCancel}>
+                            {artworkData.length === 0 ? (
+                              <div className="col-md-12">
+                                <p>No artwork was added.</p>
+                              </div>
+                            ) : (
+                              <div className="row">
+                                {artworkData.map((item, i) => (
+                                  <div key={i} className="col-xl-6 col-lg-12 col-md-6">
+                                    <div className="tpcourse">
+                                      <div className="tpcourse__thumb p-relative w-img fix">
+                                        <img
+                                          src={item.image}
+                                          alt="artwork-thumb"
+                                          style={{ height: "300px", width: "500px", objectFit: "cover" }}
+                                        />
+                                      </div>
+                                      <div className="tpcourse__content-2" style={{ width: "500px", objectFit: "cover" }}>
+                                        <div className="tpcourse__category mb-10">
+                                          {item.categoryName}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </Modal></span>
+                      </li>
+                      <li>
+                        <i className="fi fi-rs-time-check"></i>{" "}
+                        <label>Certificate</label>{" "}
+                        <span>
+                          <Button type="link" onClick={showCertificateModal}>
+                            Show
+                          </Button>
+                          <Modal className="ArtworkModal" title="Artwork" open={isCertificateModalOpen} onOk={handleCertificateOk} onCancel={handleCertificateCancel}>
+                            {certificateData.length === 0 ? (
+                              <div className="col-md-12">
+                                <p>No artwork was added.</p>
+                              </div>
+                            ) : (
+                              <div className="row">
+                                {certificateData.map((item, i) => (
+                                  <div key={i} className="col-xl-6 col-lg-12 col-md-6">
+                                    <div className="tpcourse">
+                                      <div className="tpcourse__thumb p-relative w-img fix">
+                                        <img
+                                          src={item.image ? item.image : placeholderCertificate}
+                                          alt="artwork-thumb"
+                                          onError={(e) => {
+                                            e.target.src = placeholderCertificate;
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </Modal></span>
+                      </li>
                       <li>
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Education</label>{" "}
                         <span>{instructorData.education}</span>
                       </li>
-
                     </ul>
                   </div>
                 </div>
@@ -149,61 +237,6 @@ const InstructorPortfolioArea = () => {
                 <div className="instruc-biography mb-50">
                   <h4 className="ins-bio-title mb-30">Biography</h4>
                   <p>{instructorData.bio}</p>
-                </div>
-                <div className="instructor-tp-artwork">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="instruc-biography">
-                        <h2 className="ins-bio-title mb-35">Artworks</h2>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    {artworkData.length === 0 ? (
-                      <div className="col-md-12">
-                        <p>No artwork was added.</p>
-                      </div>
-                    ) : (
-                      artworkData.map((item, i) => (
-                        <div key={i} className="col-xl-6 col-lg-12 col-md-6">
-                          <div className="tpcourse mb-40">
-                            <div className="tpcourse__thumb p-relative w-img fix">
-                              <img
-                                src={item.image}
-                                alt="artwork-thumb"
-                                style={{ height: "200px", objectFit: "cover" }}
-                              />
-                            </div>
-                            <div className="tpcourse__content-2">
-                              <div className="tpcourse__category mb-10">
-                                {item.categoryName}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-                <div className="instructor-tp-Certificate">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="instruc-biography">
-                        <h2 className="ins-bio-title mb-35">Certificate</h2>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    {certificateData.map((item, i) => (
-                      <div key={i} className="col-xl-6 col-lg-12 col-md-6">
-                        <div className="tpcourse mb-40">
-                          <div className="tpcourse__thumb p-relative w-img fix">
-                            <img src={item.image ? item.image : placeholderCertificate} alt="certificate-thumb" onError={(e)=>{e.target.src=placeholderCertificate}}/>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
                 </div>
                 <div className="instructor-tp-course">
                   <div className="row">
