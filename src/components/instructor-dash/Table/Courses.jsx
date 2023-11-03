@@ -19,7 +19,7 @@ const CourseTable = ({ setSelected }) => {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [userId, setUserId] = useState(0)
+  const [userId, setUserId] = useState(null)
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,15 +52,16 @@ const CourseTable = ({ setSelected }) => {
         .catch((error) => {
           console.error("Error fetching user ID:", error);
         });
-    axios
-      .get(`https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=8`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((response) => {
-        setCourses(response.data.data);
-        loadingMessage();
-        
-      });
+        if(userId != null) {
+          axios
+          .get(`https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/all-courses`)
+          .then((response) => {
+            setCourses(response.data.data);
+            loadingMessage();
+            
+          });
+        }
+    
       
   }, [accessToken, userId]);
 

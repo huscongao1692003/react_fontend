@@ -3,6 +3,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Spin, message } from "antd";
 import { useStore, actions } from "@/src/store";
+import { Image } from 'antd';
+import Backdrop from '@mui/material/Backdrop';
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
@@ -25,9 +27,10 @@ function CourseCreateArea() {
   const [categories, setCategories] = useState([]); // State variable to store categories data
   const [skills, setSkills] = useState([]); // State variable to store skills data
   const [state, dispatch] = useStore();
-  const [imagePre, setImagePre] = useStore("");
+  const [imagePre, setImagePre] = useState("");
+  const [isOverlay, setIsOverlay] = useState(true);
 
-  const error = () => {
+  const error = (notifi) => {
     message.error(err);
     message.config({
       maxCount: 3,
@@ -52,6 +55,7 @@ function CourseCreateArea() {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setCourseData({ ...courseData, image: selectedFile });
+    handleUpload(e);
   };
 
   const handleUpload = (event) => {
@@ -140,6 +144,8 @@ function CourseCreateArea() {
 
   useEffect(() => {
     // Fetch API data for styles, categories, and skills
+    const loadingMessage = message.loading('Loading...', 0);
+    setIsOverlay(true);
     const fetchData = async () => {
       try {
         if (Object.keys(state.data).length != 0) {
@@ -156,6 +162,7 @@ function CourseCreateArea() {
             category: state.data.categoryId,
             image: state.data.image,
           });
+          setImagePre(state.data.image);
           dispatch(actions.setValueCourse({}));
         }
 
@@ -172,6 +179,8 @@ function CourseCreateArea() {
         setStyles(stylesResponse.data.data);
         setCategories(categoriesResponse.data);
         setSkills(skillsResponse.data);
+        setIsOverlay(false);
+        loadingMessage();
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -182,6 +191,19 @@ function CourseCreateArea() {
 
   return (
     <>
+    {isOverlay ? (
+        <div>
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer - 190 }}
+            open={isOverlay}
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            }}
+          ></Backdrop>
+        </div>
+      ) : (
+        ""
+      )}
       {err !== "" && successMsg === ""
         ? error()
         : err === "" && successMsg !== "" && success()}
@@ -198,11 +220,14 @@ function CourseCreateArea() {
                   onChange={handleFileChange}
                 />
 
-                <img
-                  src="https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"
-                  alt=""
-                  className="img-account-profile rounded-circle mb-2"
-                />
+                  <Image
+                    src={imagePre === "" ? "https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg" : imagePre}
+                    onError={(e) => (e.target.src = "https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg",
+                                      message.error("Error loading image", 2))}
+                    alt=""
+                    width={290}
+                  />
+                  
                 <div className="small font-italic text-muted mb-4">
                   {courseData?.image?.name
                     ? courseData?.image?.name
@@ -251,6 +276,7 @@ function CourseCreateArea() {
                         className="form-control bg-transparent color-border-form-dashboard"
                         maxLength={40}
                         required
+                        value={courseData.courseTitle}
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
@@ -270,6 +296,7 @@ function CourseCreateArea() {
                           placeholder="Enter your price"
                           className="form-control bg-transparent color-border-form-dashboard"
                           required
+                          value={courseData.price}
                           onChange={(e) => {
                             if (e.target.value < 0) {
                               e.target.value = 0;
@@ -293,6 +320,7 @@ function CourseCreateArea() {
                       </label>
                       <select
                         className="form-control bg-transparent color-border-form-dashboard"
+                        value={courseData.category}
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
@@ -316,6 +344,7 @@ function CourseCreateArea() {
                       </label>
                       <select
                         className="form-control bg-transparent color-border-form-dashboard"
+                        value={courseData.style}
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
@@ -339,6 +368,7 @@ function CourseCreateArea() {
                       </label>
                       <select
                         className="form-control bg-transparent color-border-form-dashboard"
+                        value={courseData.skill}
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
@@ -362,6 +392,8 @@ function CourseCreateArea() {
                       className="form-control bg-transparent color-border-form-dashboard"
                       id="exampleFormControlTextarea1"
                       rows="4"
+                      required
+                      value={courseData.description}
                       onChange={(e) => {
                         setCourseData({
                           ...courseData,
@@ -378,6 +410,8 @@ function CourseCreateArea() {
                       className="form-control bg-transparent color-border-form-dashboard"
                       id="exampleFormControlTextarea1"
                       rows="4"
+                      required
+                      value={courseData.information}
                       onChange={(e) => {
                         setCourseData({
                           ...courseData,
