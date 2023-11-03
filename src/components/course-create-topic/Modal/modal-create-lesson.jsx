@@ -1,304 +1,100 @@
-import { headers } from "@/next.config";
+import { useState,useEffect } from "react";
 import axios from "axios";
-import { useState } from "react";
 
-const generateUniqueFileName = (file) => {
-  const timestamp = Date.now();
-  const randomString = Math.random().toString(36).substring(2, 15);
-  const originalFileName = file.name;
-  const fileExtension = originalFileName.split(".").pop();
-  const uniqueFileName = `${timestamp}-${randomString}.${fileExtension}`;
-  return uniqueFileName;
-};
 function CreateLesson({ courseData, setCourseData, courseId }) {
-  const [step, setStep] = useState(1);
-
+ 
   const [topicData, setTopicData] = useState({
-    typeFile: "",
-    lessonId: "",
-    url: "",
-    name: "",
-    index: 1,
-    listAssignment: [],
+    topicTitle: "",
+    number: 0, // Assuming number is a default value you want to start with
   });
+  const[topicIdData,setTopicIdData] = useState(0)
 
-  const [lessonData, setLessonData] = useState({
-    files: [],
-    topic: "",
-  });
+  useEffect(() => {
+    const getTopics = async () => {
+      const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
+      const accessToken = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+  
+      try {
+        const response = await axios.get(url, config);
+        if (response.data.status === "OK") {
+          setTopicIdData(response.data.data);
+          const maxNumber = response.data.data.reduce(
+            (max, topic) => Math.max(max, topic.number), 0
+          );
+          setTopicData({ ...topicData, number: maxNumber + 1 });
+        } else {
+          console.error(response);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    
+    if (courseId) {
+      getTopics();
+    }
+  }, [courseId]); // Only re-run the effect if courseId changes
 
   const handleSubmitCreateNewTopic = async () => {
     const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
-      "Content-Type":
-        topicData.typeFile === "video"
-          ? "application/json"
-          : "multipart/form-data",
-      Authorization: `Bearer ${accessToken}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     };
-    const formData = new FormData();
-    for (let i = 0; i < lessonData.files.length; i++) {
-      const uniqueFileName = generateUniqueFileName(lessonData.files[i]);
-      formData.append("files", lessonData.files[i], uniqueFileName);
-    }
-    formData.append("topic", lessonData.topic);
+       
     try {
-      const response = await axios.post(url, formData, { headers: config });
+      const response = await axios.post(url, topicData, config);
       if (response.data.status === "OK") {
         alert("success");
         setCourseData({
           ...courseData,
           lessons: [...courseData?.lessons, topicData],
         });
-        setLessonData({
-          topic: "",
-          files: [],
-        });
+        getCourseData();
+       
       } else {
         console.error(response);
       }
-      // You can process the response data here
     } catch (e) {
       console.error(e);
     }
   };
 
   return (
-    <div
-      className="modal fade"
-      id="modalTopic"
-      tabindex="-1"
-      aria-labelledby="modalTopicLabel"
-      aria-hidden="true"
-    >
+    <div className="modal fade" id="modalTopic" tabIndex="-1" aria-labelledby="modalTopicLabel" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="modalTopicLabel">
-              Add New Lesson
+              Add New Topic
             </h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <form novalidate="" className="ng-untouched ng-pristine ng-invalid">
-              {step == 1 ? (
-                <>
-                  <div className="mb-3">
-                    <label for="inputEmailAddress" className="small mb-1">
-                      Type file
-                    </label>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="flexRadioDefault"
-                        value={"pdf"}
-                        checked={topicData?.typeFile == "pdf"}
-                        onChange={(e) =>
-                          setTopicData({
-                            ...topicData,
-                            typeFile: e.target.value,
-                          })
-                        }
-                        id="pdf"
-                      />
-                      <label class="form-check-label" for="pdf">
-                        PDF
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="flexRadioDefault"
-                        id="image"
-                        value={"image"}
-                        checked={topicData?.typeFile == "image"}
-                        onChange={(e) =>
-                          setTopicData({
-                            ...topicData,
-                            typeFile: e.target.value,
-                          })
-                        }
-                      />
-                      <label class="form-check-label" for="image">
-                        Image
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="flexRadioDefault"
-                        id="video"
-                        value={"video"}
-                        checked={topicData?.typeFile == "video"}
-                        onChange={(e) =>
-                          setTopicData({
-                            ...topicData,
-                            typeFile: e.target.value,
-                          })
-                        }
-                      />
-                      <label class="form-check-label" for="video">
-                        Video
-                      </label>
-                    </div>
-                  </div>
-                  {topicData?.typeFile && (
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-success pl-3 pr-3"
-                      style={{ padding: "6px 30px" }}
-                      onClick={() => {
-                        setStep(2);
-                      }}
-                    >
-                      Next
-                    </button>
-                  )}
-                </>
-              ) : (
-                <>
-                  {/* <div className="mb-3">
-                    <label for="inputEmailAddress" className="small mb-1">
-                      Lesson Id
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Enter lesson id"
-                      className="form-control ng-untouched ng-pristine ng-invalid"
-                      value={topicData?.lessonId}
-                      onChange={(e) => {
-                        setTopicData({
-                          ...topicData,
-                          lessonId: parseInt(e.target.value),
-                        });
-                      }}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label for="inputEmailAddress" className="small mb-1">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter name"
-                      className="form-control ng-untouched ng-pristine ng-invalid"
-                      value={topicData?.name}
-                      onChange={(e) => {
-                        setTopicData({
-                          ...topicData,
-                          name: e.target.value,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label for="inputEmailAddress" className="small mb-1">
-                      Index
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Enter index"
-                      className="form-control ng-untouched ng-pristine ng-invalid"
-                      value={topicData?.index}
-                      onChange={(e) => {
-                        setTopicData({
-                          ...topicData,
-                          index: parseInt(e.target.value),
-                        });
-                      }}
-                    />
-                  </div> */}
-                  <div className="mb-3">
-                    <label for="inputEmailAddress" className="small mb-1">
-                      Topic
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter topic"
-                      className="form-control ng-untouched ng-pristine ng-invalid"
-                      value={lessonData?.topic}
-                      onChange={(e) => {
-                        setLessonData({
-                          ...lessonData,
-                          topic: e.target.value,
-                        });
-                      }}
-                    />
-                  </div>
-                  {topicData?.typeFile === "video" ? (
-                    <div className="mb-3">
-                      <label class="form-check-label" for="flexRadioDefault2">
-                        Url
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter url"
-                        className="form-control ng-untouched ng-pristine ng-invalid"
-                        // value={topicData?.url}
-                        onChange={(e) => {
-                          setLessonData({
-                            ...lessonData,
-                            url: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <div className="mb-3">
-                      <label class="form-check-label" for="flexRadioDefault2">
-                        File
-                      </label>
-                      <input
-                        type="file"
-                        multiple
-                        className="form-control ng-untouched ng-pristine ng-invalid"
-                        onChange={(e) => {
-                          setLessonData({
-                            ...lessonData,
-                            files: e.target.files,
-                          });
-                        }}
-                      />
-                    </div>
-                  )}
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-success pl-3 pr-3"
-                    style={{ padding: "6px 30px" }}
-                    onClick={() => {
-                      setStep(1);
-                    }}
-                  >
-                    Back
-                  </button>
-                </>
-              )}
+            <form>
+              <div className="mb-3">
+                <label htmlFor="topicTitle" className="form-label">Topic Title</label>
+                <input type="text" className="form-control" id="topicTitle" value={topicData.topicTitle} onChange={(e) => setTopicData({ ...topicData, topicTitle: e.target.value })} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="number" className="form-label">Number</label>
+                <input type="number" className="form-control" id="number" value={topicData.number} onChange={(e) => setTopicData({ ...topicData, number: parseInt(e.target.value) })} />
+              </div>
             </form>
           </div>
           <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={handleSubmitCreateNewTopic}
-            >
-              Add
-            </button>
+            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" className="btn btn-success" onClick={handleSubmitCreateNewTopic}>Add</button>
           </div>
         </div>
       </div>
