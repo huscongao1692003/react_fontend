@@ -2,19 +2,21 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Spin, message } from "antd";
+import { useStore, actions } from "@/src/store";
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
     price: 0,
     information: "",
-    style: 0,
-    skill: 0,
-    courseId: 10,
+    style: 1,
+    skill: 1,
+    courseId: 0,
     image: null,
     description: "",
     courseTitle: "",
-    category: 0,
+    category: 1,
   });
+
   const [err, setErr] = useState("");
   const router = useRouter();
   const [successMsg, setSuccessMsg] = useState("");
@@ -22,9 +24,11 @@ function CourseCreateArea() {
   const [styles, setStyles] = useState([]); // State variable to store styles data
   const [categories, setCategories] = useState([]); // State variable to store categories data
   const [skills, setSkills] = useState([]); // State variable to store skills data
+  const [state, dispatch] = useStore();
+  const [imagePre, setImagePre] = useStore("");
 
   const error = () => {
-    message.error("Something has error!!!");
+    message.error(err);
     message.config({
       maxCount: 3,
     });
@@ -50,28 +54,51 @@ function CourseCreateArea() {
     setCourseData({ ...courseData, image: selectedFile });
   };
 
+  const handleUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      setImagePre(e.target.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   const submitCourseData = async () => {
     const loadingMessage = message.loading("Processing...", 0);
     setIsloading(true);
 
-    if (
-      courseData.courseTitle.length < 5 ||
-      courseData.description.length < 5 ||
-      courseData.information.length < 5 ||
-      courseData.description.length > 255 ||
-      !courseData.category ||
-      !courseData.style ||
-      !courseData.skill ||
-      !courseData.price ||
-      !courseData.image
-    ) {
-      setErr("Validation error: Please check your inputs.");
-      setSuccessMsg("");
+    if (courseData.courseTitle.length < 6) {
+      setErr('Course title must be at least 6 characters long.');
+      loadingMessage();
+      setIsloading(false);
+      return;
+    } else if (courseData.description.length < 5) {
+      setErr('Description must be at least 5 characters long.');
+      loadingMessage();
+      setIsloading(false);
+      return;
+    } else if (courseData.information.length < 5) {
+      setErr('Information must be at least 5 characters long.');
+      loadingMessage();
+      setIsloading(false);
+      return;
+    } else if (courseData.description.length > 255) {
+      setErr('Description must not exceed 255 characters.');
+      loadingMessage();
+      setIsloading(false);
+      return;
+    } else if(!courseData.image) {
+      setErr('Please upload an image.');
       loadingMessage();
       setIsloading(false);
       return;
     }
+      
+    
     try {
+      console.log(courseData);
       if (localStorage.getItem("accessToken")) {
         const accessToken = localStorage.getItem("accessToken");
         const headers = {
@@ -115,9 +142,32 @@ function CourseCreateArea() {
     // Fetch API data for styles, categories, and skills
     const fetchData = async () => {
       try {
-        const stylesResponse = await axios.get("https://drawproject-production-012c.up.railway.app/api/v1/style");
-        const categoriesResponse = await axios.get("https://drawproject-production-012c.up.railway.app/api/v1/category");
-        const skillsResponse = await axios.get("https://drawproject-production-012c.up.railway.app/api/v1/skill");
+        if (Object.keys(state.data).length != 0) {
+          setCourseData({
+            ...courseData,
+            courseTitle: state.data.courseTitle,
+            price: state.data.price,
+            information: state.data.information,
+            style: state.data.drawingStyleId,
+            skill: state.data.skillId,
+            courseId: state.data.courseId,
+            image: null,
+            description: state.data.description,
+            category: state.data.categoryId,
+            image: state.data.image,
+          });
+          dispatch(actions.setValueCourse({}));
+        }
+
+        const stylesResponse = await axios.get(
+          "https://drawproject-production-012c.up.railway.app/api/v1/style"
+        );
+        const categoriesResponse = await axios.get(
+          "https://drawproject-production-012c.up.railway.app/api/v1/category"
+        );
+        const skillsResponse = await axios.get(
+          "https://drawproject-production-012c.up.railway.app/api/v1/skill"
+        );
 
         setStyles(stylesResponse.data.data);
         setCategories(categoriesResponse.data);
@@ -135,10 +185,10 @@ function CourseCreateArea() {
       {err !== "" && successMsg === ""
         ? error()
         : err === "" && successMsg !== "" && success()}
-      <div className="container-xl px-4 mt-100 mb-100">
+      <div className="container-xl px-4">
         <div className="row gx-4">
-          <div className="col-xl-4">
-            <div className="card">
+          <div className="col-md-4">
+            <div className="card bg-transparent">
               <div className="card-header">Course Picture</div>
               <div className="card-body text-center">
                 <input
@@ -169,41 +219,80 @@ function CourseCreateArea() {
                 </button>
               </div>
             </div>
+            <Spin spinning={isLoading}>
+              <div className="submit-course mt-4 mb-3" style={{textAlign: "center"}}>
+                <button
+                  type="button"
+                  className="tp-btn"
+                  onClick={submitCourseData}
+                >
+                  Submit
+                </button>
+              </div>
+            </Spin>
           </div>
-          <div className="col-xl-8">
-            <div className="card mb-4">
+          <div className="col-md-8">
+            <div className="card mb-4 bg-transparent">
               <div className="card-header">Course Details</div>
               <div className="card-body">
                 <form
-                  novalidate=""
+                  noValidate=""
                   className="ng-untouched ng-pristine ng-valid"
                 >
-                  <div className="mb-3">
-                    <label for="inputUsername" className="small mb-1">
-                      Course Title (how the course name will appear to other
-                      users on the site)
-                    </label>
-                    <input
-                      id="inputCourseTitle"
-                      type="text"
-                      placeholder="Enter course title"
-                      className="form-control"
-                      onChange={(e) => {
-                        setCourseData({
-                          ...courseData,
-                          courseTitle: e.target.value,
-                        });
-                      }}
-                    />
-                  </div>
                   <div className="row">
-                    <div className="mb-3 col-md-6">
-                      <label for="inputFirstName" className="small mb-1">
+                    <div className="mb-3 col-md-8">
+                      <label htmlFor="inputUsername" className="small mb-1">
+                        Course Title
+                      </label>
+                      <input
+                        id="inputCourseTitle"
+                        type="text"
+                        placeholder="Enter course title"
+                        className="form-control bg-transparent color-border-form-dashboard"
+                        maxLength={40}
+                        required
+                        onChange={(e) => {
+                          setCourseData({
+                            ...courseData,
+                            courseTitle: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                    <div className="mb-3 col-md-4">
+                      <label htmlFor="inputLocation" className="small mb-1">
+                        Price
+                      </label>
+                      <div className="input-price d-flex custom-input-price-course">
+                        <span>$</span>
+                        <input
+                          type="number"
+                          placeholder="Enter your price"
+                          className="form-control bg-transparent color-border-form-dashboard"
+                          required
+                          onChange={(e) => {
+                            if (e.target.value < 0) {
+                              e.target.value = 0;
+                            } else if (e.target.value > 999999) {
+                              e.target.value = 999999;
+                            }
+                            setCourseData({
+                              ...courseData,
+                              price: parseInt(e.target.value),
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="mb-3 col-md-4">
+                      <label htmlFor="inputFirstName" className="small mb-1">
                         Category
                       </label>
                       <select
-                        placeholder="Select your category"
-                        className="form-control"
+                        className="form-control bg-transparent color-border-form-dashboard"
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
@@ -211,7 +300,6 @@ function CourseCreateArea() {
                           });
                         }}
                       >
-                        <option value={0}>Select a category</option>
                         {categories.map((category) => (
                           <option
                             key={category.categoryId}
@@ -222,13 +310,12 @@ function CourseCreateArea() {
                         ))}
                       </select>
                     </div>
-                    <div className="mb-3 col-md-6">
-                      <label for="inputLastName" className="small mb-1">
+                    <div className="mb-3 col-md-4">
+                      <label htmlFor="inputLastName" className="small mb-1">
                         Style
                       </label>
                       <select
-                        placeholder="Select your style"
-                        className="form-control"
+                        className="form-control bg-transparent color-border-form-dashboard"
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
@@ -236,7 +323,6 @@ function CourseCreateArea() {
                           });
                         }}
                       >
-                        <option value={0}>Select a style</option>
                         {styles.map((style) => (
                           <option
                             key={style.drawingStyleId}
@@ -247,15 +333,12 @@ function CourseCreateArea() {
                         ))}
                       </select>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="mb-3 col-md-6">
-                      <label for="inputOrgName" className="small mb-1">
+                    <div className="mb-3 col-md-4">
+                      <label htmlFor="inputOrgName" className="small mb-1">
                         Skill
                       </label>
                       <select
-                        placeholder="Select your skill"
-                        className="form-control"
+                        className="form-control bg-transparent color-border-form-dashboard"
                         onChange={(e) => {
                           setCourseData({
                             ...courseData,
@@ -263,7 +346,6 @@ function CourseCreateArea() {
                           });
                         }}
                       >
-                        <option value={0}>Select a skill</option>
                         {skills.map((skill) => (
                           <option key={skill.skillId} value={skill.skillId}>
                             {skill.skillName}
@@ -271,31 +353,15 @@ function CourseCreateArea() {
                         ))}
                       </select>
                     </div>
-                    <div className="mb-3 col-md-6">
-                      <label for="inputLocation" className="small mb-1">
-                        Price
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="Enter your price"
-                        className="form-control"
-                        onChange={(e) => {
-                          setCourseData({
-                            ...courseData,
-                            price: parseInt(e.target.value),
-                          });
-                        }}
-                      />
-                    </div>
                   </div>
                   <div className="mb-3">
-                    <label for="inputUsername" className="small mb-1">
+                    <label htmlFor="inputUsername" className="small mb-1">
                       Description
                     </label>
                     <textarea
-                      class="form-control"
+                      className="form-control bg-transparent color-border-form-dashboard"
                       id="exampleFormControlTextarea1"
-                      rows="3"
+                      rows="4"
                       onChange={(e) => {
                         setCourseData({
                           ...courseData,
@@ -305,13 +371,13 @@ function CourseCreateArea() {
                     ></textarea>
                   </div>
                   <div className="mb-3">
-                    <label for="inputUsername" className="small mb-1">
+                    <label htmlFor="inputUsername" className="small mb-1">
                       Information
                     </label>
                     <textarea
-                      class="form-control"
+                      className="form-control bg-transparent color-border-form-dashboard"
                       id="exampleFormControlTextarea1"
-                      rows="3"
+                      rows="4"
                       onChange={(e) => {
                         setCourseData({
                           ...courseData,
@@ -320,15 +386,6 @@ function CourseCreateArea() {
                       }}
                     ></textarea>
                   </div>
-                  <Spin spinning={isLoading}>
-                    <button
-                      type="button"
-                      className="tp-btn"
-                      onClick={submitCourseData}
-                    >
-                      Submit
-                    </button>
-                  </Spin>
                 </form>
               </div>
             </div>

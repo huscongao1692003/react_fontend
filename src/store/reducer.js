@@ -1,4 +1,6 @@
-import { SET_VALUE_INPUT_GLOBAL } from './constants'
+import { SET_VALUE_INPUT_GLOBAL,
+        SET_VALUE_COURSE
+} from './constants'
 
 const initState = {
     data: {},
@@ -6,12 +8,9 @@ const initState = {
 }
 
 function reducer(state, action) {
-    console.log("test: " + (action.type === SET_VALUE_INPUT_GLOBAL));
     switch (action.type) {
-        
         case SET_VALUE_INPUT_GLOBAL:
             let value;
-            console.log("setting value: " + action.payload + ", " + parseInt(action.payload.substring(2)));
             if (action.payload.substring(0, 2) === "ca") {
                 value = {
                     dataType: "category",
@@ -32,8 +31,14 @@ function reducer(state, action) {
                 search: action.payload,
                 
             }
+        case SET_VALUE_COURSE:
+            console.log("action: ", action.payload);
+            return {
+                ...state,
+                data: action.payload,
+            }
         default:
-            throw new Error("Unknown action typehttp://localhost:3000/course-list: ");
+            throw new Error("Unknown action");
     }
 }
 

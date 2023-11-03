@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BlogSearch from "./blog-search";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Spinner from "react-bootstrap/Spinner";
 import { useDebounce } from "@/hooks/debounce";
 import Sidebar from "./category";
@@ -28,7 +27,7 @@ const Postbox = () => {
     return date.toLocaleString();
   }
 
-  function handlePageChange(page) {
+  function handlePageChange(event, page) {
     setPage(page);
   }
 
@@ -37,7 +36,7 @@ const Postbox = () => {
 
       try {
         const queryParams = {
-          eachPage: 4,
+          eachPage: 2,
           page: page,
           search: searchValueDebounce,
           categoryId: category

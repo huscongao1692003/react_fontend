@@ -59,7 +59,7 @@ const CourseArea = () => {
                       <img src={course.image} alt="course-thumb" />
                     </Link>
                     <div className="tpcourse__tag">
-                      <Link href={course.category}>
+                      <Link href={`/course-details?id=${course.courseId}`}>
                         <i className="fi fi-rr-heart"></i>
                       </Link>
                     </div>
@@ -100,10 +100,10 @@ const CourseArea = () => {
                     <div className="tpcourse__category d-flex align-items-center justify-content-between">
                       <ul className="tpcourse__price-list d-flex align-items-center">
                         <li className = {randomColor()} >
-                          <Link href={`/course-details?id=${course.courseId}`}>{course.category}</Link>
+                          <Link href={`/course-details?id=${course.courseId}`}>{course.categoryName}</Link>
                         </li>
                         <li className = {randomColor()}>
-                          <Link href={`/course-details?id=${course.courseId}`}>{course.style}</Link>
+                          <Link href={`/course-details?id=${course.courseId}`}>{course.drawingStyleName}</Link>
                         </li>
                         <li className="tpcourse__course-price">
                           ${course.price}

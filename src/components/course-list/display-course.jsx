@@ -53,17 +53,17 @@ const DisplayCourse = ( {courses} ) => {
               <ul className="tpcourse__price-list d-flex align-items-center">
                 <li>
                   <Link className={randomColor()} href="/course-details">
-                    {course.skill}
+                    {course.skillName}
                   </Link>
                 </li>
                 <li>
                   <Link className={randomColor()} href="/course-details">
-                    {course.category}
+                    {course.categoryName}
                   </Link>
                 </li>
                 <li>
                   <Link className={randomColor()} href="/course-details">
-                    {course.style}
+                    {course.drawingStyleName}
                   </Link>
                 </li>
               </ul>

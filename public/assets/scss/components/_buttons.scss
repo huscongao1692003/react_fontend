@@ -312,3 +312,22 @@
 		}
 	}
 }
+
+.custom-input-price-course {
+	position: relative;
+	input {
+		padding-left: 1.3rem;
+	}
+	span {
+		position: absolute;
+		font-size: 1.1rem;
+    	bottom: 15.2%;
+    	left: 0.4rem;
+	}
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

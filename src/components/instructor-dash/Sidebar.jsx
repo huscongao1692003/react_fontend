@@ -14,47 +14,46 @@ import Table from './Table/Table';
 import Courses from './Table/Courses';
 import Post from "../Table/Post";
 import Orders from "./Table/Orders"
-import CreateCourse from "../course-create"
+import CourseCreateArea from "../course-create/course-create-area"; 
 import { motion } from "framer-motion";
 import InstructorReport from "../Table/InstructorReport";
-
-const MenuItems = [
-  {
-    icon: UilEstate,
-    heading: "Dashboard",
-    content: <MainDash />,
-  },
-  {
-    icon: UilEstate,
-    heading: "Report",
-    content: <InstructorReport />,
-  },
-  {
-    icon: UilClipboardAlt,
-    heading: "Orders",
-    content: <Orders />,
-  },
-  {
-    icon: UilClipboardAlt,
-    heading: "Create Course",
-    content: <CreateCourse />,
-  },
-  {
-    icon: UilPackage,
-    heading: 'Courses',
-    content: <Courses />,
-  },
-  {
-    icon: UilChart,
-    heading: 'Post Manager',
-    content: <Post />,
-  },
-];
 
 const SidebarInstructor = () => {
   const [selected, setSelected] = useState(0);
   const [expanded, setExpanded] = useState(true);
   const [animate, setAnimate] = useState("");
+  const MenuItems = [
+    {
+      icon: UilEstate,
+      heading: "Dashboard",
+      content: <MainDash />,
+    },
+    {
+      icon: UilEstate,
+      heading: "Report",
+      content: <InstructorReport />,
+    },
+    {
+      icon: UilClipboardAlt,
+      heading: "Orders",
+      content: <Orders />,
+    },
+    {
+      icon: UilClipboardAlt,
+      heading: "Create Course",
+      content: <CourseCreateArea />,
+    },
+    {
+      icon: UilPackage,
+      heading: 'Courses',
+      content: <Courses setSelected={setSelected} />,
+    },
+    {
+      icon: UilChart,
+      heading: 'Post Manager',
+      content: <Post />,
+    },
+  ];
 
   const SidebarVariants = {
     true: {

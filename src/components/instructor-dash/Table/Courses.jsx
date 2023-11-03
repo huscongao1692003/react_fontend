@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import {
   Table,
@@ -10,23 +10,37 @@ import {
   Paper,
   Button,
 } from '@mui/material';
-import Spinner from 'react-bootstrap/Spinner';
 import { useRouter } from 'next/router';
-import Dropdown from 'react-bootstrap/Dropdown'; // Import Bootstrap Dropdown
-import Modal from 'react-bootstrap/Modal';
-import { ListGroup } from 'react-bootstrap';
+import { message } from 'antd';
+import StudentOfCourse from './Student-Course';
+import { useStore, actions } from "@/src/store";
 
-export default function CourseTable() {
+const CourseTable = ({ setSelected }) => {
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsloading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [userId, setUserId] = useState(3)
-  const [students, setStudents] = useState([]);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Control the dropdown visibility
+  const [userId, setUserId] = useState(0)
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [courseId, setCourseId] = useState(0);
+  const [state, dispatch] = useStore();
+
+  message.config({
+    maxCount: 1
+  })
+
+  //get course data and save it to context
+  const onSelect = (id) => {
+    const course = courses.find(object => object.courseId === id);
+    dispatch(actions.setValueCourse(course));
+    setSelected(3);
+  };
 
   useEffect(() => {
+    
+    const loadingMessage = message.loading('Loading...', 0);
+    
     axios
         .get(`https://drawproject-production-012c.up.railway.app/api/v1/users/id`, {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -44,36 +58,25 @@ export default function CourseTable() {
       })
       .then((response) => {
         setCourses(response.data.data);
-        setLoading(false);
+        loadingMessage();
+        
       });
+      
   }, [accessToken, userId]);
 
-  const handleStudentOfCourseClick = (course) => {
-    // Fetch the list of students for the selected course
-    axios
-      .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${course.courseId}/student`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((response) => {
-        setStudents(response.data.data); // Update with the response data property
-        console.log(students);
-        setSelectedCourse(course);
-        setDropdownOpen(true); // Open the Bootstrap dropdown
-      });
-  };
-
-  if (loading) {
-    return (
-      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
-        <Spinner animation="grow" variant="#80808029" size="lg" />
-      </div>
-    );
-  }
+  
 
   return (
     <div className="Table">
+      
+
+       {
+        isModalOpen ? <StudentOfCourse courseId={courseId} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />  : ""
+       }
+      
+
       <h3>Courses</h3>
-      <TableContainer component={Paper} style={{ boxShadow: '0px 13px 20px 0px #80808029' }}>
+      <TableContainer component={Paper} style={{ boxShadow: '0px 13px 20px 0px #80808029', backgroundColor: "transparent", textAlignLast: "center" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -87,6 +90,7 @@ export default function CourseTable() {
           </TableHead>
           <TableBody>
             {courses.map((course) => (
+              
               <TableRow key={course.courseId}>
                 <TableCell component="th" scope="row">
                   {course.courseTitle}
@@ -96,15 +100,15 @@ export default function CourseTable() {
                 <TableCell>{course.status}</TableCell>
                 <TableCell>{course.numLesson}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="secondary" onClick={() => handleStudentOfCourseClick(course)}>
-                    Student Of Course
+                  <Button variant="outlined" color="secondary" onClick={() => (setIsModalOpen(true), setCourseId(course.courseId))}>
+                    Student
                   </Button>
                   <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => router.push(`/edit-course/${course.courseId}`)} // Example route for editing the course
+                    onClick={() => {onSelect(course.courseId)}} // Example route for editing the course
                   >
-                    Edit Course
+                    Edit
                   </Button>
                 </TableCell>
               </TableRow>
@@ -112,25 +116,9 @@ export default function CourseTable() {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Dropdown show={dropdownOpen} onToggle={(isOpen) => setDropdownOpen(isOpen)}>
-        <Dropdown.Toggle id="dropdown-menu-align-responsive-1" variant="secondary" >
-          Students of {selectedCourse ? selectedCourse.courseTitle : ''}
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          {students.map((student) => (
-            <Dropdown.Item key={student.userID}>
-              <ListGroup>
-                <ListGroup.Item>{student.fullName}</ListGroup.Item>
-                <ListGroup.Item>Email: {student.email}</ListGroup.Item>
-                <ListGroup.Item>Status: {student.status}</ListGroup.Item>
-                <ListGroup.Item>Progress: {student.progressDTO.progress}</ListGroup.Item>
-                <ListGroup.Item>Status: {student.progressDTO.status}</ListGroup.Item>
-              </ListGroup>
-            </Dropdown.Item>
-            ))}
-        </Dropdown.Menu>
-      </Dropdown>
     </div>
     );
 }
+
+
+export default CourseTable;
