@@ -47304,7 +47304,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   min-height: 100vh;
 }
 
-.AppGlass {
+/* .AppGlass {
   display: grid;
   height: 97vh;
   width: 97vw;
@@ -47312,8 +47312,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   border-radius: 2rem;
   gap: 16px;
   overflow-y: scroll;
-}
-
+} */
 .AppGlass::-webkit-scrollbar {
   display: none;
 }
@@ -47678,62 +47677,6 @@ th {
 .ComposedChart {
   width: 32%;
   flex: 1;
-}
-
-.newReportForm {
-  margin-top: 50px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.newReportForm h4 {
-  margin-bottom: 20px;
-}
-
-.newReportForm label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.newReportForm input,
-.newReportForm textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.newReportForm button {
-  display: block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.newReportForm button:hover {
-  background-color: #0069d9;
-}
-
-button {
-  padding: 5px 10px;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #218838;
 }
 
 .RightSide {
@@ -52224,6 +52167,10 @@ div.choose-sub-color {
 /*----------------------------------------*/
 /*  08. COURSE CSS START
 /*----------------------------------------*/
+.ant-modal-custom {
+  width: 90% !important;
+}
+
 .course-menu span {
   font-size: 20px;
   display: block;
