@@ -7,6 +7,7 @@ import TopicItem from "./topic-item";
 import { ModalCreateLesson, ModalCreateAssignment } from "./Modal";
 
 function CourseCreateTopicArea({ courseId }) {
+  const [topics, setTopics] = useState([]);
   const [courseData, setCourseData] = useState({
     lessons: [],
     index: "",
@@ -24,19 +25,26 @@ function CourseCreateTopicArea({ courseId }) {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-
+  
     try {
       const response = await axios.get(url, config);
       if (response.data.status === "OK") {
-        setCourseData(response.data.data[0]);
+        // Assuming that response.data.data contains an array of all topics
+        setTopics(response.data.data); // This line is changed
       } else {
         console.error(response);
       }
-      // You can process the response data here
     } catch (e) {
       console.error(e);
     }
   };
+  
+  useEffect(() => {
+    if (courseId) {
+      getCourseData();
+    }
+  }, [courseId]);
+  
 
   const handleSubmit = async () => {
     const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
@@ -61,10 +69,6 @@ function CourseCreateTopicArea({ courseId }) {
     }
   };
 
-  const TopicItemsHTML = courseData?.lessons?.map((item, index) => (
-    <TopicItem key={index} data={item} />
-  ));
-
   useEffect(() => {
     if (courseId) {
       getCourseData();
@@ -81,6 +85,7 @@ function CourseCreateTopicArea({ courseId }) {
       <ModalCreateAssignment
         courseData={courseData}
         setCourseData={setCourseData}
+        courseId={courseId}
       />
       <div className="d-flex justify-content-center align-items-center mt-4">
         <button
@@ -89,7 +94,7 @@ function CourseCreateTopicArea({ courseId }) {
           data-bs-toggle="modal"
           data-bs-target="#modalTopic"
         >
-          Add New Lesson
+          Add New Topic
         </button>
         <button
           type="button"
@@ -100,7 +105,11 @@ function CourseCreateTopicArea({ courseId }) {
           Add New Lesson
         </button>
       </div>
-      {TopicItemsHTML}
+      <div>
+      {topics.map((topic) => (
+        <TopicItem key={topic.topicId} data={topic} />
+      ))}
+    </div>
     </div>
   );
 }
