@@ -1,8 +1,15 @@
 import LessionItem from "./lesson-item";
 
 function TopicItem({ data }) {
+  // const { lessonId, url, name, typeFile, index, listAssignment } = data;
+
   const { topicTitle, lessons } = data;
 
+  console.log(lessons);
+
+  const LessonItemsHTML = lessons?.map((item, index) => (
+    <LessionItem data={item} key={index} number={index} />
+  ));
 
   return (
     <div
@@ -20,9 +27,7 @@ function TopicItem({ data }) {
           </button>
         </div>
       </div>
-      <div className="card-body">{lessons.map((lesson, index) => (
-          <LessionItem key={lesson.lessonId} data={lesson} />
-        ))}</div>
+      <div className="card-body">{LessonItemsHTML}</div>
     </div>
   );
 }

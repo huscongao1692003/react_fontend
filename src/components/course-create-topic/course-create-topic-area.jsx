@@ -7,18 +7,10 @@ import TopicItem from "./topic-item";
 import { ModalCreateLesson, ModalCreateAssignment } from "./Modal";
 
 function CourseCreateTopicArea({ courseId }) {
-  const [topics, setTopics] = useState([]);
-  const [courseData, setCourseData] = useState({
-    lessons: [],
-    index: "",
-    topicTitle: "",
-    topicId: "",
-  });
-  useEffect(() => {
-    setCourseData((prevData) => ({ ...prevData, lessons: topics }));
-  }, [topics]);
+  const [courseData, setCourseData] = useState([]);
+
   const getCourseData = async () => {
-    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
+    const url = `https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
       headers: {
@@ -27,29 +19,22 @@ function CourseCreateTopicArea({ courseId }) {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-  
+
     try {
       const response = await axios.get(url, config);
       if (response.data.status === "OK") {
-        // Assuming that response.data.data contains an array of all topics
-        setTopics(response.data.data); // This line is changed
+        setCourseData(response.data.data);
       } else {
         console.error(response);
       }
+      // You can process the response data here
     } catch (e) {
       console.error(e);
     }
   };
-  
-  useEffect(() => {
-    if (courseId) {
-      getCourseData();
-    }
-  }, [courseId]);
-  
 
   const handleSubmit = async () => {
-    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
+    const url = `https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
       headers: {
@@ -71,11 +56,25 @@ function CourseCreateTopicArea({ courseId }) {
     }
   };
 
+  const TopicItemsHTML =
+    courseData &&
+    courseData?.map((item, index) => {
+      return <TopicItem key={index} data={item} />;
+    });
+
+  const [reload, setReload] = useState(false);
+
   useEffect(() => {
     if (courseId) {
       getCourseData();
     }
   }, [courseId]);
+
+  useEffect(() => {
+    if (reload) {
+      getCourseData();
+    }
+  }, [reload]);
 
   return (
     <div style={{ minHeight: "50vh" }}>
@@ -83,18 +82,20 @@ function CourseCreateTopicArea({ courseId }) {
         courseData={courseData}
         setCourseData={setCourseData}
         courseId={courseId}
+        setReload={setReload}
       />
       <ModalCreateAssignment
         courseData={courseData}
         setCourseData={setCourseData}
         courseId={courseId}
+        setReload={setReload}
       />
       <div className="d-flex justify-content-center align-items-center mt-4">
         <button
           type="button"
           className="btn btn-outline-success m-2"
           data-bs-toggle="modal"
-          data-bs-target="#modalTopic"
+          data-bs-target="#modalLesson"
         >
           Add New Topic
         </button>
@@ -102,16 +103,12 @@ function CourseCreateTopicArea({ courseId }) {
           type="button"
           className="btn btn-outline-success m-2"
           data-bs-toggle="modal"
-          data-bs-target="#modalLesson"
+          data-bs-target="#modalTopic"
         >
           Add New Lesson
         </button>
       </div>
-      <div>
-      {topics.map((topic) => (
-        <TopicItem key={topic.topicId} data={topic} />
-      ))}
-    </div>
+      {TopicItemsHTML}
     </div>
   );
 }

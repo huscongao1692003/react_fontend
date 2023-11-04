@@ -1,65 +1,28 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-function CreateAssignment({ courseData, setCourseData, courseId }) {
+function CreateAssignment({ courseData, setReload, courseId }) {
+  console.log(courseData);
   const [topicId, setTopicId] = useState(null);
-  const [topics, setTopics] = useState([]);
-  const [lessonType, setLessonType] = useState(""); // For storing the lesson type
   const [lessonData, setLessonData] = useState({
-    // Updated state structure
-    name: "",
-    topic: "",
+    // assignmentId: null,
+    // assignmentTitle: "",
+    topicTitle: "",
     number: null,
-    lessonId: "",
-    status: "",
-    url: "",
-    file: null,
+    // compulsory: null,
+    // lessonId: null,
+    // status: "",
   });
 
-  const topicIdInt = parseInt(topicId);
-  const getCourseData = async () => {
-    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
-    const accessToken = localStorage.getItem("accessToken");
-    const config = {
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    try {
-      const response = await axios.get(url, config);
-      if (response.data.status === "OK") {
-        // Assuming that response.data.data contains an array of all topics
-        setTopics(response.data.data); // This line is changed
-      } else {
-        console.error(response);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  useEffect(() => {
-    if (courseId) {
-      getCourseData();
-    }
-  }, [courseId]);
-  const TopicIdHTML = topics.map((topic, index) => (
-    <option value={topic.topicId} key={index}>
-      {topic.topicTitle}
+  const TopicIdHTML = courseData?.lessons?.map((topic, index) => (
+    <option value={topic?.lessonId} key={index}>
+      {topic.name}
     </option>
   ));
 
   const createNewLesson = async () => {
     let newLessonData = [...courseData?.lessons];
     let newLessons = [];
-
-    const selectedTopic = topics.find((t) => t.topicId.toString() === topicId);
-    const numberOfLessonsInTopic = selectedTopic
-      ? selectedTopic.lessons.length
-      : 0;
 
     newLessonData.forEach((lesson, index) => {
       if (lesson?.lessonId == topicId) {
@@ -68,53 +31,28 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
       newLessons.push(lesson);
     });
 
-    const payload = {
-      topicId: topicIdInt,
-      number: numberOfLessonsInTopic + 1, // This will be the new lesson's number
-      name: lessonData.assignmentTitle,
-      typeFile: lessonType.toLowerCase(), // Ensure typeFile is lowercase
-      ...(lessonType === "video" && { url: lessonData.url }),
-    };
-    const formData = new FormData();
-    if (lessonType === "image" || lessonType === "pdf") {
-      formData.append("number", numberOfLessonsInTopic + 1);
-      formData.append("typeFile", lessonType.toLowerCase());
-      formData.append("topicId", topicIdInt);
-      formData.append("name", lessonData.assignmentTitle);
-      formData.append("file", lessonData.file);
-    } else {
-      formData.append("number", numberOfLessonsInTopic + 1);
-      formData.append("typeFile", lessonType.toLowerCase());
-      formData.append("topicId", topicIdInt);
-      formData.append("name", lessonData.assignmentTitle);
-      formData.append("url", lessonData.url);
-    }
-
-    const url = `https://drawproject-production-012c.up.railway.app/api/v1/lessons`;
+    const url = `https://drawproject-production.up.railway.app/api/v1/courses/${courseId}/topic`;
+    // const url = `https://drawproject-production.up.railway.app/api/v1/assignments`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
-      headers: {
-        "Content-Type":
-          lessonType === "video" ? "application/json" : "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`,
-      },
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     };
-
     try {
-      const response = await axios.post(url, formData, { headers: config });
+      const response = await axios.post(url, lessonData, { headers: config });
+      if (response.data.status === "CREATED") {
+        alert("success");
+        setReload(true);
+        setTimeout(() => {
+          setReload(false);
+        }, 500);
+      } else {
+        console.error(response);
+      }
+      // You can process the response data here
     } catch (e) {
       console.error(e);
     }
-  };
-  const handleFileChange = (event) => {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      setLessonData({ ...lessonData, file: file });
-    }
-  };
-
-  const handleLessonTypeChange = (event) => {
-    setLessonType(event.target.value);
   };
 
   return (
@@ -129,7 +67,7 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="modalLessonLabel">
-              Add New Lesson
+              Add New Topic
             </h5>
             <button
               type="button"
@@ -138,57 +76,9 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
               aria-label="Close"
             ></button>
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="lessonType" className="small mb-1">
-              Lesson Type
-            </label>
-            <select
-              id="lessonType"
-              className="form-select"
-              value={lessonType}
-              onChange={handleLessonTypeChange}
-            >
-              <option value="">Select Type</option>
-              <option value="video">Video</option>
-              <option value="image">Image</option>
-              <option value="pdf">PDF</option>
-            </select>
-          </div>
-
-          {lessonType === "image" || lessonType === "pdf" ? (
-            <div className="mb-3">
-              <label htmlFor="fileUpload" className="small mb-1">
-                Upload File
-              </label>
-              <input
-                type="file"
-                id="fileUpload"
-                className="form-control"
-                onChange={handleFileChange}
-              />
-            </div>
-          ) : null}
-
-          {lessonType === "video" ? (
-            <div className="mb-3">
-              <label htmlFor="videoUrl" className="small mb-1">
-                Video URL
-              </label>
-              <input
-                type="text"
-                id="videoUrl"
-                className="form-control"
-                value={lessonData.url}
-                onChange={(e) =>
-                  setLessonData({ ...lessonData, url: e.target.value })
-                }
-              />
-            </div>
-          ) : null}
           <div className="modal-body">
             <form novalidate="" className="ng-untouched ng-pristine ng-invalid">
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <label for="inputEmailAddress" className="small mb-1">
                   Topic Id
                 </label>
@@ -197,27 +87,43 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                   aria-label="Default select example"
                   value={topicId}
                   onChange={(e) => {
-                    const newTopicId = e.target.value;
-                    setTopicId(newTopicId);
-                    // You don't need to set lessonId here, just topicId
+                    setTopicId(e.target.value);
+                    setLessonData({ ...lessonData, topicId: e.target.value });
+                    // setLessonData({ ...lessonData, lessonId: topicId });
                   }}
                 >
                   <option selected disabled>
-                    Choose the Topic
+                    Choose the lesson
                   </option>
                   {TopicIdHTML}
                 </select>
+              </div> */}
+              {/* <div className="mb-3">
+                <label for="inputEmailAddress" className="small mb-1">
+                  Assignment Id
+                </label>
+                <input
+                  type="number"
+                  placeholder="Enter lesson id"
+                  className="form-control ng-untouched ng-pristine ng-invalid"
+                  value={lessonData?.lessonId}
+                  onChange={(e) => {
+                    setLessonData({
+                      ...lessonData,
+                      assignmentId: parseInt(e.target.value),
+                    });
+                  }}
+                />
               </div>
-
               <div className="mb-3">
                 <label for="inputEmailAddress" className="small mb-1">
-                  Lesson Name
+                  Assignment Title
                 </label>
                 <input
                   type="text"
                   placeholder="Enter name"
                   className="form-control ng-untouched ng-pristine ng-invalid"
-                  
+                  value={lessonData?.name}
                   onChange={(e) => {
                     setLessonData({
                       ...lessonData,
@@ -225,7 +131,7 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                     });
                   }}
                 />
-              </div>
+              </div> */}
               <div className="mb-3">
                 <label for="inputEmailAddress" className="small mb-1">
                   Number
@@ -238,11 +144,88 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                   onChange={(e) => {
                     setLessonData({
                       ...lessonData,
-                      index: parseInt(e.target.value),
+                      number: parseInt(e.target.value),
                     });
                   }}
                 />
               </div>
+              <div className="mb-3">
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Topic
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter url"
+                  className="form-control ng-untouched ng-pristine ng-invalid"
+                  value={lessonData?.url}
+                  onChange={(e) => {
+                    setLessonData({
+                      ...lessonData,
+                      topicTitle: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              {/* <div className="mb-3">
+                <label for="inputEmailAddress" className="small mb-1">
+                  Status
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter name"
+                  className="form-control ng-untouched ng-pristine ng-invalid"
+                  value={lessonData?.status}
+                  onChange={(e) => {
+                    setLessonData({
+                      ...lessonData,
+                      status: e.target.value,
+                    });
+                  }}
+                />
+              </div> */}
+              {/* <div className="mb-3">
+                <label for="inputEmailAddress" className="small mb-1">
+                  Compulsory
+                </label>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    value={true}
+                    checked={lessonData?.compulsory == "true"}
+                    onChange={(e) =>
+                      setLessonData({
+                        ...lessonData,
+                        compulsory: e.target.value,
+                      })
+                    }
+                    id="true"
+                  />
+                  <label class="form-check-label" for="true">
+                    True
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    value={false}
+                    checked={lessonData?.compulsory == "false"}
+                    onChange={(e) =>
+                      setLessonData({
+                        ...lessonData,
+                        compulsory: e.target.value,
+                      })
+                    }
+                    id="false"
+                  />
+                  <label class="form-check-label" for="false">
+                    False
+                  </label>
+                </div>
+              </div> */}
             </form>
           </div>
           <div className="modal-footer">
