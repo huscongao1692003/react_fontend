@@ -1,8 +1,29 @@
 import { useState,useEffect } from "react";
 import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
+import { Spin, message, Space } from 'antd';
+
 
 function CreateLesson({ courseData, setCourseData, courseId }) {
- 
+ const[loading,setLoading] = useState(false);
+ const [err, setErr] = useState("");
+    const [successMsg, setSuccessMsg] = useState("");
+    const [isLoading, setIsloading] = useState(false);
+ const error = () => {
+  message.error("Something has error!!!")
+  message.config({
+      maxCount: 3
+  })
+  setErr("");
+};
+
+const success = () => {
+  message.success("Successful")
+  message.config({
+      maxCount: 1
+  })
+  setSuccessMsg("");
+}
   const [topicData, setTopicData] = useState({
     topicTitle: "",
     number: 0, // Assuming number is a default value you want to start with
@@ -22,6 +43,7 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
       };
   
       try {
+        setLoading(true)
         const response = await axios.get(url, config);
         if (response.data.status === "OK") {
           setTopicIdData(response.data.data);
@@ -29,6 +51,8 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
             (max, topic) => Math.max(max, topic.number), 0
           );
           setTopicData({ ...topicData, number: maxNumber + 1 });
+          setLoading(false);
+
         } else {
           console.error(response);
         }
@@ -43,6 +67,8 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
   }, [courseId]); // Only re-run the effect if courseId changes
 
   const handleSubmitCreateNewTopic = async () => {
+    const loadingMessage = message.loading('Processing...', 0);
+    setIsloading(true);
     const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
@@ -54,6 +80,10 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
        
     try {
       const response = await axios.post(url, topicData, config);
+      if (response.status === 200 || response.status === 201) {
+       
+        window.location.reload();
+      }
       if (response.data.status === "OK") {
         alert("success");
         setCourseData({
@@ -61,15 +91,30 @@ function CreateLesson({ courseData, setCourseData, courseId }) {
           lessons: [...courseData?.lessons, topicData],
         });
       // getCourseData();
+          setErr("");
+            setSuccessMsg("Successfully.");
        
       } else {
         console.error(response);
       }
     } catch (e) {
       console.error(e);
+      setErr(response);
+      setSuccessMsg("");
     }
+    loadingMessage();
+    setIsloading(false);
   };
-
+  if (loading == true) {
+    return (
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ paddingTop: "300px", paddingBottom: "300px" }}
+      >
+        <Spinner animation="grow" variant="success" size="lg" />
+      </div>
+    );
+  }
   return (
     <div className="modal fade" id="modalTopic" tabIndex="-1" aria-labelledby="modalTopicLabel" aria-hidden="true">
       <div className="modal-dialog">

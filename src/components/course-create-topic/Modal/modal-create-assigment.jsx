@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 function CreateAssignment({ courseData, setCourseData, courseId }) {
   const [topicId, setTopicId] = useState(null);
   const [topics, setTopics] = useState([]);
-  const [lessonType, setLessonType] = useState(""); // For storing the lesson type
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState("")
+  const [lessonType, setLessonType] = useState("");
+  const [newLessonNumber,setNewLessonNumber]= useState(1) // For storing the lesson type
   const [lessonData, setLessonData] = useState({
     // Updated state structure
     name: "",
@@ -15,7 +18,16 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
     url: "",
     file: null,
   });
+  const validateFields = () => {
+    let tempErrors = {};
+    tempErrors.topicId = topicId ? "" : "Topic must be selected.";
+    // tempErrors.name = lessonData.name ? "" : "Lesson name is required.";
+    tempErrors.typeFile = lessonType ? "" : "Lesson type is required.";
+    tempErrors.url = lessonType === "video" && !lessonData.url ? "URL is required for video type." : "";
+    setErrors(tempErrors);
 
+    return Object.values(tempErrors).every(x => x === "");
+  };
   const topicIdInt = parseInt(topicId);
   const getCourseData = async () => {
     const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
@@ -31,6 +43,7 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
     try {
       const response = await axios.get(url, config);
       if (response.data.status === "OK") {
+      
         // Assuming that response.data.data contains an array of all topics
         setTopics(response.data.data); // This line is changed
       } else {
@@ -41,6 +54,19 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
     }
   };
 
+  useEffect(() => {
+    // Whenever topics or topicId changes, calculate the new lesson number
+    const selectedTopic = topics.find(t => t.topicId.toString() === topicId);
+    let maxLessonNumber = 0;
+
+    if (selectedTopic && selectedTopic.lessons.length > 0) {
+      maxLessonNumber = selectedTopic.lessons.reduce(
+        (max, lesson) => Math.max(max, lesson.number), 0
+      );
+    }
+
+    setNewLessonNumber(maxLessonNumber + 1);
+  }, [topics, topicId]);
   useEffect(() => {
     if (courseId) {
       getCourseData();
@@ -53,10 +79,15 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
   ));
 
   const createNewLesson = async () => {
+    if (!validateFields()) {
+      return;
+    }
+    setIsSubmitting(true);
     let newLessonData = [...courseData?.lessons];
     let newLessons = [];
 
-    const selectedTopic = topics.find((t) => t.topicId.toString() === topicId);
+    const selectedTopic = topics.find(t => t.topicId.toString() === topicId);
+
     const numberOfLessonsInTopic = selectedTopic
       ? selectedTopic.lessons.length
       : 0;
@@ -67,23 +98,30 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
       }
       newLessons.push(lesson);
     });
+    let maxLessonNumber = 0;
+  
+  
+    if (selectedTopic && selectedTopic.lessons.length > 0) {
+      maxLessonNumber = selectedTopic.lessons.reduce((max, lesson) => Math.max(max, lesson.number), 0);
+    }
+  
 
     const payload = {
       topicId: topicIdInt,
-      number: numberOfLessonsInTopic + 1, // This will be the new lesson's number
+      number: newLessonNumber, // This will be the new lesson's number
       name: lessonData.assignmentTitle,
       typeFile: lessonType.toLowerCase(), // Ensure typeFile is lowercase
       ...(lessonType === "video" && { url: lessonData.url }),
     };
     const formData = new FormData();
     if (lessonType === "image" || lessonType === "pdf") {
-      formData.append("number", numberOfLessonsInTopic + 1);
+      formData.append("number", newLessonNumber);
       formData.append("typeFile", lessonType.toLowerCase());
       formData.append("topicId", topicIdInt);
       formData.append("name", lessonData.assignmentTitle);
       formData.append("file", lessonData.file);
     } else {
-      formData.append("number", numberOfLessonsInTopic + 1);
+      formData.append("number", newLessonNumber);
       formData.append("typeFile", lessonType.toLowerCase());
       formData.append("topicId", topicIdInt);
       formData.append("name", lessonData.assignmentTitle);
@@ -102,8 +140,15 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
 
     try {
       const response = await axios.post(url, formData, { headers: config });
+      if (response.status === 200 || response.status === 201) {
+        // Reload the page to update the data after successful creation
+        window.location.reload();
+      }
     } catch (e) {
       console.error(e);
+    }
+    finally {
+      setIsSubmitting(false); // Set to false when submission ends, regardless of outcome
     }
   };
   const handleFileChange = (event) => {
@@ -145,6 +190,7 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
             </label>
             <select
               id="lessonType"
+              required
               className="form-select"
               value={lessonType}
               onChange={handleLessonTypeChange}
@@ -154,6 +200,7 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
               <option value="image">Image</option>
               <option value="pdf">PDF</option>
             </select>
+            {errors.typeFile && <div className="error">{errors.typeFile}</div>}
           </div>
 
           {lessonType === "image" || lessonType === "pdf" ? (
@@ -202,11 +249,12 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                     // You don't need to set lessonId here, just topicId
                   }}
                 >
-                  <option selected disabled>
+                  <option selected disabled required>
                     Choose the Topic
                   </option>
                   {TopicIdHTML}
                 </select>
+                {errors.topicId && <div className="error">{errors.topicId}</div>}
               </div>
 
               <div className="mb-3">
@@ -214,6 +262,7 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                   Lesson Name
                 </label>
                 <input
+                required
                   type="text"
                   placeholder="Enter name"
                   className="form-control ng-untouched ng-pristine ng-invalid"
@@ -225,6 +274,8 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                     });
                   }}
                 />
+                {/* {errors.name && <div className="error">{errors.name}</div>} */}
+
               </div>
               <div className="mb-3">
                 <label for="inputEmailAddress" className="small mb-1">
@@ -232,9 +283,10 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                 </label>
                 <input
                   type="number"
-                  placeholder="Enter index"
+                  placeholder="index"
                   className="form-control ng-untouched ng-pristine ng-invalid"
-                  value={lessonData?.index}
+                  value={newLessonNumber}
+                  readOnly
                   onChange={(e) => {
                     setLessonData({
                       ...lessonData,
@@ -256,9 +308,9 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
             <button
               type="button"
               className="btn btn-success"
-              onClick={createNewLesson}
-            >
-              Add
+              onClick={createNewLesson}disabled={isSubmitting} // Disable the button when submitting
+              >
+                {isSubmitting ? 'Adding...' : 'Add'} 
             </button>
           </div>
         </div>
