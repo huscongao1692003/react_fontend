@@ -5,6 +5,7 @@ import axios from "axios";
 function Cetificate() {
   const [certificate, setCertificate] = useState({
     image: [],
+    imagePreviews: [], // To store image preview URLs
   });
 
   const fileInputRef = useRef(null);
@@ -19,9 +20,16 @@ function Cetificate() {
 
   const handleFileChange = (e) => {
     const selectedFiles = e.target.files;
-    // Convert FileList to an array and update the state
     const imagesArray = Array.from(selectedFiles);
-    setCertificate({ ...certificate, images: imagesArray });
+    
+    // Set files
+    setCertificate((prev) => ({ ...prev, image: imagesArray }));
+
+    // Create image previews
+    const imagePreviews = imagesArray.map((file) =>
+      URL.createObjectURL(file)
+    );
+    setCertificate((prev) => ({ ...prev, imagePreviews }));
   };
 
   useEffect(() => {
@@ -50,19 +58,19 @@ function Cetificate() {
         };
         const url =
           "https://drawproject-production-012c.up.railway.app/api/v1/instructor/certificates";
-
+  
         // Create a new FormData object
         const formData = new FormData();
-
+  
         // Append each selected image to the formData
         certificate.image.forEach((image, index) => {
-          formData.append(`images[${index}]`, image);
+          formData.append(`listImages`, image);
         });
-
+  
         try {
           const response = await axios.post(url, formData, { headers });
-
-          if (response.status === 201) {
+  
+          if (response.status === 200) {
             setLoading(false);
             fetchCertificateData();
             alert("Certificates created successfully");
@@ -75,6 +83,8 @@ function Cetificate() {
       console.error(e);
     }
   };
+  
+  
 
   return (
     <div className="container-xl px-4 mt-100 mb-100">
@@ -83,29 +93,34 @@ function Cetificate() {
           <div className="card">
             <div className="card-header">Cetificate Image</div>
             <div className="card-body text-center">
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
-              <img
-                src="https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"
-                alt=""
-                className="img-account-profile rounded-circle mb-2"
-              />
-              <div className="small font-italic text-muted mb-4">
-                {certificate.image.length === 0
-                  ? "JPG or PNG no larger than 5 MB"
-                  : `${certificate.image.length} images selected`}
-              </div>
-              <button
-                type="button"
-                className="tp-btn"
-                onClick={handleButtonClick}
-              >
-                Upload Images
-                </button>
+              {/* Display image previews */}
+         <div className="image-preview-container">
+          {certificate.imagePreviews.map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              alt={`Preview ${index}`}
+              className="img-preview img-account-profile"
+              style={{ maxWidth: "100px", maxHeight: "100px" }}
+            />
+          ))}
+        </div>
+        <input
+          type="file"
+          multiple // Allow multiple files to be selected
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        <button
+          type="button"
+          className="tp-btn"
+          onClick={handleButtonClick}
+        >
+          Upload Images
+        </button>
+         
+
             </div>
           </div>
         </div>
