@@ -81,11 +81,11 @@ const CourseTable = ({ setSelected }) => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell style={{width: "10%"}}>Course ID</TableCell>
               <TableCell>Course Title</TableCell>
               <TableCell>Price</TableCell>
-              <TableCell>Course ID</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Number of Lessons</TableCell>
+              <TableCell>Lessons</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -93,11 +93,11 @@ const CourseTable = ({ setSelected }) => {
             {courses.map((course) => (
               
               <TableRow key={course.courseId}>
+                <TableCell >{course.courseId}</TableCell>
                 <TableCell component="th" scope="row">
                   {course.courseTitle}
                 </TableCell>
                 <TableCell>{course.price}</TableCell>
-                <TableCell>{course.courseId}</TableCell>
                 <TableCell>{course.status}</TableCell>
                 <TableCell>{course.numLesson}</TableCell>
                 <TableCell>
@@ -110,6 +110,13 @@ const CourseTable = ({ setSelected }) => {
                     onClick={() => {onSelect(course.courseId)}} // Example route for editing the course
                   >
                     Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => {onSelect(course.courseId)}} // Example route for editing the course
+                  >
+                    Close
                   </Button>
                 </TableCell>
               </TableRow>

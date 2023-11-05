@@ -30,14 +30,14 @@ function CompactCard({ param, setExpanded }) {
       onClick={setExpanded}
       key={param.title} // Add a unique key prop here
     >
-      <div className="radialBar">
-        <CircularProgressbar value={param.barValue} text={`${param.barValue}%`} />
-        <span>{param.title}</span>
+      <div className="title-logo d-flex flex-column" style={{}}>
+        {/* <CircularProgressbar value={param.barValue} text={`${param.barValue}%`} /> */}
+          <Png  style={{width: "60%", height:"60%"}}/>
+        <span style={{fontSize: "1.3rem", fontWeight: "bold"}}>{param.title}</span>
       </div>
-      <div className="detail">
-        <Png />
-        <span>{param.value}</span>
-        <span>Last 24 hours</span>
+      <div className="detail d-flex flex-column align-items-center justify-content-center">
+        <span style={{fontSize: "1.8rem", fontWeight: "bold"}}>{param.value}</span>
+        
       </div>
     </div>
   );

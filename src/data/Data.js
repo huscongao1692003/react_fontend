@@ -1,12 +1,9 @@
 import {
-  UilEstate,
-  UilClipboardAlt,
   UilBlogger,
   UilUser,
   UilBookOpen,
-  UilMoneyWithdrawal,
   UilBookReader,
-  UilUsdSquare
+  UilStar,
 } from "@iconscout/react-unicons";
 
 
@@ -18,7 +15,7 @@ export const cardsData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 70,
-    value: "537",
+    value: "0",
     png: UilBookOpen,
     series: [
       {
@@ -34,7 +31,7 @@ export const cardsData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 70,
-    value: "1642",
+    value: "0",
     png: UilUser,
     series: [
       {
@@ -50,7 +47,7 @@ export const cardsData = [
       boxShadow: "0px 10px 20px 0px #FDC0C7",
     },
     barValue: 80,
-    value: "324",
+    value: "0",
     png: UilBlogger,
     series: [
       {
@@ -67,7 +64,7 @@ export const cardsData = [
       boxShadow: "0px 10px 20px 0px #F9D59B",
     },
     barValue: 60,
-    value: "512",
+    value: "0",
     png: UilBookReader,
     series: [
       {

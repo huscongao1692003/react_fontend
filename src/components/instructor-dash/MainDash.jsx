@@ -1,16 +1,55 @@
-import React from 'react'
-import Cards from '../Cards/Cards'
-import Table from './Table/Table'
-import Courses from './Table/Courses'
+import React, { useState, useEffect } from "react";
+import GeneralData from "./chart/General-data";
+import Cards from "../Cards/Cards";
+import { cardsData } from "./chart/Data";
+import axios from "axios";
 
 const DashStaff = () => {
-  return (
-    <div className='DashInstructor'>
-        <h1>Dashboard</h1>
-        <Table/>
-        <Courses/>
-    </div>
-  )
-}
+  const accessToken =
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const [listDataCard, setListDataCard] = useState(cardsData);
+  const [objectData, setObjectData] = useState({});
+  console.log("objectData: ", objectData);
 
-export default DashStaff
+  useEffect(() => {
+    const url = `https://drawproject-production-012c.up.railway.app/api/v1/dashboard/instructor`;
+
+    // Fetch data for the current year
+    axios
+      .get(url, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        setObjectData(response.data.data);
+        
+      })
+      .catch((error) => {
+        console.error("Network error: ", error);
+      });
+
+      
+  }, []); // Use an empty dependency array to mimic componentDidMount
+
+  useEffect(() => {
+    if(Object.keys(objectData).length != 0) {
+      const newListCard = [...cardsData];
+      newListCard[0].value = objectData.numOfStudent;
+      newListCard[1].value = objectData.numOfCourse;
+      newListCard[2].value = objectData.numOfPost;
+      newListCard[3].value = objectData.totalIncome;
+      newListCard[4].value = objectData.star.toFixed(1);
+      setListDataCard(newListCard);
+    }
+  }, [objectData])
+
+  return (
+    <div className="DashInstructor">
+      <Cards listDataCard={listDataCard} />
+      <div className="chart-container mt-30">
+        <GeneralData />
+      </div>
+    </div>
+  );
+};
+
+export default DashStaff;
