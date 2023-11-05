@@ -13,7 +13,10 @@ function Artwork() {
   const router = useRouter();
   const { id } = router.query;
   const [categories, setCategories] = useState([]);
+  const [categoryError, setCategoryError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingArt, setLoadingArt] = useState(false);
+
   const [artworkData, setArtworkData] = useState([]);
 
   const handleButtonClick = () => {
@@ -29,7 +32,7 @@ function Artwork() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://drawproject-production.up.railway.app/api/v1/category"
+          "https://drawproject-production-012c.up.railway.app/api/v1/category"
         );
         setCategories(response.data);
       } catch (error) {
@@ -37,21 +40,64 @@ function Artwork() {
       }
     };
     async function fetchArtworkData() {
-        try {
-          const response = await axios.get(
-            `https://drawproject-production.up.railway.app/api/v1/instructor/${id}/artworks`
-          );
-          setArtworkData(response.data.data);
-        } catch (error) {
-          console.error("Error fetching artwork data:", error);
-        }
+      try {
+        const response = await axios.get(
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=completed&eachPage=10`
+        );
+        setArtworkData(response.data.data);
+      } catch (error) {
+        console.error("Error fetching artwork data:", error);
       }
-  
-      fetchArtworkData();
+    }
+
+    fetchArtworkData();
     fetchCategories();
   }, [id]);
+  const fetchArtworkDataOpen = async () => {
+    try {
+      setLoadingArt(true); // Set loading before fetching
+      const response = await axios.get(
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=10`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      setArtworkData(response.data.data);
+      setLoadingArt(false); // Unset loading after fetching
+    } catch (error) {
+      console.error("Error fetching open artwork data:", error);
+      setLoadingArt(false); // Unset loading in case of error
+    }
+  };
+  const fetchArtworkDataComplete = async () => {
+    try {
+      setLoadingArt(true);
+      const response = await axios.get(
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=completed&eachPage=10`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      setArtworkData(response.data.data);
+      setLoadingArt(false); // Unset loading after fetching
+    } catch (error) {
+      console.error("Error fetching open artwork data:", error);
+      setLoadingArt(false); // Unset loading in case of error
+    }
+  };
 
   const submitPostData = async () => {
+    setCategoryError('');
+
+    // Check if a category has been selected (assuming the default '0' is not a valid category)
+    if (artwork.categoryId === 0) {
+      setCategoryError('Please select a category.');
+      return; // Prevent submission if validation fails
+    }
     try {
       if (localStorage.getItem("accessToken")) {
         setLoading(true);
@@ -62,7 +108,7 @@ function Artwork() {
           Authorization: `Bearer ${accessToken}`,
         };
         const url =
-          "https://drawproject-production.up.railway.app/api/v1/instructor/artworks";
+          "https://drawproject-production-012c.up.railway.app/api/v1/instructor/artworks&eachPage=10";
         const formData = new FormData();
         formData.append("categoryId", artwork.categoryId);
         formData.append("status", artwork.status);
@@ -145,6 +191,8 @@ function Artwork() {
                       </option>
                     ))}
                   </select>
+                  {categoryError && <div className="error-message">{categoryError}</div>}
+
                 </div>
 
                 <button
@@ -157,6 +205,23 @@ function Artwork() {
                 </button>
               </form>
               <div className="mb-3"></div>
+              <button
+                type="button"
+                className="tp-btn"
+                onClick={fetchArtworkDataOpen}
+                disabled={loading} // Disable button while loading
+              >
+                {loadingArt ? "Loading..." : "Waiting Verify ArtWork"}
+              </button>
+              <h2></h2>
+              <button
+                type="button"
+                className="tp-btn m-100 "
+                onClick={fetchArtworkDataComplete}
+                disabled={loading} // Disable button while loading
+              >
+                {loadingArt ? "Loading..." : " ArtWork"}
+              </button>
             </div>
           </div>
           <h2>My Artwork</h2>

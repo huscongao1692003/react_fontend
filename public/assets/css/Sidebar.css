@@ -41,7 +41,7 @@
   height: 2.5rem;
   margin-left: 2rem;
   position: relative;
-  transition: all 300ms ease;
+  /* transition: all 300ms ease; */
   border-radius: 0.7rem;
   font-size: 14px;
   position: sticky;
@@ -125,8 +125,8 @@
 }
 .columnView{
   display: flex;
-  height: 100%;
-  width: 97vw;
+  height: 100vh;
+  width: 100vw;
 }
 .content {
   overflow-x: auto;

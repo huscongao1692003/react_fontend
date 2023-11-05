@@ -7,7 +7,7 @@ function LessionItem({ data, number, isLastItem }) {
           <div className="icon"></div>
           <div className="ms-4">
             <div className="text-xs text-muted" style={{ fontWeight: "600" }}>
-              Lesson{` ${number + 1}:  ${name}`}
+              Lesson{` ${name}`}
             </div>
             <div className="text-xs text-muted">{topic}</div>
           </div>
