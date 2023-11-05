@@ -46,7 +46,7 @@ const InstructorPortfolioArea = () => {
     const fetchArtworkData = async () => {
       try {
         const response = await axios.get(
-          `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/artworks?page=1&eachPage=5&categoryId=0`
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/artworks?page=1&eachPage=5&categoryId=0`
         );
         setArtworkData(response.data.data); // Set the artwork data in state
       } catch (error) {
@@ -56,7 +56,7 @@ const InstructorPortfolioArea = () => {
     const fetchCertificateData = async () => {
       try {
         const response = await axios.get(
-          `https://drawproject-production.up.railway.app/api/v1/instructor/${userId}/certificates`
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/certificates`
         );
         setCertificateData(response.data.data); // Set the certificate data in state
       } catch (error) {
