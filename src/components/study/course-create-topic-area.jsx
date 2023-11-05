@@ -142,6 +142,14 @@ function CourseCreateTopicArea() {
                                 </a>
                               </EmbedPDF>
                             </div>
+                          ) : lesson.typeFile === "image" ? (
+                            <div>
+                              <img
+                                src={lesson.url}
+                                alt={lesson.name}
+                                style={{ maxWidth: '100%', height: 'auto' }}
+                              />
+                            </div>
                           ) : null}
                         </div>
                       </div>
