@@ -34,17 +34,16 @@ const DashStaff = () => {
     if(Object.keys(objectData).length != 0) {
       const newListCard = [...cardsData];
       newListCard[0].value = objectData.numOfStudent;
-      newListCard[1].value = objectData.numOfCourse;
-      newListCard[2].value = objectData.numOfPost;
-      newListCard[3].value = objectData.totalIncome;
-      newListCard[4].value = objectData.star.toFixed(1);
+      newListCard[1].value = objectData.numOfPost;
+      newListCard[2].value = objectData.totalIncome;
+      newListCard[3].value = objectData.star.toFixed(1);
       setListDataCard(newListCard);
     }
   }, [objectData])
 
   return (
     <div className="DashInstructor">
-      <Cards listDataCard={listDataCard} />
+      <Cards listDataCard={listDataCard} open={objectData.numOfCourseOpen} close={objectData.numOfCourse - objectData.numOfCourseOpen} />
       <div className="chart-container mt-30">
         <GeneralData />
       </div>
