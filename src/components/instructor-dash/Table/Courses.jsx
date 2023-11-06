@@ -26,18 +26,18 @@ const CourseTable = ({ setSelected }) => {
   const [state, dispatch] = useStore();
   const [err, setErr] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const [restart, setRestart] = useState(true);
+  const [restart, setRestart] = useState(0);
 
   message.config({
     maxCount: 1,
   });
 
   const error = () => {
-    message.error("Network error");
+    message.error(err);
+    
     message.config({
-      maxCount: 3,
+      maxCount: 1,
     });
-    setErr("");
   };
 
   const success = () => {
@@ -45,7 +45,6 @@ const CourseTable = ({ setSelected }) => {
     message.config({
       maxCount: 1,
     });
-    setSuccessMsg("");
   };
 
   //get course data and save it to context
@@ -56,6 +55,8 @@ const CourseTable = ({ setSelected }) => {
   };
 
   const closeCourse = async (courseId) => {
+    setErr("");
+    setSuccessMsg("");
     const loadingMessage = message.loading("Processing login...", 0);
     setIsloading(true);
 
@@ -68,7 +69,7 @@ const CourseTable = ({ setSelected }) => {
       )
       .then((response) => {
         setSuccessMsg("Close course successfully!");
-        setRestart(true);
+        setRestart(restart + 1);
       })
       .catch((error) => {
         console.log(error);
@@ -78,8 +79,11 @@ const CourseTable = ({ setSelected }) => {
   };
 
   const openCourse = async (courseId) => {
-    const loadingMessage = message.loading("Processing login...", 0);
+    setErr("");
+    setSuccessMsg("");
+    const loadingMessage = message.loading("Processing ...", 0);
     setIsloading(true);
+    
     axios
       .put(
         `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/open`,
@@ -92,11 +96,19 @@ const CourseTable = ({ setSelected }) => {
         }
       )
       .then((response) => {
-        setSuccessMsg("Open course successfully!");
-        setRestart(true);
+        if(response.data.status === "NOT_ACCEPTABLE") {
+          setErr(response.data.message);
+          setSuccessMsg("");
+        } else {
+          setSuccessMsg("Open course successfully!");
+          setErr("");
+        }
+        setRestart(restart + 1);
+        
       })
       .catch((error) => {
         console.log(error);
+        setErr("Netwrork error");
       });
     loadingMessage();
     setIsloading(false);
@@ -114,7 +126,6 @@ const CourseTable = ({ setSelected }) => {
       )
       .then((response) => {
         setUserId(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching user ID:", error);
