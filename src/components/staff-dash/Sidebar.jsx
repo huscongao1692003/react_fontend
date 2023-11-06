@@ -10,7 +10,7 @@ import {
   UilSignOutAlt
 } from "@iconscout/react-unicons";
 import MainDash from "./MainDash";
-import Table from './Table/Table';
+import Certificate from './Table/Certificate';
 import Courses from '../Table/Courses';
 import Post from "../Table/Post";
 import Instructor from "./Table/Instructor"
@@ -25,7 +25,7 @@ const MenuItems = [
   },
   {
     icon: UilUsersAlt,
-    heading: "Instructor",
+    heading: "User",
     content: <Instructor />,
   },
   {
@@ -42,6 +42,11 @@ const MenuItems = [
     icon: UilChart,
     heading: 'Post Manager',
     content: <Post />,
+  },
+  {
+    icon: UilChart,
+    heading: 'Censorship',
+    content: <Certificate />,
   },
 ];
 

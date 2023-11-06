@@ -8,6 +8,7 @@ import {
   UilPackage,
   UilChart,
   UilBars,
+  UilFilePlusAlt,
   UilSignOutAlt
 } from "@iconscout/react-unicons";
 import MainDash from "./MainDash";
@@ -40,7 +41,7 @@ const SidebarInstructor = () => {
       content: <Orders />,
     },
     {
-      icon: UilClipboardAlt,
+      icon: UilFilePlusAlt,
       heading: "Create Course",
       content: <CourseCreateArea setSelected={setSelected} />,
     },

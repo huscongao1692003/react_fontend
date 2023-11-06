@@ -66,3 +66,7 @@ th {
   width: 32%;
   flex: 1;
 }
+.card-header{
+  font-weight: bold;
+  font-size: 20px;
+}
