@@ -7,7 +7,9 @@ import { Button, Modal } from 'antd';
 
 // Placeholder image URL
 const placeholderImage = "/assets/img/instructor.png";
+const placeholderAvatar = "/assets/img/icon/course-avata-05.png";
 const placeholderCertificate = "/assets/img/C5xB9.jpg";
+const placeholderCourse = "https://storage.googleapis.com/example_test_image/image/courses/co11697775460577";
 const InstructorPortfolioArea = () => {
   const [instructorData, setInstructorData] = useState(null);
   const [coursesData, setCoursesData] = useState([]);
@@ -157,7 +159,7 @@ const InstructorPortfolioArea = () => {
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Artwork</label>{" "}
                         <span>
-                          <Button type="link" onClick={showArtworkModal}>
+                          <Button type="link" onClick={showArtworkModal} style={{marginTop:"-15px", marginRight:"-15px"}}>
                             show Artwork
                           </Button>
                           <Modal className="ArtworkModal" title="Artwork" open={isArtworkModalOpen} onOk={handleArtworkOk} onCancel={handleArtworkCancel}>
@@ -172,7 +174,7 @@ const InstructorPortfolioArea = () => {
                                     <div className="tpcourse">
                                       <div className="tpcourse__thumb p-relative w-img fix">
                                         <img
-                                          src={item.image}
+                                          src={item.image ? item.image : placeholderCertificate}
                                           alt="artwork-thumb"
                                           style={{ height: "300px", width: "500px", objectFit: "cover" }}
                                         />
@@ -193,13 +195,13 @@ const InstructorPortfolioArea = () => {
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Certificate</label>{" "}
                         <span>
-                          <Button type="link" onClick={showCertificateModal}>
+                          <Button type="link" onClick={showCertificateModal} style={{marginTop:"-15px", marginRight:"-15px"}}>
                             Show
                           </Button>
                           <Modal className="ArtworkModal" title="Artwork" open={isCertificateModalOpen} onOk={handleCertificateOk} onCancel={handleCertificateCancel}>
                             {certificateData.length === 0 ? (
                               <div className="col-md-12">
-                                <p>No artwork was added.</p>
+                                <p>No certificate was added.</p>
                               </div>
                             ) : (
                               <div className="row">
@@ -252,22 +254,15 @@ const InstructorPortfolioArea = () => {
                         <div className="tpcourse mb-40">
                           <div className="tpcourse__thumb p-relative w-img fix">
                             <Link href="/course-details">
-                              {item.image ? (
-                                <img
-                                  src={item.image}
+                            <img
+                                  src={item.image && item.image !== "null" ? item.image : placeholderCourse}
                                   alt="course-thumb"
                                   style={{ height: "300px", objectFit: "cover" }}
+                                  onError={(e) => {e.target.src = placeholderCourse;}}
                                 />
-                              ) : (
-                                <img
-                                  src={placeholderImage}
-                                  alt="placeholder-course-thumb"
-                                  style={{ height: "300px", objectFit: "cover" }}
-                                />
-                              )}
                             </Link>
                             <div className="tpcourse__img-icon">
-                              <img src={item.icon} alt="course-avata" />
+                              <img src={item.icon ? item.icon : placeholderAvatar} alt="course-avata" />
                             </div>
                           </div>
                           <div className="tpcourse__content-2">
@@ -275,14 +270,19 @@ const InstructorPortfolioArea = () => {
                               <ul className="tpcourse__price-list d-flex align-items-center">
                                 <li>
                                   <Link className={item.ct_color} href="/course-details">
-                                    {item.category}
+                                    {item.categoryName}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link className={item.cn_color} href="/course-details">
-                                    {item.skill}
+                                    {item.skillName}
                                   </Link>
                                 </li>
+                                {/* <li>
+                                  <Link className={item.ct_color} href="/course-details">
+                                    {item.drawingStyleName}
+                                  </Link>
+                                </li> */}
                               </ul>
                             </div>
                             <div className="tpcourse__ava-title mb-15">
@@ -298,7 +298,7 @@ const InstructorPortfolioArea = () => {
                                 </li>
                                 <li>
                                   <img src="/assets/img/icon/c-meta-02.png" alt="meta-icon" />
-                                  <span>{item.st_text}</span>
+                                  <span>({item.numStudent})</span>
                                 </li>
                               </ul>
                             </div>
