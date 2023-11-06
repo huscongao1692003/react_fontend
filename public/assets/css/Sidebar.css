@@ -132,10 +132,8 @@
 .content {
   width: 82%;
   flex-grow: 1;
-<<<<<<< HEAD
   overflow-y: auto;
-=======
   margin-left: 20%;
   padding-top: 1.3rem;
->>>>>>> 429cdcf5e27bad4992069a693f1e294f60bb7a46
+
 }
