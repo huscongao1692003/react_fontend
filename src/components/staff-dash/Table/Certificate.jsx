@@ -9,17 +9,25 @@ import {
   Col,
   Modal,
 } from "react-bootstrap";
+import { Pagination } from "@mui/material";
+
 
 const Instructor = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCertificatesModal, setShowCertificatesModal] = useState(false);
   const [showArtworksModal, setShowArtworksModal] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [currentCertificates, setCurrentCertificates] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const [currentArtworks, setCurrentArtworks] = useState([]);
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    setLoading(true)
+  };
 
   const handleShowArtworks = async (userId) => {
     try {
@@ -90,12 +98,14 @@ const Instructor = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "https://drawproject-production-012c.up.railway.app/api/v1/instructor",
+          `https://drawproject-production-012c.up.railway.app/api/v1/users/instructors?page=${page}`,
           {
             headers: { Authorization: `Bearer ${accessToken}` },
           }
         );
-        setUsers(response.data);
+        setUsers(response.data.data);
+        setPage(response.data.page);
+        setTotalPage(response.data.totalPage);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -103,7 +113,7 @@ const Instructor = () => {
       }
     };
     fetchUsers();
-  }, [accessToken]);
+  }, [accessToken,page,handleArtworkAction,handleCertificateAction]);
 
   if (loading) {
     return (
@@ -118,7 +128,7 @@ const Instructor = () => {
 
   return (
     <Container className="mt-4">
-      <h3>Users</h3>
+      <h3>Instructor</h3>
       <Row xs={1} md={2} lg={3} className="g-4">
         {users.map((user) => (
           <Col key={user.userId}>
@@ -126,7 +136,10 @@ const Instructor = () => {
               <Card.Body>
                 <Card.Title>{user.username}</Card.Title>
                 <Card.Text>Email: {user.email}</Card.Text>
-                <Card.Text>Status: {user.status}</Card.Text>
+                <Card.Text>Waiting Artwork: {user.numOfArtWorkClose}</Card.Text>
+                <Card.Text>Artwork: {user.numOfArtWorkOpen}</Card.Text>
+                <Card.Text>Waiting Certificate: {user.numOfCertificateClose}</Card.Text>
+                <Card.Text>Certificate: {user.numOfCertificateOpen}</Card.Text>
                 <Card.Text>Mobile: {user.mobileNum}</Card.Text>
 
                 <Button
@@ -216,6 +229,9 @@ const Instructor = () => {
           ))}
         </Modal.Body>
       </Modal>
+      <div className="d-flex justify-content-center mt-10 mb-10">
+            <Pagination page={page} count={5} onChange={handlePageChange} />
+          </div>
     </Container>
   );
 };
