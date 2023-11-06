@@ -89,7 +89,7 @@ const Instructor = () => {
 
   return (
     <>
-      <h3>Users</h3>
+      <h3 className='mt-30'>Users</h3>
 
       <div className='dataTable'>
         <Box sx={{ height: 400, width: '100%' }}>
