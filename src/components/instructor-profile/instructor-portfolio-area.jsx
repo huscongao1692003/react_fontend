@@ -3,7 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router.js";
-import { Button, Modal } from 'antd';
+import { Button, Modal, Image } from 'antd';
 
 // Placeholder image URL
 const placeholderImage = "/assets/img/instructor.png";
@@ -116,7 +116,7 @@ const InstructorPortfolioArea = () => {
             <div className="col-xl-4 col-lg-5">
               <div className="instruc-sidebar mb-40">
                 <div className="isntruc-side-thumb mb-30">
-                  <img
+                  <Image
                     src={instructorData.avatar ? instructorData.avatar : placeholderImage}
                     alt="instructor-thumb"
                     onError={(e) => {
@@ -173,7 +173,7 @@ const InstructorPortfolioArea = () => {
                                   <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                                     <div className="tpcourse">
                                       <div className="tpcourse__thumb p-relative w-img fix">
-                                        <img
+                                        <Image
                                           src={item.image ? item.image : placeholderCertificate}
                                           alt="artwork-thumb"
                                           style={{ height: "300px", width: "500px", objectFit: "cover" }}
@@ -209,7 +209,7 @@ const InstructorPortfolioArea = () => {
                                   <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                                     <div className="tpcourse">
                                       <div className="tpcourse__thumb p-relative w-img fix">
-                                        <img
+                                        <Image
                                           src={item.image ? item.image : placeholderCertificate}
                                           alt="artwork-thumb"
                                           onError={(e) => {
