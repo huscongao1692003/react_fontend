@@ -145,19 +145,20 @@ function CourseCreateArea({ setSelected }) {
         formData.append("price", courseData.price);
         formData.append("skill", courseData.skill);
         if(courseId != 0) {
+          console.log("here");
           formData.append("status", status);
         }
 
         const response = await (courseId == 0) ? (axios.post(url, formData, { headers })) : (await axios.put(url + `/${courseId}`, formData, { headers }));
 
-        if (response.data.status !== "BAD_REQUEST") {
+        
           setErr("");
           setSuccessMsg("Create course successfully.");
           const delayDuration = 1500; // 3 seconds (adjust as needed)
           setTimeout(() => {
             setSelected(4);
           }, delayDuration);
-        }
+        
       }
     } catch (e) {
       setErr("Something error!!!.");

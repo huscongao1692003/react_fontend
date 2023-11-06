@@ -82,10 +82,13 @@ const CourseTable = ({ setSelected }) => {
     setIsloading(true);
     axios
       .put(
-        `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/open`,null,
+        `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/open`,
+        null,
         {
-          
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
       )
       .then((response) => {
