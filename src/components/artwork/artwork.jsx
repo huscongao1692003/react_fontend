@@ -42,7 +42,7 @@ function Artwork() {
     async function fetchArtworkData() {
       try {
         const response = await axios.get(
-          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=completed&eachPage=10`
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=10`
         );
         setArtworkData(response.data.data);
       } catch (error) {
@@ -57,7 +57,7 @@ function Artwork() {
     try {
       setLoadingArt(true); // Set loading before fetching
       const response = await axios.get(
-        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=10`,
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=close&eachPage=10`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -75,7 +75,7 @@ function Artwork() {
     try {
       setLoadingArt(true);
       const response = await axios.get(
-        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=completed&eachPage=10`,
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=10`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
