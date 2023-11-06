@@ -5,11 +5,11 @@ import NavMenu from "./nav-menu";
 import Sidebar from "./sidebar";
 import {useRouter} from 'next/router';
 import { UilSignOutAlt } from '@iconscout/react-unicons'
-import { UilUserSquare } from '@iconscout/react-unicons'
 import Dropdown from 'react-bootstrap/Dropdown';
 import dynamic from "next/dynamic";
 import SearchBar from "@/src/layout/headers/SearchBar";
-import { Avatar } from 'antd';
+import { Avatar, Space } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 
 const Header = () => {
@@ -20,7 +20,6 @@ const Header = () => {
     const role = typeof window !== 'undefined' ? localStorage.getItem("roles") : null;
     const [isSearching, setIsSearching] = useState(false);
     const avatar = typeof window !== 'undefined' ? localStorage.getItem('avatar') : null;
-    const avatarDefault = "/assets/img/student.png"
 
     const handleLogout = () => {
         localStorage.clear();
@@ -121,13 +120,13 @@ const Header = () => {
                                                 <li style={{ marginLeft: "0" }} >
                                                     <Dropdown >
                                                       <Dropdown.Toggle variant={"transparent"}  className="custom-dropdown-toggle">
-                                                      <Avatar
-                                                        src={
-                                                          avatar || "/assets/img/zdJeuso-_400x400.jpg"
-                                                        }
-                                                        alt="avatar" 
-                                                        size={40}
-                                                      />
+                                                      <Space wrap size={16}>
+                                                        <Avatar
+                                                          size="large"
+                                                          src={avatar}
+                                                          icon={<UserOutlined />}
+                                                        />
+                                                      </Space>
                                                       </Dropdown.Toggle>
                                                   
                                                       <Dropdown.Menu>

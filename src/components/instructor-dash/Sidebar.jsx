@@ -42,7 +42,7 @@ const SidebarInstructor = () => {
     {
       icon: UilClipboardAlt,
       heading: "Create Course",
-      content: <CourseCreateArea />,
+      content: <CourseCreateArea setSelected={setSelected} />,
     },
     {
       icon: UilPackage,

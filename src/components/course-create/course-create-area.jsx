@@ -6,7 +6,7 @@ import { useStore, actions } from "@/src/store";
 import { Image } from 'antd';
 import Backdrop from '@mui/material/Backdrop';
 
-function CourseCreateArea() {
+function CourseCreateArea({ setSelected }) {
   const resetData = {
     price: 0,
     information: "",
@@ -91,31 +91,37 @@ function CourseCreateArea() {
   const submitCourseData = async () => {
     const loadingMessage = message.loading("Processing...", 0);
     setIsloading(true);
+    setIsOverlay(true);
 
     if (courseData.courseTitle.length < 6) {
       setErr('Course title must be at least 6 characters long.');
       loadingMessage();
       setIsloading(false);
+      setIsOverlay(false);
       return;
     } else if (courseData.description.length < 5) {
       setErr('Description must be at least 5 characters long.');
       loadingMessage();
       setIsloading(false);
+      setIsOverlay(false);
       return;
-    } else if (courseData.information.length < 5) {
-      setErr('Information must be at least 5 characters long.');
+    } else if (courseData.information.length < 100) {
+      setErr('Information must be at least 100 characters long.');
       loadingMessage();
       setIsloading(false);
+      setIsOverlay(false);
       return;
     } else if (courseData.description.length > 255) {
       setErr('Description must not exceed 255 characters.');
       loadingMessage();
       setIsloading(false);
+      setIsOverlay(false);
       return;
     } else if(!courseData.image) {
       setErr('Please upload an image.');
       loadingMessage();
       setIsloading(false);
+      setIsOverlay(false);
       return;
     }
       
@@ -132,7 +138,6 @@ function CourseCreateArea() {
         formData.append("courseTitle", courseData.courseTitle);
         formData.append("category", courseData.category);
         formData.append("description", courseData.description);
-        formData.append("readingTime", courseData.readingTime);
         formData.append("image", courseData.image);
         formData.append("style", courseData.style);
         formData.append("information", courseData.information);
@@ -140,18 +145,17 @@ function CourseCreateArea() {
         formData.append("price", courseData.price);
         formData.append("skill", courseData.skill);
         if(courseId != 0) {
-          formData.append("courseId", courseId);
           formData.append("status", status);
         }
 
-        const response = await (courseId == 0) ? (axios.post(url, formData, { headers })) : (await axios.put(url, formData, { headers }));
+        const response = await (courseId == 0) ? (axios.post(url, formData, { headers })) : (await axios.put(url + `/${courseId}`, formData, { headers }));
 
         if (response.data.status !== "BAD_REQUEST") {
           setErr("");
           setSuccessMsg("Create course successfully.");
           const delayDuration = 1500; // 3 seconds (adjust as needed)
           setTimeout(() => {
-            window.location.reload();
+            setSelected(4);
           }, delayDuration);
         }
       }
@@ -162,8 +166,9 @@ function CourseCreateArea() {
     }
     loadingMessage();
     setIsloading(false);
+    setIsOverlay(false);
   };
-
+  
   useEffect(() => {
     // Fetch API data for styles, categories, and skills
     const loadingMessage = message.loading('Loading...', 0);
