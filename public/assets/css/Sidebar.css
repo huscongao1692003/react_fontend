@@ -31,7 +31,9 @@
   padding-right: 20px;
   padding-top: 10px;
   margin-right: 15px;
-  
+  width: 18%;
+  height: 100vh;
+  position: fixed;
 }
 
 .menuItem {
@@ -125,11 +127,15 @@
 }
 .columnView{
   display: flex;
-  height: 100vh;
   width: 100vw;
 }
 .content {
-  overflow-x: auto;
+  width: 82%;
   flex-grow: 1;
+<<<<<<< HEAD
   overflow-y: auto;
+=======
+  margin-left: 20%;
+  padding-top: 1.3rem;
+>>>>>>> 429cdcf5e27bad4992069a693f1e294f60bb7a46
 }

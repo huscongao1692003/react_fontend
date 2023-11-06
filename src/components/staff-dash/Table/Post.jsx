@@ -90,7 +90,7 @@ const User = () => {
     }
     return (
         <>
-        <h3>Posts</h3>
+        <h3 className='mt-30'>Posts</h3>
 
         <div className='dataTable'>
             <Box sx={{ height: 400, width: '100%' }}>

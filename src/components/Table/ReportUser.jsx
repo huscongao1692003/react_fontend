@@ -38,7 +38,7 @@ const MyComponent = () => {
 
   return (
     <div>
-      <h1>Report Students</h1>
+      <h1 className='mt-30'>Report Students</h1>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

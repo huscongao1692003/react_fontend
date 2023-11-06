@@ -7,7 +7,7 @@ import Order from '../instructor-dash/Table/Orders'
 const DashStaff = () => {
   return (
     <div className='DashStaff'>
-      <div className="staffDashContainer">
+      <div className="staffDashContainer mt-30">
         <h1>Dashboard</h1>
         <Order/>
         <Courses/>

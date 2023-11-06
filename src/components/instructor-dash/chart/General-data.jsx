@@ -23,6 +23,7 @@ function GeneralData() {
     stroke: {
       curve: "smooth",
     },
+    
   });
 
   const [series, setSeries] = useState([]);
@@ -79,16 +80,14 @@ function GeneralData() {
 
 
   return (
-    <div className="app">
-      <div className="row">
-        <div className="spline-line-chart">
+    <div className="app mt-60">
+        <div className="spline-line-chart custom-chart-line">
           <Chart
             options={options}
             series={series}
             type="line"
-            width="500"
+            width="80%"
           />
-        </div>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import {
   Paper,
 } from '@mui/material';
 import Spinner from 'react-bootstrap/Spinner';
+import { Pagination } from "@mui/material";
 import { Spin, message, Space } from 'antd';
 
 export default function CourseTable() {
@@ -18,8 +19,15 @@ export default function CourseTable() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    setLoading(true)
+  };
 
   const error = () => {
     message.error(err);
@@ -79,21 +87,23 @@ export default function CourseTable() {
 
   const fetchCourses = () => {
     axios
-      .get('https://drawproject-production-012c.up.railway.app/api/v1/courses/viewcourses?page=1&eachPage=8', {
+      .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/viewcourses?page=${page}&eachPage=8`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
         setCourses(response.data.data);
+        setPage(response.data.page);
+        setTotalPage(response.data.totalPage);
         setLoading(false);
       })
       .catch((error) => {
-        setErr("Error fetching courses.");
+        // setErr("Error fetching courses.");
       });
   };
 
   useEffect(() => {
     fetchCourses();
-  }, [accessToken]);
+  }, [accessToken,page]);
 
   if (loading) {
     return (
@@ -106,7 +116,7 @@ export default function CourseTable() {
   return (
     <>
       {err !== "" && successMsg === "" ? error() : err === "" && successMsg !== "" && success()}
-      <div className="Table">
+      <div className="Table mt-45">
         <h3>Courses</h3>
         <TableContainer
           component={Paper}
@@ -160,6 +170,9 @@ export default function CourseTable() {
             </TableBody>
           </Table>
         </TableContainer>
+        <div className="d-flex justify-content-center mt-10">
+            <Pagination page={page} count={5} onChange={handlePageChange} />
+          </div>
       </div>
     </>
   );
