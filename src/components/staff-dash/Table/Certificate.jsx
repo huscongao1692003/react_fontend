@@ -104,8 +104,7 @@ const Instructor = () => {
           }
         );
         setUsers(response.data.data);
-        setPage(response.data.page);
-        setTotalPage(response.data.totalPage);
+  setTotalPage(response.data.totalPage)
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -230,7 +229,7 @@ const Instructor = () => {
         </Modal.Body>
       </Modal>
       <div className="d-flex justify-content-center mt-10 mb-10">
-            <Pagination page={page} count={5} onChange={handlePageChange} />
+            <Pagination page={page} count={totalPage} onChange={handlePageChange} />
           </div>
     </Container>
   );
