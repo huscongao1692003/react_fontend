@@ -119,8 +119,9 @@ export default function CourseTable() {
       <div className="Table mt-45">
         <h3>Courses</h3>
         <TableContainer
+        className='bg-transparent'
           component={Paper}
-          style={{ boxShadow: '0px 13px 20px 0px #80808029' }}
+          
         >
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>

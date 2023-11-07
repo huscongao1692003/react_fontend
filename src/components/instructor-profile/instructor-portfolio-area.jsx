@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router.js";
 import { Button, Modal, Image } from 'antd';
+import { randomColor } from "@/utils/utils";
 
 // Placeholder image URL
 const placeholderImage = "/assets/img/instructor.png";
@@ -251,73 +252,73 @@ const InstructorPortfolioArea = () => {
                   <div className="row">
                     {coursesData .filter((item) => item.status === "Open").map((item, i) => (
                       <div key={i} className="col-xl-6 col-lg-12 col-md-6">
-                        <div className="tpcourse mb-40">
-                          <div className="tpcourse__thumb p-relative w-img fix">
-                            <Link href="/course-details">
-                            <img
-                                  src={item.image && item.image !== "null" ? item.image : placeholderCourse}
-                                  alt="course-thumb"
-                                  style={{ height: "300px", objectFit: "cover" }}
-                                  onError={(e) => {e.target.src = placeholderCourse;}}
-                                />
-                            </Link>
-                            <div className="tpcourse__img-icon">
-                              <img src={item.icon ? item.icon : placeholderAvatar} alt="course-avata" />
-                            </div>
-                          </div>
-                          <div className="tpcourse__content-2" >
-                            <div className="" style={{height: "200px"}}>
-                            <div className="tpcourse__category mb-10">
-                              <ul className="tpcourse__price-list d-flex align-items-center">
-                                <li>
-                                  <Link className={item.ct_color} href="/course-details">
-                                    {item.categoryName}
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link className={item.cn_color} href="/course-details">
-                                    {item.skillName}
-                                  </Link>
-                                </li>
-                                {/* <li>
-                                  <Link className={item.ct_color} href="/course-details">
-                                    {item.drawingStyleName}
-                                  </Link>
-                                </li> */}
-                              </ul>
-                            </div>
-                            <div className="tpcourse__ava-title mb-15">
-                              <h4 className="tpcourse__title">
-                                <Link href="/course-details">{item.courseTitle}</Link>
-                              </h4>
-                            </div>
-                            <div className="tpcourse__meta tpcourse__meta-gap pb-15 mb-15">
-                              <ul className="d-flex align-items-center">
-                                <li>
-                                  <img src="/assets/img/icon/c-meta-01.png" alt="meta-icon" />
-                                  <span>({item.numLesson})</span>
-                                </li>
-                                <li>
-                                  <img src="/assets/img/icon/c-meta-02.png" alt="meta-icon" />
-                                  <span>({item.numStudent})</span>
-                                </li>
-                              </ul>
-                            </div></div>
-                            <div className="tpcourse__rating d-flex align-items-center justify-content-between">
-                              <div className="tpcourse__rating-icon">
-                                <span>{item.averageStar.toFixed(1)}</span>
-                                <i className="fi fi-ss-star"></i>
-                                <i className="fi fi-ss-star"></i>
-                                <i className="fi fi-ss-star"></i>
-                                <i className="fi fi-ss-star"></i>
-                                <i className="fi fi-rs-star"></i>
-                              </div>
-                              <div className="tpcourse__pricing">
-                                <h5 className="price-title">${item.price}</h5>
+                          <div className="tpcourse mb-40">
+                            <div className="tpcourse__thumb p-relative w-img fix">
+                              <Link href="/course-details">
+                              <img
+                                    src={item.image && item.image !== "null" ? item.image : placeholderCourse}
+                                    alt="course-thumb"
+                                    style={{ height: "300px", objectFit: "cover" }}
+                                    onError={(e) => {e.target.src = placeholderCourse;}}
+                                  />
+                              </Link>
+                              <div className="tpcourse__img-icon">
+                                <img src={item.icon ? item.icon : placeholderAvatar} alt="course-avata" />
                               </div>
                             </div>
+                            <div className="tpcourse__content-2" >
+                              <div className="" style={{height: "150px"}}>
+                              <div className="tpcourse__category mb-10">
+                                <ul className="tpcourse__price-list d-flex align-items-center">
+                                  <li>
+                                    <Link className={randomColor()} href="/course-details">
+                                      {item.categoryName}
+                                    </Link>
+                                  </li>
+                                  <li>
+                                    <Link className={randomColor()} href="/course-details">
+                                      {item.skillName}
+                                    </Link>
+                                  </li>
+                                  {/* <li>
+                                    <Link className={item.ct_color} href="/course-details">
+                                      {item.drawingStyleName}
+                                    </Link>
+                                  </li> */}
+                                </ul>
+                              </div>
+                              <div className="tpcourse__ava-title mb-15">
+                                <h4 className="tpcourse__title">
+                                  <Link href="/course-details">{item.courseTitle}</Link>
+                                </h4>
+                              </div>
+                              <div className="tpcourse__meta tpcourse__meta-gap pb-15 mb-15">
+                                <ul className="d-flex align-items-center">
+                                  <li>
+                                    <img src="/assets/img/icon/c-meta-01.png" alt="meta-icon" />
+                                    <span>{item.numLesson} Lessons</span>
+                                  </li>
+                                  <li>
+                                    <img src="/assets/img/icon/c-meta-02.png" alt="meta-icon" />
+                                    <span>{item.numStudent} Students</span>
+                                  </li>
+                                </ul>
+                              </div></div>
+                              <div className="tpcourse__rating d-flex align-items-center justify-content-between">
+                                <div className="tpcourse__rating-icon">
+                                  <span>{item.averageStar.toFixed(1)}</span>
+                                  <i className="fi fi-ss-star"></i>
+                                  <i className="fi fi-ss-star"></i>
+                                  <i className="fi fi-ss-star"></i>
+                                  <i className="fi fi-ss-star"></i>
+                                  <i className="fi fi-rs-star"></i>
+                                </div>
+                                <div className="tpcourse__pricing">
+                                  <h5 className="price-title">${item.price}</h5>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
                       </div>
                     ))}
                   </div>

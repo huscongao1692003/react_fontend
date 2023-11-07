@@ -91,7 +91,7 @@ const Instructor = () => {
     <>
       <h3 className='mt-30'>Users</h3>
 
-      <div className='dataTable'>
+      <div className='dataTable bg-transparent'>
         <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid
             rows={users}

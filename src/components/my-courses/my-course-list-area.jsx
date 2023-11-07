@@ -142,12 +142,12 @@ const MyCourseListArea = () => {
                                   <ul className="tpcourse__price-list d-flex align-items-center">
                                     <li>
                                       <Link className={course.ct_color} href="/course-details">
-                                        {course.skill}
+                                        {course.skillName}
                                       </Link>
                                     </li>
                                     <li>
                                       <Link className={course.cn_color} href="/course-details">
-                                        {course.category}
+                                        {course.categoryName}
                                       </Link>
                                     </li>
                                   </ul>

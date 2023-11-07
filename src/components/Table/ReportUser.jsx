@@ -14,7 +14,9 @@ const MyComponent = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent?page=1&eachPage=10&studentId=0&courseId=0');
+      const response = await axios.get(
+        'https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent?page=1&eachPage=10&studentId=0&courseId=0'
+      );
       setData(response.data.data);
     } catch (error) {
       console.error(error);
@@ -24,7 +26,11 @@ const MyComponent = () => {
 
   const handleReject = async (studentId, courseId, message) => {
     try {
-      await axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/reject?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(message)}`);
+      await axios.put(
+        `https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/reject?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(
+          message
+        )}`
+      );
       fetchData();
     } catch (error) {
       console.error(error);
@@ -33,12 +39,17 @@ const MyComponent = () => {
 
   const handleAccept = async (studentId, courseId, message) => {
     try {
-      await axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/accept?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(message)}`);
+      await axios.put(
+        `https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/accept?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(
+          message
+        )}`
+      );
       fetchData();
     } catch (error) {
       console.error(error);
     }
   };
+
   if (loading) {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
@@ -49,8 +60,8 @@ const MyComponent = () => {
 
   return (
     <div>
-      <h1 className='mt-30'>Report Students</h1>
-      <TableContainer component={Paper}>
+      <h1 className="mt-30">Report Students</h1>
+      <TableContainer component={Paper} className="bg-transparent">
         <Table>
           <TableHead>
             <TableRow>
@@ -63,20 +74,40 @@ const MyComponent = () => {
           </TableHead>
           <TableBody>
             {data.map((item) => (
-              <TableRow key={item.reportStudentId.studentId}>
+              <TableRow key={`${item.reportStudentId.studentId}-${item.reportStudentId.courseId}`}>
                 <TableCell>{item.reportStudentId.studentId}</TableCell>
                 <TableCell>{item.reportStudentId.courseId}</TableCell>
                 <TableCell>{item.message}</TableCell>
                 <TableCell>
-                  <img src={item.image ? item.image : placeholderImage} alt="Report Image" style={{ width: '100px' }} onError={(e) => {e.target.src = placeholderImage}}/>
+                  <img
+                    src={item.image ? item.image : placeholderImage}
+                    alt="Report Image"
+                    style={{ width: '100px' }}
+                    onError={(e) => {
+                      e.target.src = placeholderImage;
+                    }}
+                  />
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" color="primary" onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}>
-                    Reject
-                  </Button>
-                  <Button variant="contained" color="secondary" onClick={() => handleAccept(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}>
-                    Accept
-                  </Button>
+                  {item.status === 'Pending' && (
+                    <div>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                      >
+                        Reject
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleAccept(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                      >
+                        Accept
+                      </Button>
+                    </div>
+                  )}
+                  {item.status === 'Completed' && <div>Completed</div>}
                 </TableCell>
               </TableRow>
             ))}
