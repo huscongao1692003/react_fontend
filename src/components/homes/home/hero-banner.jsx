@@ -29,7 +29,7 @@ const HeroBanner = () => {
                      </div>
                   </div>
                   <div className="banner-shape d-none d-lg-block">
-                     <img style={{width:"42%",borderRadius:"10%", right:"0", bottom:"-100px", filter: blur("20px")}} src="/assets/back.png" alt="banner-shape" className="b-shape" />
+                     <img style={{width:"50%",borderRadius:"10%", right:"0", bottom:"-10px"}} src="/assets/img/Standee_1.png" alt="banner-shape" className="b-shape" />
                   </div>
                </div>
             </div>

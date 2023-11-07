@@ -22,7 +22,7 @@ const shape_img = [
 
 // about info
 const about_info = {
-    img_1: "/assets/img/about/about-img.png",
+    img_1: "/assets/back.png",
     img_2: "/assets/img/about/about-shape-01.png",
     img_3: "/assets/img/about/about-shape-02.png",
     about_title: "About Our Courses",
