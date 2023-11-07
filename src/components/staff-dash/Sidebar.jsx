@@ -25,7 +25,7 @@ const MenuItems = [
   },
   {
     icon: UilUsersAlt,
-    heading: "User",
+    heading: "Instructor",
     content: <Instructor />,
   },
   {

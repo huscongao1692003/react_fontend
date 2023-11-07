@@ -18,7 +18,7 @@ const feature_content = [
     id: 3,
     icon: "fi fi-rr-document",
     title: "Get Certificate",
-    des: "Achieve your goals and gain a competitive edge with our recognized certificates upon course completion.",
+    des: "Gain a competitive edge with our recognized certificates upon course completion.",
   },
   {
     id: 4,

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
+import Spinner from 'react-bootstrap/Spinner';
 
 const MyComponent = () => {
+  const placeholderImage = "/assets/img/report.jpg";
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -16,6 +19,7 @@ const MyComponent = () => {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   };
 
   const handleReject = async (studentId, courseId, message) => {
@@ -35,6 +39,13 @@ const MyComponent = () => {
       console.error(error);
     }
   };
+  if (loading) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+        <Spinner animation="grow" variant="light" size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -57,7 +68,7 @@ const MyComponent = () => {
                 <TableCell>{item.reportStudentId.courseId}</TableCell>
                 <TableCell>{item.message}</TableCell>
                 <TableCell>
-                  <img src={item.image} alt="Report Image" style={{ width: '100px' }} />
+                  <img src={item.image ? item.image : placeholderImage} alt="Report Image" style={{ width: '100px' }} onError={(e) => {e.target.src = placeholderImage}}/>
                 </TableCell>
                 <TableCell>
                   <Button variant="contained" color="primary" onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}>

@@ -112,11 +112,11 @@ const InstructorPortfolioArea = () => {
         data-wow-delay=".2s"
       >
         <div className="container">
-          <div className="row">
+          <div className="row ">
             <div className="col-xl-4 col-lg-5">
               <div className="instruc-sidebar mb-40">
-                <div className="isntruc-side-thumb mb-30">
-                  <Image
+                <div className="isntruc-side-thumb mb-30 ">
+                  <img
                     src={instructorData.avatar ? instructorData.avatar : placeholderImage}
                     alt="instructor-thumb"
                     onError={(e) => {
@@ -198,7 +198,7 @@ const InstructorPortfolioArea = () => {
                           <Button type="link" onClick={showCertificateModal} style={{marginTop:"-15px", marginRight:"-15px"}}>
                             Show
                           </Button>
-                          <Modal className="ArtworkModal" title="Artwork" open={isCertificateModalOpen} onOk={handleCertificateOk} onCancel={handleCertificateCancel}>
+                          <Modal className="ArtworkModal" title="Certificate" open={isCertificateModalOpen} onOk={handleCertificateOk} onCancel={handleCertificateCancel}>
                             {certificateData.length === 0 ? (
                               <div className="col-md-12">
                                 <p>No certificate was added.</p>
@@ -209,9 +209,9 @@ const InstructorPortfolioArea = () => {
                                   <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                                     <div className="tpcourse">
                                       <div className="tpcourse__thumb p-relative w-img fix">
-                                        <Image
+                                        <img
                                           src={item.image ? item.image : placeholderCertificate}
-                                          alt="artwork-thumb"
+                                          alt="certificate-thumb"
                                           onError={(e) => {
                                             e.target.src = placeholderCertificate;
                                           }}
@@ -249,7 +249,7 @@ const InstructorPortfolioArea = () => {
                     </div>
                   </div>
                   <div className="row">
-                    {coursesData.map((item, i) => (
+                    {coursesData .filter((item) => item.status === "Open").map((item, i) => (
                       <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                         <div className="tpcourse mb-40">
                           <div className="tpcourse__thumb p-relative w-img fix">
@@ -265,7 +265,8 @@ const InstructorPortfolioArea = () => {
                               <img src={item.icon ? item.icon : placeholderAvatar} alt="course-avata" />
                             </div>
                           </div>
-                          <div className="tpcourse__content-2">
+                          <div className="tpcourse__content-2" >
+                            <div className="" style={{height: "200px"}}>
                             <div className="tpcourse__category mb-10">
                               <ul className="tpcourse__price-list d-flex align-items-center">
                                 <li>
@@ -301,7 +302,7 @@ const InstructorPortfolioArea = () => {
                                   <span>({item.numStudent})</span>
                                 </li>
                               </ul>
-                            </div>
+                            </div></div>
                             <div className="tpcourse__rating d-flex align-items-center justify-content-between">
                               <div className="tpcourse__rating-icon">
                                 <span>{item.averageStar.toFixed(1)}</span>

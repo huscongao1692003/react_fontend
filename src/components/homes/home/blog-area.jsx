@@ -67,7 +67,7 @@ const BlogArea = () => {
                   <div className="tp-blog__thumb p-relative">
                     <div className="tp-blog__timg fix">
                       <Link href={`/blog-details?postId=${post.postId}`}>
-                        {post.image && <img src={post.image} alt="image" />}
+                        {post.image && <img src={post.image} alt="image" style={{ height: "300px", width: "500px", objectFit: "cover" }}/>}
                       </Link>
                     </div>
                     <div className="tp-blog__icon">
@@ -76,7 +76,7 @@ const BlogArea = () => {
                       </Link>
                     </div>
                   </div>
-                  <div className="tp-blog__content">
+                  <div className="tp-blog__content" style={{ height: "250px" }}>
                     <div className="tp-blog__meta mb-10">
                       <div>Date</div>
                       <div>{formatCreatedAt(post.createdAt)}</div>
