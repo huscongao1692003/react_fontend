@@ -8,6 +8,7 @@ import { ModalCreateLesson, ModalCreateAssignment } from "./Modal";
 
 function CourseCreateTopicArea({ courseId }) {
   const [topics, setTopics] = useState([]);
+  const [refetch, setRefetch] = useState(0);
   const [courseData, setCourseData] = useState({
     lessons: [],
     index: "",
@@ -75,7 +76,7 @@ function CourseCreateTopicArea({ courseId }) {
     if (courseId) {
       getCourseData();
     }
-  }, [courseId]);
+  }, [courseId, refetch]);
 
   return (
     <div style={{ minHeight: "50vh" }}>
@@ -108,9 +109,9 @@ function CourseCreateTopicArea({ courseId }) {
         </button>
       </div>
       <div>
-      {topics.map((topic) => (
-        <TopicItem key={topic.topicId} data={topic} />
-      ))}
+      {topics.length > 0 ? topics.map((topic) => (
+        <TopicItem key={topic.topicId} data={topic} setRefetch={setRefetch} refetch={refetch} />
+      )) : ""}
     </div>
     </div>
   );

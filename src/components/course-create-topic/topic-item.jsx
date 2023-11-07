@@ -1,8 +1,34 @@
+import { useState } from "react";
 import LessionItem from "./lesson-item";
+import axios from "axios";
 
-function TopicItem({ data }) {
+function TopicItem({ data, setRefetch, refetch } ) {
   const { topicTitle, lessons } = data;
 
+  // const hanldDeleteTopic = async (id) => {
+  //   console.log("asdfasdf");
+  //   const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/topic/${id}/close`;
+  //   const accessToken = localStorage.getItem("accessToken");
+  //   const config = {
+  //     headers: {
+  //       Accept: "*/*",
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${accessToken}`,
+  //     },
+  //   };
+  //   try {
+  //     const response = await axios.put(url, null, config);
+  //     if (response.data.status === "OK") {
+  //       alert("success");
+  //       setRefetch(refetch + 1);
+  //     } else {
+  //       console.error(response);
+  //     }
+  //     // You can process the response data here
+  //   } catch (e) {
+  //     console.error(e);
+  //   } 
+  // }
 
   return (
     <div

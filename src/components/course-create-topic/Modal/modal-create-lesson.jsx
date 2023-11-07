@@ -51,11 +51,12 @@ const success = () => {
             (max, topic) => Math.max(max, topic.number), 0
           );
           setTopicData({ ...topicData, number: maxNumber + 1 });
-          setLoading(false);
+          
 
         } else {
           console.error(response);
         }
+        setLoading(false);
       } catch (e) {
         console.error(e);
       }
