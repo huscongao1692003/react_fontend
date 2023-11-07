@@ -56,13 +56,13 @@ const CourseArea = () => {
                 <div className="tpcourse mb-40">
                   <div className="tpcourse__thumb p-relative w-img fix">
                     <Link href={`/course-details?id=${course.courseId}`}>
-                      <img src={course.image} alt="course-thumb" />
+                      <img src={course.image} alt="course-thumb" style={{ height: "300px", width: "500px", objectFit: "cover" }}/>
                     </Link>
-                    <div className="tpcourse__tag">
+                    {/* <div className="tpcourse__tag">
                       <Link href={`/course-details?id=${course.courseId}`}>
                         <i className="fi fi-rr-heart"></i>
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="tpcourse__content">
                     <div className="tpcourse__avatar d-flex align-items-center mb-20">
