@@ -71,9 +71,16 @@ function TopicItem({ data, setRefetch, refetch } ) {
         </button>
         </div>
       </div>
-      <div className="card-body">{lessons.map((lesson, index) => (
-          <LessionItem key={lesson.lessonId} data={lesson} handleDeleteLesson={handleDeleteLesson} />
-        ))}</div>
+      <div className="card-body"> {lessons
+    .filter(lesson => lesson.status !== "Close") // Add this line to filter out closed lessons
+    .map((lesson, index) => (
+      <LessionItem 
+        key={lesson.lessonId} 
+        data={lesson} 
+        handleDeleteLesson={handleDeleteLesson} 
+        isLastItem={index === lessons.length - 1} // Assuming you want to pass isLastItem
+      />
+  ))}</div>
     </div>
   );
 }
