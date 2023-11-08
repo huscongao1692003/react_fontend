@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 const choose_data = {
-  bg_img: "/assets/img/bg/choose-img-01.jpg",
+  bg_img: "https://d3rf6j5nx5r04a.cloudfront.net/bCxm8hiIChWhmYN2sqdnZBKzzac=/1120x0/product/c/9/4ec3c06691ec41eaacb1b8f2f6b4f928_opt.jpg",
   experiences_years: "23",
   title: "Why Choose Us",
   sub_title: (
@@ -35,7 +35,7 @@ const ChooseArea = () => {
           <div className="row align-items-center">
             <div className="col-xl-7 col-lg-6 col-md-6">
               <div className="tp-choose-img p-relative mb-30 ml-25">
-                <img src={bg_img} alt="choose-img" />
+                <img src={bg_img} style={{borderRadius:"10%"}} alt="choose-img" />
                 <div className="tpchoose-img-text d-none d-md-block">
                   <ul>
                     <li>
