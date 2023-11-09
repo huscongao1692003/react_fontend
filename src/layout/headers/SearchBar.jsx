@@ -18,7 +18,7 @@ const renderCourse = (id, image, title, instructorName, type) => ({
           alignItems: "center",
         }}
       >
-        <div style={{ width: "10%", marginRight: "1rem" }}>
+        <div style={{ width: "20%", marginRight: "1rem" }}>
           <img
             src={image && image != null ? image : defaultCourseImage}
             alt="course-avatar"
@@ -28,7 +28,7 @@ const renderCourse = (id, image, title, instructorName, type) => ({
           />
         </div>
         <div
-          className="content"
+          className="content-search"
           style={{ display: "flex", flexDirection: "column", width: "80%" }}
         >
           <span
@@ -72,7 +72,7 @@ const renderTag = (id, name, type) => ({
           <i className="fa-solid fa-tag"></i>
         </div>
         <div
-          className="content"
+          className="content-search"
           style={{ display: "flex", flexDirection: "column", width: "80%" }}
         >
           <span
