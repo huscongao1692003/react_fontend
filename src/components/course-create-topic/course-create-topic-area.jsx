@@ -72,11 +72,7 @@ function CourseCreateTopicArea({ courseId }) {
     }
   };
 
-  useEffect(() => {
-    if (courseId) {
-      getCourseData();
-    }
-  }, [courseId, refetch]);
+
 
   return (
     <div style={{ minHeight: "50vh" }}>
@@ -110,8 +106,8 @@ function CourseCreateTopicArea({ courseId }) {
       </div>
       <div>
       {topics.length > 0 ? topics.map((topic) => (
-        <TopicItem key={topic.topicId} data={topic} setRefetch={setRefetch} refetch={refetch} />
-      )) : ""}
+  <TopicItem key={topic.topicId} data={topic} setRefetch={setRefetch} refetch={refetch} />
+)) : ""}
     </div>
     </div>
   );

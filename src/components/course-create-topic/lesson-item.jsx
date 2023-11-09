@@ -1,5 +1,11 @@
-function LessionItem({ data, number, isLastItem }) {
-  const { assignmentId, name, topic, index, compulsory } = data;
+function LessionItem({ data, isLastItem, handleDeleteLesson }) {
+
+  const { lessonId, name, topic } = data;
+
+  const onDeleteClick = () => {
+    handleDeleteLesson(lessonId);
+  };
+
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
@@ -13,10 +19,9 @@ function LessionItem({ data, number, isLastItem }) {
           </div>
         </div>
         <div className="ms-4 small">
-          <a href="javascript:void(0);" className="me-3">
-            Edit
-          </a>
-          <a href="javascript:void(0);">Delete</a>
+          <a href="javascript:void(0);" onClick={onDeleteClick}>
+          Delete
+        </a>
         </div>
       </div>
       {!isLastItem && <hr />}

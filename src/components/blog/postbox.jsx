@@ -92,7 +92,7 @@ const Postbox = () => {
                           className="postbox__thumb w-img mb-30"
                           href={`/blog-details?postId=${post.postId}`}
                         >
-                          {post.image && <img src={post.image} alt="image" />}
+                          {post.image && <img src={post.image} alt="image" style={{height:"600px", width:"850px" }}/>}
                         </div>
 
                         <div className="postbox__content">
