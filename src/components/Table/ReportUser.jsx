@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
 import Spinner from 'react-bootstrap/Spinner';
+import { Image } from 'antd';
+import { UilCheck,UilSpinnerAlt,UilTimes } from '@iconscout/react-unicons';
 
 const MyComponent = () => {
   const placeholderImage = "/assets/img/report.jpg";
@@ -65,21 +67,22 @@ const MyComponent = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Student ID</TableCell>
-              <TableCell>Course ID</TableCell>
-              <TableCell>Message</TableCell>
-              <TableCell>Image</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell style={{ textAlign: 'center' }}>Student ID</TableCell>
+              <TableCell style={{ textAlign: 'center' }}>Course ID</TableCell>
+              <TableCell style={{ textAlign: 'center' }}>Message</TableCell>
+              <TableCell style={{ textAlign: 'center' }}>Image</TableCell>
+              <TableCell style={{ textAlign: 'center' }}>Status</TableCell>
+              <TableCell style={{ textAlign: 'center' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item) => (
               <TableRow key={`${item.reportStudentId.studentId}-${item.reportStudentId.courseId}`}>
-                <TableCell>{item.reportStudentId.studentId}</TableCell>
-                <TableCell>{item.reportStudentId.courseId}</TableCell>
-                <TableCell>{item.message}</TableCell>
-                <TableCell>
-                  <img
+                <TableCell style={{ textAlign: 'center' }}>{item.reportStudentId.studentId}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>{item.reportStudentId.courseId}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>{item.message}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
+                  <Image
                     src={item.image ? item.image : placeholderImage}
                     alt="Report Image"
                     style={{ width: '100px' }}
@@ -88,26 +91,85 @@ const MyComponent = () => {
                     }}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
+                {item.status === 'Pending' && (
+                    <div>
+                      <UilSpinnerAlt/>
+                    </div>
+                  )}
+                  {item.status === 'Completed' && (
+                    <div>
+                    <UilCheck/>
+                  </div>
+                  )}
+                  {item.status === null && (
+                    <div>
+                    <UilTimes />
+                  </div>
+                  )}
+                </TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
                   {item.status === 'Pending' && (
                     <div>
                       <Button
                         variant="contained"
-                        color="primary"
+                        color="error"
+                        style={{ marginRight: '8px' }}
                         onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
                       >
                         Reject
                       </Button>
                       <Button
                         variant="contained"
-                        color="secondary"
+                        color="success"
                         onClick={() => handleAccept(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
                       >
                         Accept
                       </Button>
                     </div>
                   )}
-                  {item.status === 'Completed' && <div>Completed</div>}
+                  {item.status === 'Completed' && (
+                    <div>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      style={{ marginRight: '8px' }}
+                      onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                      disabled
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => handleAccept(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                      disabled
+                    >
+                      Accept
+                    </Button>
+                  </div>
+                  )}
+                  {item.status === null && (
+                    <div>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      style={{ marginRight: '8px' }}
+                      onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                      disabled
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => handleAccept(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                      disabled
+                    >
+                      Accept
+                    </Button>
+                  </div>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
