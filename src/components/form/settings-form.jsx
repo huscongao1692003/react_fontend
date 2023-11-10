@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Form from "react-bootstrap/Form";
+import { Spin, message } from "antd";
 
 const Settings = () => {
   const router = useRouter();
@@ -14,6 +15,25 @@ const Settings = () => {
   const [skills, setSkills] = useState([]); // State to store skills fetched from the API
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [err, setErr] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [isLoading, setIsloading] = useState(false);
+
+  const error = (notifi) => {
+    message.error(err);
+    message.config({
+      maxCount: 3,
+    });
+    setErr("");
+  };
+
+  const success = () => {
+    message.success("Update profile successful");
+    message.config({
+      maxCount: 1,
+    });
+    setSuccessMsg("");
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -33,7 +53,7 @@ const Settings = () => {
         setSkillName(data.skill.skillId);
 
         // Initialize selectedSkillId with the user's existing skill ID
-        setSelectedSkillId(data.skill.skillId);
+        setSelectedSkillId(data.skill);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }
@@ -56,10 +76,13 @@ const Settings = () => {
   }, []);
 
   const handleSubmit = async (e) => {
+    const loadingMessage = message.loading('Processing login...', 0);
+    setIsloading(true);
     e.preventDefault();
+    const accessToken = localStorage.getItem("accessToken");
 
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      
       const formData = new FormData();
       formData.append("fullName", fullName);
       formData.append("mobileNumber", mobileNumber);
@@ -82,12 +105,25 @@ const Settings = () => {
       );
 
       // Show success message or redirect to dashboard
-      console.log("Profile updated successfully");
-      router.push("/");
+      setErr("");
+      setSuccessMsg("You have successfully logged in.");
+      if(selectedFile !== null) {
+        const responseAvatar = await axios.get (
+          "https://drawproject-production-012c.up.railway.app/api/v1/users/avatar",
+          {headers: {Authorization: `Bearer ${accessToken}`}}
+        )
+        localStorage.setItem("avatar", responseAvatar.data);
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
-      console.error("Failed to update profile:", error);
+      setErr("An error occurred during updating! Please try again.");
       // Show error message
+      setSuccessMsg("");
     }
+    loadingMessage();
+    setIsloading(false);
   };
 
   useEffect(() => {
@@ -110,6 +146,9 @@ const Settings = () => {
 
   return (
     <>
+        {
+                (err !== "" && successMsg === "") ? error() : (err === "" && successMsg !== "") && success()
+            }
       <section
         className="login-area pt-100 pb-100 wow fadeInUp"
         data-wow-duration=".8s"
@@ -186,7 +225,6 @@ const Settings = () => {
                     onChange={(e) => setSelectedSkillId(e.target.value)} // Handle skill selection
                     required
                   >
-                    <option value="">Select a skill</option>
                     {skills.map((skill) => (
                       <option key={skill.skillId} value={skill.skillId}>
                         {skill.skillName}
@@ -194,7 +232,9 @@ const Settings = () => {
                     ))}
                   </Form.Control>
                   <div className="mt-10"></div>
-                  <button className="tp-btn w-100">Update Profile</button>
+                  <Spin spinning={isLoading}>
+                    <button className="tp-btn w-100">Update Profile</button>
+                  </Spin>
                 </form>
                 <div className="mt-20"></div>
               </div>
