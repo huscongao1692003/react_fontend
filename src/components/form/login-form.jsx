@@ -22,9 +22,10 @@ const LoginForm = () => {
     }
 
     const error = () => {
-        message.error("Invalid your username or password")
+        message.error(err);
         message.config({
-            maxCount: 3
+            maxCount: 2,
+            duration: 5000
         })
         setErr("");
       };
@@ -86,8 +87,9 @@ const LoginForm = () => {
             if (error.response) {
                 if (error.response.status === 400 && error.response.data) {
                     // Extract the error message from the response data
-                    setErr(error.response.data.message || "Bad request");
-                    console.log(err)
+                    setErr("Invalid your username or password");
+                } else if(error.response.status === 429) {
+                    setErr("You entered incorrectly too many times! please try again after 5 minutes.");
                 } else {
                     setErr("An error occurred during login.");
                 }
