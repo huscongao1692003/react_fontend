@@ -4,11 +4,12 @@ import { message, Image } from 'antd';
 
 // Define the placeholder image source
 const placeholderImage = "/assets/img/report.jpg";
+const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
 function CourseCreateArea() {
   const [reportData, setReportData] = useState({
-    studentId: 1,
-    courseId: 1,
+    studentId: "",
+    courseId: "",
     message: "",
     image: null,
   });
@@ -40,12 +41,16 @@ function CourseCreateArea() {
       formData.append("message", reportData.message);
       formData.append("image", reportData.image);
 
-      const response = await axios.post(url, formData);
+      const response = await axios.post(url, formData, {
+        headers:{
+          Authorization: `Bearer ${accessToken}`,
+        }
+      });
       if (response.data.status !== "BAD_REQUEST") {
         message.success("Report sent successfully");
         setReportData({
-          studentId: 1,
-          courseId: 1,
+          studentId: "",
+          courseId: "",
           message: "",
           image: null,
         });
@@ -95,6 +100,7 @@ function CourseCreateArea() {
                   <input
                     type="number"
                     id="courseId"
+                    placeholder="Input Course Id"
                     className="form-control mb-3 bg-transparent color-border-form-dashboard"
                     value={reportData.courseId}
                     onChange={(e) => setReportData({ ...reportData, courseId: parseInt(e.target.value) })}
@@ -104,6 +110,7 @@ function CourseCreateArea() {
                   <input
                     type="number"
                     id="studentId"
+                    placeholder="Input Student Id"
                     className="form-control mb-3 bg-transparent color-border-form-dashboard"
                     value={reportData.studentId}
                     onChange={(e) => setReportData({ ...reportData, studentId: parseInt(e.target.value) })}
