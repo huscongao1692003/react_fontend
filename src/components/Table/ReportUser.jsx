@@ -73,6 +73,7 @@ const MyComponent = () => {
               <TableCell style={{ textAlign: 'center' }}>Image</TableCell>
               <TableCell style={{ textAlign: 'center' }}>Status</TableCell>
               <TableCell style={{ textAlign: 'center' }}>Actions</TableCell>
+              <TableCell style={{ textAlign: 'center' }}>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -170,6 +171,16 @@ const MyComponent = () => {
                     </Button>
                   </div>
                   )}
+                </TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
+                <Button
+                      variant="contained"
+                      color="error"
+                      style={{ marginRight: '8px' }}
+                      onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                    >
+                      Delete
+                    </Button>
                 </TableCell>
               </TableRow>
             ))}
