@@ -5,7 +5,7 @@ import Breadcrumb from "../bredcrumb/breadcrumb";
 const ErrorPage = () => {
   return (
     <>
-      <Breadcrumb title="" subtitle="404 Error" isDbbl="Pages" />
+      <Breadcrumb title="" subtitle="Maintenance" isDbbl="Pages" />
       <section className="error-area pt-120 pb-115">
         <div className="container">
           <div className="row">
