@@ -208,7 +208,7 @@ const CourseTable = ({ setSelected }) => {
                     >
                       Edit
                     </Button>
-                    {course.status === "Open" ? (
+                    {/* {course.status === "Open" ? (
                       <Button
                         variant="outlined"
                         color="secondary"
@@ -228,7 +228,7 @@ const CourseTable = ({ setSelected }) => {
                       >
                         Open
                       </Button>
-                    )}
+                    )} */}
                   </Spin>
                 </TableCell>
               </TableRow>

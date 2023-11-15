@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
-import Slider from "react-slick";
+import Slider from "react-slick"; 
 
 const testimonial_data = [
   {
     id: 1,
     name: "Courtney Henry",
-    img: "assets/img/icon/test-ava-01.png",
-    title: "Sr. UX/UI Designer",
+    img: "assets/img/icon/c-details-avata-01.png",
+    title: "Digital Artist",
     des: (
       <>
         Dramatically supply transparent deliverab before & you backward comp
@@ -17,8 +17,8 @@ const testimonial_data = [
   {
     id: 2,
     name: "Devon Lane",
-    img: "assets/img/icon/test-ava-02.png",
-    title: "Software Engineer",
+    img: "assets/img/icon/c-details-avata-01.png",
+    title: "Artist",
     des: (
       <>
         Dramatically supply transparent deliverab before & you backward comp
@@ -29,8 +29,8 @@ const testimonial_data = [
   {
     id: 3,
     name: "Jenny Wilson",
-    img: "assets/img/icon/test-ava-03.png",
-    title: "Content Writer",
+    img: "assets/img/icon/c-details-avata-01.png",
+    title: "Digital Artist",
     des: (
       <>
         Dramatically supply transparent deliverab before & you backward comp
@@ -41,8 +41,8 @@ const testimonial_data = [
   {
     id: 4,
     name: "Jenny Wilson",
-    img: "assets/img/icon/test-ava-03.png",
-    title: "Content Writer",
+    img: "assets/img/icon/c-details-avata-01.png",
+    title: "Oil Artist",
     des: (
       <>
         Dramatically supply transparent deliverab before & you backward comp
@@ -114,7 +114,7 @@ const TestimonialArea = () => {
             <div className="col-xl-6 col-lg-8 col-md-8 col-12">
               <div className="section-title mb-65">
                 <h2 className="tp-section-title mb-20">
-                  Our Expert Instructor
+                  Our Supporter
                 </h2>
               </div>
             </div>
