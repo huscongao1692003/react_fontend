@@ -7,7 +7,7 @@ import WrapperFour from "../layout/wrapper-4";
 const Error = () => {
   return (
     <WrapperFour>
-      <SEO pageTitle={"Page Not Found"} />
+      <SEO pageTitle={"Maintenance page"} />
       <ErrorPage />
     </WrapperFour>
   );
