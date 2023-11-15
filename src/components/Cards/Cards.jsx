@@ -7,7 +7,7 @@ const Cards = ({ listDataCard = [], open, close }) => {
   return (
     <>
       <h3 style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-        Analytics Card
+        Analytics Data
       </h3>
       <div className="Cards">
         <div className="parentContainer">

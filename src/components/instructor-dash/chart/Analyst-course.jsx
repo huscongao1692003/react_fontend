@@ -15,14 +15,10 @@ const RadarAnalystCourse = ({ list=[], title }) => {
 
   const chartOptions = {
     chart: {
-      type: "radar",
+      type: "pie",
     },
-    series: [
-      {
-        name: "Series 1",
-        data: mapToList(1),
-      },
-    ],
+    series: mapToList(1),
+    labels: mapToList(0),
     title: {
       text: title,
       align: 'left',
@@ -33,14 +29,18 @@ const RadarAnalystCourse = ({ list=[], title }) => {
         fontSize: "1rem",
       }
     },
-    labels: mapToList(0),
+    plotOptions: {
+      pie: {
+        customScale: 0.8
+      }
+    },
   };
 
   return (
       <Chart
         options={chartOptions}
         series={chartOptions.series}
-        type="radar"
+        type="pie"
         width={"100%"}
         
       />

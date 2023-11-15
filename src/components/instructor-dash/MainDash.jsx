@@ -51,7 +51,7 @@ const DashStaff = () => {
       <Cards listDataCard={listDataCard} open={objectData.numOfCourseOpen} close={courseClosers} />
       <GeneralData />
       <div className="d-flex mt-30 ">
-        <div className="chart-category" style={{width: "50%"}}>
+        <div className="chart-category" style={{width: "46%"}}>
           <RadarAnalystCourse list={ categories } title={"Category"} />
         </div>
         <div className="chart-style" style={{width: "50%"}}>
