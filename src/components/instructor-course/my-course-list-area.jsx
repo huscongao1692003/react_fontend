@@ -12,7 +12,7 @@ const MyCourseListArea = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1); 
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const router = useRouter();
@@ -151,12 +151,12 @@ const MyCourseListArea = () => {
                           <ul className="tpcourse__price-list d-flex align-items-center">
                             <li>
                               <Link className={course.ct_color} href="/course-details">
-                                {course.skill}
+                                {course.skillName}
                               </Link>
                             </li>
                             <li>
                               <Link className={course.cn_color} href="/course-details">
-                                {course.category}
+                                {course.categoryName}
                               </Link>
 
                             </li>
