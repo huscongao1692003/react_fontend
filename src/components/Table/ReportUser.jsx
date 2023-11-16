@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
-import Spinner from 'react-bootstrap/Spinner';
-import { Image } from 'antd';
-import { UilCheck,UilSpinnerAlt,UilTimes } from '@iconscout/react-unicons';
+import { Image, Spin, message } from 'antd';
+import { UilCheck, UilSpinnerAlt, UilTimes } from '@iconscout/react-unicons';
 
 const MyComponent = () => {
   const placeholderImage = "/assets/img/report.jpg";
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [isHandleRejectLoading, setHandleRejectIsloading] = useState(false);
+  const [isHandleAcceptLoading, setHandleAcceptIsloading] = useState(false);
+  const [isHandleDeleteLoading, setHandleDeleteIsloading] = useState(false);
+  const loadingMessage = message.loading('Processing...', 1);
 
   useEffect(() => {
     fetchData();
   }, []);
+  const error = () => {
+    message.error(err);
+    message.config({
+        maxCount: 2,
+        duration: 5000
+    })
+    setErr("");
+  };
 
+  const success = () => {
+    message.success("Login successful")
+    message.config({
+        maxCount: 1
+    })
+    setSuccessMsg("");
+  }
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -27,6 +45,8 @@ const MyComponent = () => {
   };
 
   const handleReject = async (studentId, courseId, message) => {
+    loadingMessage(true);
+    setHandleRejectIsloading(true);
     try {
       await axios.put(
         `https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/reject?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(
@@ -37,9 +57,13 @@ const MyComponent = () => {
     } catch (error) {
       console.error(error);
     }
+    setHandleRejectIsloading(false);
+    loadingMessage(false);
   };
 
   const handleAccept = async (studentId, courseId, message) => {
+    loadingMessage(true);
+    setHandleAcceptIsloading(true);
     try {
       await axios.put(
         `https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/accept?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(
@@ -50,15 +74,32 @@ const MyComponent = () => {
     } catch (error) {
       console.error(error);
     }
+    setHandleAcceptIsloading(false);
+    loadingMessage(false);
+  };
+  
+  const handleDelete = async (studentId, courseId, message) => {
+    setHandleDeleteIsloading(true);
+    try {
+      await axios.put(
+        `https://drawproject-production-012c.up.railway.app/api/v1/staff/reportstudent/reject?studentId=${studentId}&courseId=${courseId}&message=${encodeURIComponent(
+          message
+        )}`
+      );
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+    setHandleDeleteIsloading(false);
   };
 
-  if (loading) {
-    return (
-      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
-        <Spinner animation="grow" variant="light" size="lg" />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+  //       <Spin size="large" />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>
@@ -95,12 +136,12 @@ const MyComponent = () => {
                 <TableCell style={{ textAlign: 'center' }}>
                 {item.status === 'Pending' && (
                     <div>
-                      <UilSpinnerAlt/>
+                      <UilSpinnerAlt />
                     </div>
                   )}
                   {item.status === 'Completed' && (
                     <div>
-                    <UilCheck/>
+                    <UilCheck />
                   </div>
                   )}
                   {item.status === null && (
@@ -177,7 +218,7 @@ const MyComponent = () => {
                       variant="contained"
                       color="error"
                       style={{ marginRight: '8px' }}
-                      onClick={() => handleReject(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
+                      onClick={() => handleDelete(item.reportStudentId.studentId, item.reportStudentId.courseId, item.message)}
                     >
                       Delete
                     </Button>

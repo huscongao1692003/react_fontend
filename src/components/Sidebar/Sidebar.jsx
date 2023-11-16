@@ -44,7 +44,7 @@ const MenuItems = [
   },
   {
     icon: UilUsersAlt,
-    heading: "Customers",
+    heading: "User Manager",
     content: <User />,
   },
   {
