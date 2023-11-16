@@ -18,6 +18,7 @@ export const ProtectedRoutes = ({ children, allowedRoles }) => {
         router.pathname.startsWith("/create-post")||
         router.pathname.startsWith("/my-courses")||
         router.pathname.startsWith("/my-orders")||
+        router.pathname.startsWith("/my-collection")||
         router.pathname.startsWith("/study")||
         router.pathname.startsWith("/view-post")
         )
