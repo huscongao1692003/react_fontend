@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { Spin, message } from "antd";
+import { Pagination } from "@mui/material";
+import { Image, Popconfirm, Button } from "antd";
 
 function Artwork() {
   const [artwork, setArtwork] = useState({
@@ -13,9 +16,13 @@ function Artwork() {
   const router = useRouter();
   const { id } = router.query;
   const [categories, setCategories] = useState([]);
-  const [categoryError, setCategoryError] = useState('');
+  const [categoryError, setCategoryError] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingArt, setLoadingArt] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [refress, setRefress] = useState(0);
+  const [imagePre, setImagePre] = useState("");
 
   const [artworkData, setArtworkData] = useState([]);
 
@@ -23,9 +30,26 @@ function Artwork() {
     fileInputRef.current.click();
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    
+  };
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setArtwork({ ...artwork, requestImage: selectedFile });
+    handleUpload(e);
+  };
+
+  const handleUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      setImagePre(e.target.result);
+    };
+
+    reader.readAsDataURL(file);
   };
 
   useEffect(() => {
@@ -36,73 +60,61 @@ function Artwork() {
         );
         setCategories(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching categories");
       }
     };
     async function fetchArtworkData() {
       try {
         const response = await axios.get(
-          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=10`
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=6`
         );
         setArtworkData(response.data.data);
+        setPage(response.data.page);
+        setTotalPage(response.data.totalPage);
       } catch (error) {
-        console.error("Error fetching artwork data:", error);
+        console.log("Error fetching artwork data");
       }
     }
 
     fetchArtworkData();
     fetchCategories();
   }, [id]);
-  const fetchArtworkDataOpen = async () => {
-    try {
-      setLoadingArt(true); // Set loading before fetching
-      const response = await axios.get(
-        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=close&eachPage=10`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
-      setArtworkData(response.data.data);
-      setLoadingArt(false); // Unset loading after fetching
-    } catch (error) {
-      console.error("Error fetching open artwork data:", error);
-      setLoadingArt(false); // Unset loading in case of error
-    }
-  };
-  const fetchArtworkDataComplete = async () => {
-    try {
-      setLoadingArt(true);
-      const response = await axios.get(
-        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=10`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
-      setArtworkData(response.data.data);
-      setLoadingArt(false); // Unset loading after fetching
-    } catch (error) {
-      console.error("Error fetching open artwork data:", error);
-      setLoadingArt(false); // Unset loading in case of error
-    }
-  };
+  useEffect(() => {
+    const fetchArtworkDataComplete = async () => {
+      const loadingMessage = message.loading("Loading...", 0);
+      try {
+        setLoadingArt(true);
+        const response = await axios.get(
+          `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${id}/artworks?status=open&eachPage=6&page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setArtworkData(response.data.data);
+        setLoadingArt(false); // Unset loading after fetching
+      } catch (error) {
+        setLoadingArt(false); // Unset loading in case of error
+      }
+      loadingMessage();
+    };
+    fetchArtworkDataComplete();
+  }, [page, refress]);
 
   const submitPostData = async () => {
-    setCategoryError('');
+    setCategoryError("");
+    const loadingMessage = message.loading("Processing...", 0);
 
     // Check if a category has been selected (assuming the default '0' is not a valid category)
     if (artwork.categoryId === 0) {
-      setCategoryError('Please select a category.');
+      setCategoryError("Please select a category.");
       return; // Prevent submission if validation fails
     }
     try {
       if (localStorage.getItem("accessToken")) {
         setLoading(true);
         const accessToken = localStorage.getItem("accessToken");
-        console.log(accessToken);
         const headers = {
           Accept: "application/json",
           Authorization: `Bearer ${accessToken}`,
@@ -117,14 +129,36 @@ function Artwork() {
         const response = await axios.post(url, formData, { headers });
 
         if (response.status === 200) {
+          loadingMessage();
           setLoading(false);
-          fetchArtworkData();
-          alert("Artwork created successfully");
+          setRefress(refress + 1);
         }
       }
     } catch (e) {
-      console.error(e);
+      
     }
+  };
+
+  const deleteArtWork = async (artworkId) => {
+    const loadingMessage = message.loading("Deleting...", 0);
+    try {
+      setLoadingArt(true);
+      const response = await axios.delete(
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/artworks/${artworkId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      setLoadingArt(false); // Unset loading after fetching
+      setRefress(refress + 1);
+    } catch (error) {
+      console.error("Error fetching delete artwork:", error);
+      setLoadingArt(false); // Unset loading in case of error
+      loadingMessage();
+    }
+    loadingMessage();
   };
 
   return (
@@ -140,11 +174,15 @@ function Artwork() {
                 style={{ display: "none" }}
                 onChange={handleFileChange}
               />
-
-              <img
-                src="https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"
+              <Image
+                src={
+                  imagePre === ""
+                    ? "https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"
+                    : imagePre
+                }
                 alt=""
-                className="img-account-profile rounded-circle mb-2"
+                width={290}
+                height={310}
               />
               <div className="small font-italic text-muted mb-4">
                 {artwork?.requestImage?.name
@@ -191,8 +229,9 @@ function Artwork() {
                       </option>
                     ))}
                   </select>
-                  {categoryError && <div className="error-message">{categoryError}</div>}
-
+                  {categoryError && (
+                    <div className="error-message">{categoryError}</div>
+                  )}
                 </div>
 
                 <button
@@ -229,18 +268,34 @@ function Artwork() {
             {artworkData.map((artwork) => (
               <div key={artwork.artworkId} className="col-md-4 mb-4">
                 <div className="card">
-                  <img
+                  <Image
                     src={artwork.image}
                     alt={`Artwork ${artwork.artworkId}`}
                     className="card-img-top"
+                    height={"11rem"}
+                    width={"100%"}
                   />
-                  <div className="card-body">
+                  <div className="card-body d-flex justify-content-between align-items-center">
                     <h5 className="card-title">{artwork.categoryName}</h5>
-                    <p className="card-text">{artwork.status}</p>
+                    <Popconfirm
+                      title="Delete this artwork"
+                      onConfirm={() => deleteArtWork(artwork.artworkId)}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button danger><i class="fa-solid fa-trash"></i></Button>
+                    </Popconfirm>
                   </div>
                 </div>
               </div>
             ))}
+            <div className="d-flex justify-content-center">
+              <Pagination
+                page={page}
+                count={totalPage}
+                onChange={handlePageChange}
+              />
+            </div>
           </div>
         </div>
       </div>
