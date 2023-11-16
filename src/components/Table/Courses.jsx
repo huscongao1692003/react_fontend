@@ -171,8 +171,12 @@ export default function CourseTable() {
             </TableBody>
           </Table>
         </TableContainer>
-        <div className="d-flex justify-content-center mt-10">
-            <Pagination page={page} count={5} onChange={handlePageChange} />
+        <div className="d-flex justify-content-center">
+            <Pagination
+              page={page}
+              count={totalPage}
+              onChange={handlePageChange}
+            />
           </div>
       </div>
     </>

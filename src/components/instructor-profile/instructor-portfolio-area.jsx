@@ -14,7 +14,7 @@ const placeholderCourse = "https://storage.googleapis.com/example_test_image/ima
 const InstructorPortfolioArea = () => {
   const [instructorData, setInstructorData] = useState(null);
   const [coursesData, setCoursesData] = useState([]);
-  const [courseId,setCourseId] = useState(null);
+  const [courseId, setCourseId] = useState(null);
   const [artworkData, setArtworkData] = useState([]);
   const [certificateData, setCertificateData] = useState([]);
   const router = useRouter();
@@ -22,7 +22,25 @@ const InstructorPortfolioArea = () => {
   const [isArtworkModalOpen, setIsArtworkModalOpen] = useState(false);
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
 
+  const renderStarIcons = (averageStar) => {
+    const starIcons = [];
+    const roundedAverageStar = Math.round(averageStar); // Round to the nearest whole number
 
+    for (let i = 1; i <= 5; i++) {
+      if (i <= roundedAverageStar) {
+        // Full star
+        starIcons.push(<i key={i} className="fi fi-ss-star"></i>);
+      } else if (i - 1 < averageStar && i > averageStar) {
+        // Half star
+        starIcons.push(<i key={i} className="fi fi-ss-star-half"></i>);
+      } else {
+        // Empty star
+        starIcons.push(<i key={i} className="fi fi-rs-star"></i>);
+      }
+    }
+
+    return starIcons;
+  };
 
   useEffect(() => {
     const fetchInstructorData = async () => {
@@ -105,7 +123,7 @@ const InstructorPortfolioArea = () => {
   const handleCertificateCancel = () => {
     setIsCertificateModalOpen(false);
   };
-  
+
 
   return (
     <>
@@ -162,7 +180,7 @@ const InstructorPortfolioArea = () => {
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Artwork</label>{" "}
                         <span>
-                          <Button type="link" onClick={showArtworkModal} style={{marginTop:"-15px", marginRight:"-15px"}}>
+                          <Button type="link" onClick={showArtworkModal} style={{ marginTop: "-15px", marginRight: "-15px" }}>
                             show Artwork
                           </Button>
                           <Modal className="ArtworkModal" title="Artwork" open={isArtworkModalOpen} onOk={handleArtworkOk} onCancel={handleArtworkCancel}>
@@ -198,7 +216,7 @@ const InstructorPortfolioArea = () => {
                         <i className="fi fi-rs-time-check"></i>{" "}
                         <label>Certificate</label>{" "}
                         <span>
-                          <Button type="link" onClick={showCertificateModal} style={{marginTop:"-15px", marginRight:"-15px"}}>
+                          <Button type="link" onClick={showCertificateModal} style={{ marginTop: "-15px", marginRight: "-15px" }}>
                             Show
                           </Button>
                           <Modal className="ArtworkModal" title="Certificate" open={isCertificateModalOpen} onOk={handleCertificateOk} onCancel={handleCertificateCancel}>
@@ -251,25 +269,25 @@ const InstructorPortfolioArea = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row"> 
-                    {coursesData .filter((item) => item.status === "Open").map((item, i) => (
+                  <div className="row">
+                    {coursesData.filter((item) => item.status === "Open").map((item, i) => (
                       <div key={i} className="col-xl-6 col-lg-12 col-md-6">
-                          <div className="tpcourse mb-40">
-                            <div className="tpcourse__thumb p-relative w-img fix">
+                        <div className="tpcourse mb-40">
+                          <div className="tpcourse__thumb p-relative w-img fix">
                             <Link href={`/course-details?id=${item.courseId}`}>
                               <img
-                                    src={item.image && item.image !== "null" ? item.image : placeholderCourse}
-                                    alt="course-thumb"
-                                    style={{ height: "300px", objectFit: "cover" }}
-                                    onError={(e) => {e.target.src = placeholderCourse;}}
-                                  />
-                              </Link>
-                              <div className="tpcourse__img-icon">
-                                <img src={item.icon ? item.icon : placeholderAvatar} alt="course-avata" />
-                              </div>
+                                src={item.image && item.image !== "null" ? item.image : placeholderCourse}
+                                alt="course-thumb"
+                                style={{ height: "300px", objectFit: "cover" }}
+                                onError={(e) => { e.target.src = placeholderCourse; }}
+                              />
+                            </Link>
+                            <div className="tpcourse__img-icon">
+                              <img src={item.icon ? item.icon : placeholderAvatar} alt="course-avata" />
                             </div>
-                            <div className="tpcourse__content-2" >
-                              <div className="" style={{height: "150px"}}>
+                          </div>
+                          <div className="tpcourse__content-2" >
+                            <div className="" style={{ height: "200px" }}>
                               <div className="tpcourse__category mb-10">
                                 <ul className="tpcourse__price-list d-flex align-items-center">
                                   <li>
@@ -306,21 +324,18 @@ const InstructorPortfolioArea = () => {
                                   </li>
                                 </ul>
                               </div></div>
-                              <div className="tpcourse__rating d-flex align-items-center justify-content-between">
-                                <div className="tpcourse__rating-icon">
-                                  <span>{item.averageStar.toFixed(1)}</span>
-                                  <i className="fi fi-ss-star"></i>
-                                  <i className="fi fi-ss-star"></i>
-                                  <i className="fi fi-ss-star"></i>
-                                  <i className="fi fi-ss-star"></i>
-                                  <i className="fi fi-rs-star"></i>
-                                </div>
-                                <div className="tpcourse__pricing">
-                                  <h5 className="price-title">${item.price}</h5>
-                                </div>
+                            <div className="tpcourse__rating d-flex align-items-center justify-content-between">
+                              <div className="tpcourse__rating-icon">
+                                <span style={{ marginRight: "0.3rem" }} >{item.averageStar.toFixed(1)}</span>
+                                {renderStarIcons(item.averageStar)}
+                                {/* <p>({course.numReviews})</p> */}
+                              </div>
+                              <div className="tpcourse__pricing">
+                                <h5 className="price-title">${item.price}</h5>
                               </div>
                             </div>
                           </div>
+                        </div>
                       </div>
                     ))}
                   </div>
