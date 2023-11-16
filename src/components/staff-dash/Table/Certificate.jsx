@@ -32,7 +32,7 @@ const Instructor = () => {
   const handleShowArtworks = async (userId) => {
     try {
       const response = await axios.get(
-        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/artworks?status=close`,
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/artworks?status=open`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -46,11 +46,11 @@ const Instructor = () => {
     }
   };
 
-  const handleArtworkAction = async (artworkId, action) => {
+  const handleArtworkAction = async (artworkId) => {
     try {
       // Assume there's an API endpoint to accept/reject artwork
-      const response = await axios.put(
-        `https://drawproject-production-012c.up.railway.app/api/v1/staff/artworks/${action}?artworkId=${artworkId}`,null,
+      const response = await axios.delete(
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/artworks/${artworkId}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -65,7 +65,7 @@ const Instructor = () => {
   const handleShowCertificates = async (userId) => {
     try {
       const response = await axios.get(
-        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/certificates?status=close`,
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/certificates?status=open`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -78,16 +78,16 @@ const Instructor = () => {
       console.error("Error fetching certificates:", error);
     }
   };
-  const handleCertificateAction = async (certificateId, action) => {
+  const handleCertificateAction = async (certificateId) => {
     try {
       // Assume there's an API endpoint to accept/reject certificate
-      const response = await axios.put(
-        `https://drawproject-production-012c.up.railway.app/api/v1/staff/certificates/${action}?certificateId=${certificateId}`,null,
+      const response = await axios.delete(
+        `https://drawproject-production-012c.up.railway.app/api/v1/instructor/certificates/${certificateId}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-      // Fetch certificates again to update UI
+      
       handleShowCertificates(selectedUserId);
     } catch (error) {
       console.error("Error updating certificate status:", error);
@@ -135,9 +135,9 @@ const Instructor = () => {
               <Card.Body>
                 <Card.Title>{user.username}</Card.Title>
                 <Card.Text>Email: {user.email}</Card.Text>
-                <Card.Text>Waiting Artwork: {user.numOfArtWorkClose}</Card.Text>
+                {/* <Card.Text>Waiting Artwork: {user.numOfArtWorkClose}</Card.Text> */}
                 <Card.Text>Artwork: {user.numOfArtWorkOpen}</Card.Text>
-                <Card.Text>Waiting Certificate: {user.numOfCertificateClose}</Card.Text>
+                {/* <Card.Text>Waiting Certificate: {user.numOfCertificateClose}</Card.Text> */}
                 <Card.Text>Certificate: {user.numOfCertificateOpen}</Card.Text>
                 <Card.Text>Mobile: {user.mobileNum}</Card.Text>
 
@@ -173,21 +173,21 @@ const Instructor = () => {
                 style={{ maxWidth: "100%" }}
               />
               <div className="mt-2">
-                <Button
+                {/* <Button
                   variant="success"
                   onClick={() =>
                     handleCertificateAction(certificate.certificateId, "accept")
                   }
                 >
                   Accept
-                </Button>{" "}
+                </Button>{" "} */}
                 <Button
                   variant="danger"
                   onClick={() =>
-                    handleCertificateAction(certificate.certificateId, "reject")
+                    handleCertificateAction(certificate.certificateId)
                   }
                 >
-                  Reject
+                  Delete
                 </Button>
               </div>
             </div>
@@ -207,21 +207,21 @@ const Instructor = () => {
                 style={{ maxWidth: "100%" }}
               />
               <div className="mt-2">
-                <Button
+                {/* <Button
                   variant="success"
                   onClick={() =>
                     handleArtworkAction(artwork.artworkId, "accept")
                   }
                 >
                   Accept
-                </Button>{" "}
+                </Button>{" "} */}
                 <Button
                   variant="danger"
                   onClick={() =>
-                    handleArtworkAction(artwork.artworkId, "reject")
+                    handleArtworkAction(artwork.artworkId)
                   }
                 >
-                  Reject
+                  Delete
                 </Button>
               </div>
             </div>
