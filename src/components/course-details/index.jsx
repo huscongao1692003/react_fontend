@@ -11,7 +11,7 @@ const CourseDetails = () => {
       <Breadcrumb title="Course Details" subtitle="Course Details" isDbbl="Course" />
       <CourseDetailsArea />
       <CourseArea />
-      <CounterArea />
+      {/* <CounterArea /> */}
     </>
   );
 };

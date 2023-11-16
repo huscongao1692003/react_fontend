@@ -10,7 +10,7 @@ const Blog = () => {
 
       <Breadcrumb title="Blog" subtitle="blog" />
       <Postbox />
-      <CounterArea />
+      {/* <CounterArea /> */}
 </>
   );
 };
