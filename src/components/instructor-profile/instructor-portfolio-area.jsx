@@ -14,6 +14,7 @@ const placeholderCourse = "https://storage.googleapis.com/example_test_image/ima
 const InstructorPortfolioArea = () => {
   const [instructorData, setInstructorData] = useState(null);
   const [coursesData, setCoursesData] = useState([]);
+  const [courseId,setCourseId] = useState(null);
   const [artworkData, setArtworkData] = useState([]);
   const [certificateData, setCertificateData] = useState([]);
   const router = useRouter();
@@ -41,6 +42,7 @@ const InstructorPortfolioArea = () => {
           `https://drawproject-production-012c.up.railway.app/api/v1/instructor/${userId}/courses?page=1&eachPage=4`
         );
         setCoursesData(response.data.data);
+        setCourseId(response.data.data.courseId)
       } catch (error) {
         console.error("Error fetching courses data:", error);
       }
@@ -249,12 +251,12 @@ const InstructorPortfolioArea = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row">
+                  <div className="row"> 
                     {coursesData .filter((item) => item.status === "Open").map((item, i) => (
                       <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                           <div className="tpcourse mb-40">
                             <div className="tpcourse__thumb p-relative w-img fix">
-                              <Link href="/course-details">
+                            <Link href={`/course-details?id=${item.courseId}`}>
                               <img
                                     src={item.image && item.image !== "null" ? item.image : placeholderCourse}
                                     alt="course-thumb"
@@ -271,12 +273,12 @@ const InstructorPortfolioArea = () => {
                               <div className="tpcourse__category mb-10">
                                 <ul className="tpcourse__price-list d-flex align-items-center">
                                   <li>
-                                    <Link className={randomColor()} href="/course-details">
+                                    <Link className={randomColor()} href="/course-list">
                                       {item.categoryName}
                                     </Link>
                                   </li>
                                   <li>
-                                    <Link className={randomColor()} href="/course-details">
+                                    <Link className={randomColor()} href="/course-list">
                                       {item.skillName}
                                     </Link>
                                   </li>
@@ -289,7 +291,7 @@ const InstructorPortfolioArea = () => {
                               </div>
                               <div className="tpcourse__ava-title mb-15">
                                 <h4 className="tpcourse__title">
-                                  <Link href="/course-details">{item.courseTitle}</Link>
+                                  <Link href={`/course-details?id=${item.courseId}`}>{item.courseTitle}</Link>
                                 </h4>
                               </div>
                               <div className="tpcourse__meta tpcourse__meta-gap pb-15 mb-15">
