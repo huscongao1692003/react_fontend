@@ -194,7 +194,10 @@ const CourseTable = ({ setSelected }) => {
                       variant="outlined"
                       color="secondary"
                       onClick={() => (
-                        setIsModalOpen(true), setCourseId(course.courseId)
+                        setIsModalOpen(true), 
+                        setCourseId(course.courseId),
+                        setErr(""),
+                        setSuccessMsg("")
                       )}
                     >
                       Student
@@ -208,7 +211,7 @@ const CourseTable = ({ setSelected }) => {
                     >
                       Edit
                     </Button>
-                    {/* {course.status === "Open" ? (
+                    {course.status === "Open" ? (
                       <Button
                         variant="outlined"
                         color="secondary"
@@ -228,7 +231,7 @@ const CourseTable = ({ setSelected }) => {
                       >
                         Open
                       </Button>
-                    )} */}
+                    )}
                   </Spin>
                 </TableCell>
               </TableRow>

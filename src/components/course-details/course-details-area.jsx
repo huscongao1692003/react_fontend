@@ -20,6 +20,7 @@ const CourseDetailsArea = () => {
   const [loading, isLoading] = useState(false);
   const [isPay, setIsPay] = useState(false);
   const [isVac, setVac] = useState(false);
+  const [isBanned, setIsBanned] = useState(false);
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
   const isLoggedIn =
@@ -71,6 +72,11 @@ const CourseDetailsArea = () => {
             setVac(true);
           } else {
             setVac(false);
+          }
+          if(response.data.status === "NOT_ACCEPTABLE" && response.data.data === "Close") {
+            setIsBanned(true);
+          } else {
+            setIsBanned(false);
           }
         })
         .catch((error) => {
@@ -328,6 +334,16 @@ const CourseDetailsArea = () => {
                       ) : (
                         <></>
                       )}
+
+                      {isLoggedIn === "true" &&
+                      storedUserRole === "ROLE_CUSTOMER" &&
+                      isBanned ? (
+                        <>
+                          <strong style={{color: "red"}}>You have been banned to this course</strong>
+                        </> 
+                      ) : <></>
+
+                      }
 
                       {isLoggedIn === "true" &&
                       storedUserRole === "ROLE_INSTRUCTOR" &&

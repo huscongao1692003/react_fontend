@@ -4,6 +4,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { Pagination } from "@mui/material";
 import DisplayCourse from "./display-course";
 import { useStore, actions } from "@/src/store";
+import Backdrop from "@mui/material/Backdrop";
 
 const CourseListArea = () => {
   const [loading, setLoading] = useState(true);
@@ -91,16 +92,13 @@ const CourseListArea = () => {
           queryParams.style = selectedStyle;
         } else {
           if (state.search != "" && state.data.dataType === "category") {
-            queryParams.category = [state.data.code]
-          }
-          else if (state.search != "" && state.data.dataType === "style") {
-            queryParams.style = [state.data.code]
+            queryParams.category = [state.data.code];
+          } else if (state.search != "" && state.data.dataType === "style") {
+            queryParams.style = [state.data.code];
           }
           setDataSearch(state.data);
           dispatch(actions.setValueInputGlobal(""));
         }
-        
-        
 
         const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses?${new URLSearchParams(
           queryParams
@@ -118,160 +116,180 @@ const CourseListArea = () => {
       }
     };
 
-    
-    fetchCoursesByStar();
+    const test = setTimeout(() => {
+      fetchCoursesByStar();
+    }, 3000);
 
+    return () => {
+      clearTimeout(test);
+    };
   }, [page, selectedSkill, selectedStar, selectedStyle, selectedCategory]);
 
   return (
-    <>
-      <section
-        className="course-list-area pb-120 wow fadeInUp"
-        data-wow-duration=".8s"
-        data-wow-delay=".2s"
-      >
-        <div className="container">
-          <div className="row text-center">
-            <div className="col-lg-12">
-              <div className="section-title mb-60">
-                <span className="tp-sub-title-box mb-15">Our Courses</span>
-                <h2 className="tp-section-title">Explore Popular Courses</h2>
-              </div>
-            </div>
-          </div>
-          <div className="row mb-20">
-            <div className="col-lg-4 col-md-12 courser-list-width mb-60">
-              <div className="course-sidebar">
-                <div className="country-select d-flex align-items-center">
-                  <div className="title">
-                    <p
-                      className="course-sidebar__title reset-element"
-                      style={{ marginRight: "1rem" }}
-                    >
-                      Star{" "}
-                    </p>
-                  </div>
-                  <select
-                    style={{ width: "auto" }}
-                    onChange={(e) => handleStarChange(e)}
-                  >
-                    <option value="0">All star</option>
-                    <option value="5">5 star</option>
-                    <option value="4">4 star</option>
-                    <option value="3">3 star</option>
-                  </select>
-                </div>
-                <div className="course-sidebar__widget mb-50">
-                  <div className="course-sidebar__info c-info-list">
-                    <h4 className="course-sidebar__title mb-35">
-                      Course Level
-                    </h4>
-                    {skillData.map((item) => (
-                      <div key={item.id} className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id={`flexSkillChecked${item.id}`}
-                          onClick={(e) => handleSkillChange(e, item.id)}
-                          defaultChecked = { (dataSearch.dataType === "skill" && dataSearch.code === item.id) ? true : false }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={`flexSkillChecked${item.id}`}
-                        >
-                          {item.name}
-                        </label>
-                        <span className="f-right">{item.courseCount}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="course-sidebar__widget mb-50">
-                  <div className="course-sidebar__info c-info-list">
-                    <h4 className="course-sidebar__title mb-35">Category</h4>
-
-                    {categoryData.map((item) => (
-                      <div key={item.id} className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id={`flexCategoryChecked${item.id}`}
-                          onClick={(e) => handleCategoryChange(e, item.id)} // Add onClick event for star filter
-                          defaultChecked = { (dataSearch.dataType === "category" && dataSearch.code === item.id) ? true : false }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={`flexCategoryChecked${item.id}`}
-                        >
-                          {item.name}
-                        </label>
-                        <span className="f-right">{item.courseCount}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="course-sidebar__widget mb-50">
-                  <div className="course-sidebar__info c-info-list">
-                    <h4 className="course-sidebar__title mb-35">Style</h4>
-
-                    {styleData.map((item) => (
-                      <div key={item.id} className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id={`flexCheckChecked${item.id}`}
-                          onClick={(e) => handleStyleChange(e, item.id)} // Add onClick event for star filter
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={`flexCheckChecked${item.id}`}
-                        >
-                          {item.name}
-                        </label>
-                        <span className="f-right">{item.courseCount}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-8 col-md-12 course-item-width ml-30">
-              {loading ? (
-                <div
-                  className="d-flex flex-column justify-content-center align-items-center"
-                  style={{ paddingTop: "300px", paddingBottom: "300px" }}
-                >
-                  <Spinner animation="grow" variant="success" size="lg" />
-                </div>
-              ) : courses.length === 0 ? (
-                <div
-                  style={{ opacity: "0.5" }}
-                  className="d-flex flex-column align-items-center"
-                >
-                  <img
-                    src="../../../assets/img/course/empty-course.gif"
-                    alt=""
-                  />
-                  <div className="content">Empty Course</div>
-                </div>
-              ) : (
-                <DisplayCourse courses={courses} />
-              )}
-            </div>
-            <div className="d-flex justify-content-center">
-              <Pagination
-                page={page}
-                count={totalPage}
-                onChange={handlePageChange}
-              />
+    <section
+      className="course-list-area pb-120 wow fadeInUp"
+      data-wow-duration=".8s"
+      data-wow-delay=".2s"
+    >
+      <div className="container">
+        <div className="row text-center">
+          <div className="col-lg-12">
+            <div className="section-title mb-60">
+              <span className="tp-sub-title-box mb-15">Our Courses</span>
+              <h2 className="tp-section-title">Explore Popular Courses</h2>
             </div>
           </div>
         </div>
-      </section>
-    </>
+        <div className="row mb-20">
+          <div className="col-lg-4 col-md-12 courser-list-width mb-60">
+            <div className="course-sidebar position-relative">
+              <div>
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer - 190,
+                    position: "absolute",
+                  }}
+                  open={loading}
+                  style={{
+                    backgroundColor: "rgba(0, 0, 0, 0.03)",
+                  }}
+                ></Backdrop>
+              </div>
+              <div className="country-select d-flex align-items-center">
+                <div className="title">
+                  <p
+                    className="course-sidebar__title reset-element"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    Star{" "}
+                  </p>
+                </div>
+                <select
+                  style={{ width: "auto" }}
+                  onChange={(e) => handleStarChange(e)}
+                >
+                  <option value="0">All star</option>
+                  <option value="5">5 star</option>
+                  <option value="4">4 star</option>
+                  <option value="3">3 star</option>
+                </select>
+              </div>
+              <div className="course-sidebar__widget mb-50">
+                <div className="course-sidebar__info c-info-list">
+                  <h4 className="course-sidebar__title mb-35">Course Level</h4>
+                  {skillData.map((item) => (
+                    <div key={item.id} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id={`flexSkillChecked${item.id}`}
+                        onClick={(e) => handleSkillChange(e, item.id)}
+                        defaultChecked={
+                          dataSearch.dataType === "skill" &&
+                          dataSearch.code === item.id
+                            ? true
+                            : false
+                        }
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`flexSkillChecked${item.id}`}
+                      >
+                        {item.name}
+                      </label>
+                      <span className="f-right">{item.courseCount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="course-sidebar__widget mb-50">
+                <div className="course-sidebar__info c-info-list">
+                  <h4 className="course-sidebar__title mb-35">Category</h4>
+
+                  {categoryData.map((item) => (
+                    <div key={item.id} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id={`flexCategoryChecked${item.id}`}
+                        onClick={(e) => handleCategoryChange(e, item.id)} // Add onClick event for star filter
+                        defaultChecked={
+                          dataSearch.dataType === "category" &&
+                          dataSearch.code === item.id
+                            ? true
+                            : false
+                        }
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`flexCategoryChecked${item.id}`}
+                      >
+                        {item.name}
+                      </label>
+                      <span className="f-right">{item.courseCount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="course-sidebar__widget mb-50">
+                <div className="course-sidebar__info c-info-list">
+                  <h4 className="course-sidebar__title mb-35">Style</h4>
+
+                  {styleData.map((item) => (
+                    <div key={item.id} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id={`flexCheckChecked${item.id}`}
+                        onClick={(e) => handleStyleChange(e, item.id)} // Add onClick event for star filter
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`flexCheckChecked${item.id}`}
+                      >
+                        {item.name}
+                      </label>
+                      <span className="f-right">{item.courseCount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-8 col-md-12 course-item-width ml-30">
+            {loading ? (
+              <div
+                className="d-flex flex-column justify-content-center align-items-center"
+                style={{ paddingTop: "300px", paddingBottom: "300px" }}
+              >
+                <Spinner animation="grow" variant="success" size="lg" />
+              </div>
+            ) : courses.length === 0 ? (
+              <div
+                style={{ opacity: "0.5" }}
+                className="d-flex flex-column align-items-center"
+              >
+                <img src="../../../assets/img/course/empty-course.gif" alt="" />
+                <div className="content">Empty Course</div>
+              </div>
+            ) : (
+              <DisplayCourse courses={courses} />
+            )}
+          </div>
+          <div className="d-flex justify-content-center">
+            <Pagination
+              page={page}
+              count={totalPage}
+              onChange={handlePageChange}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
