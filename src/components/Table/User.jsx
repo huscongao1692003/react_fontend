@@ -4,55 +4,64 @@ import { Box } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Spinner from 'react-bootstrap/Spinner';
 
-
 const User = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
   const handleDisableUser = (userId) => {
-    axios.put(`https://drawproject-production-012c.up.railway.app/api/v1/admin/user/${userId}`,null, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
-    })
-  .then((response) => {
-    axios.get('https://drawproject-production-012c.up.railway.app/api/v1/admin/user', {
-      headers: { "Authorization": `Bearer ${accessToken}` }
-    })
-    .then((response) => {
-      const usersWithId = response.data.map((user, index) => ({
-        id: user.userId,
-        role:user.roles.name,
-        ...user,
-      }));
-      setUsers(usersWithId);
-      setLoading(false);
-    })
-    console.log(`User with ID ${userId} has been disabled.`);
-  })
-  .catch((error) => {
-    console.error(`Error disabling user with ID ${userId}:`, error);
-  });
+    axios
+      .put(`https://drawproject-production-012c.up.railway.app/api/v1/admin/user/${userId}`, null, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        axios
+          .get('https://drawproject-production-012c.up.railway.app/api/v1/admin/user', {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          })
+          .then((response) => {
+            const usersWithId = response.data.map((user, index) => ({
+              id: user.userId,
+              role: user.roles.name,
+              ...user,
+            }));
+
+            // Filter out users with the "ADMIN" role
+            const filteredUsers = usersWithId.filter((user) => user.role !== 'ADMIN');
+
+            setUsers(filteredUsers);
+            setLoading(false);
+          })
+        console.log(`User with ID ${userId} has been disabled.`);
+      })
+      .catch((error) => {
+        console.error(`Error disabling user with ID ${userId}:`, error);
+      });
   };
 
-
   useEffect(() => {
-    axios.get('https://drawproject-production-012c.up.railway.app/api/v1/admin/user', {
-      headers: { "Authorization": `Bearer ${accessToken}` }
-    })
-    .then((response) => {
-      // Assign a unique id to each user using userId
-      const usersWithId = response.data.map((user, index) => ({
-        id: user.userId,
-        role:user.roles.name,
-        ...user,
-      }));
-      setUsers(usersWithId);
-      setLoading(false);
-    })
-    .catch((error) => {
-      console.error('Error fetching user data:', error);
-      setLoading(false);
-    });
+    axios
+      .get('https://drawproject-production-012c.up.railway.app/api/v1/admin/user', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        // Assign a unique id to each user using userId
+        const usersWithId = response.data.map((user, index) => ({
+          id: user.userId,
+          role: user.roles.name,
+          ...user,
+        }));
+
+        // Filter out users with the "ADMIN" role
+        const filteredUsers = usersWithId.filter((user) => user.role !== 'ADMIN');
+
+        setUsers(filteredUsers);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      });
   }, []);
 
   const columns = [
@@ -71,17 +80,17 @@ const User = () => {
       headerName: 'Disable User',
       width: 150,
       renderCell: (params) => (
-        <button
-          onClick={() => handleDisableUser(params.row.userId)} // Call your API function here
-          >
-          Disable
-        </button>
-        ),
+        <button onClick={() => handleDisableUser(params.row.userId)}>Disable</button>
+      ),
     },
-    ];
+  ];
+
   if (loading) {
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ paddingTop: '300px', paddingBottom: '300px' }}
+      >
         <Spinner animation="grow" variant="light" size="lg" />
       </div>
     );
@@ -91,35 +100,34 @@ const User = () => {
     <>
       <h3>Users</h3>
 
-      <div className='dataTable'>
-        <Box sx={{ height: 400, width: '100%' }}>
-          <DataGrid
-            rows={users}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
+      <div className="dataTable bg-transparent">
+        <DataGrid
+          style={{ border: '1px solid #333' }}
+          rows={users}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
               },
-            }}
-            slots={{toolbar: GridToolbar}}
-            slotProps={{
-              toolbar: {
-                showQuickFilter: true,
-              }
-            }}
-            pageSizeOptions={[5]}
-            checkboxSelection
-            disableRowSelectionOnClick
-            disableColumnFilter
-            disableDensitySelector
-            disableColumnSelector
-          />
-        </Box>
+            },
+          }}
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+            },
+          }}
+          pageSizeOptions={[5]}
+          checkboxSelection
+          disableRowSelectionOnClick
+          disableColumnFilter
+          disableDensitySelector
+          disableColumnSelector
+        />
       </div>
     </>
-    )
-}
+  );
+};
 
 export default User;

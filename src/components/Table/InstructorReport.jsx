@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { message, Image } from 'antd';
+import { message, Image, Spin } from 'antd'; // Import Spin from Ant Design
 
 // Define the placeholder image source
 const placeholderImage = "/assets/img/report.jpg";
@@ -15,6 +15,7 @@ function CourseCreateArea() {
   });
 
   const [imagePreview, setImagePreview] = useState(null);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -34,6 +35,8 @@ function CourseCreateArea() {
 
   const submitReportData = async () => {
     try {
+      setLoading(true); // Set loading to true when starting the request
+
       const url = "https://drawproject-production-012c.up.railway.app/api/v1/courses/student/report";
       const formData = new FormData();
       formData.append("studentId", reportData.studentId);
@@ -46,7 +49,8 @@ function CourseCreateArea() {
           Authorization: `Bearer ${accessToken}`,
         }
       });
-      if (response.data.status !== "BAD_REQUEST") {
+
+      if (response.data.status !== "BAD_REQUEST" && response.data.status !== "NOT_FOUND" && response.data.status !== "CONFLICT") {
         message.success("Report sent successfully");
         setReportData({
           studentId: "",
@@ -56,11 +60,23 @@ function CourseCreateArea() {
         });
         setImagePreview(null);
       } else {
-        message.error("Failed to send report");
+        message.error(response.data.message);
       }
     } catch (error) {
-      message.error("Something went wrong");
+      if (error.response) {
+        // The request was made and the server responded with a status code other than 2xx
+        const errorMessage = error.response.data.message;
+        message.error(errorMessage);
+      } else if (error.request) {
+        // The request was made but no response was received
+        message.error("No response received from the server");
+      } else {
+        // Other errors
+        message.error("Something went wrong");
+      }
       console.error(error);
+    } finally {
+      setLoading(false); // Set loading to false when the request is completed
     }
   };
 
@@ -120,8 +136,9 @@ function CourseCreateArea() {
                     type="button"
                     className="tp-btn"
                     onClick={submitReportData}
+                    disabled={loading} // Disable the button while loading
                   >
-                    Submit Report
+                    {loading ? <Spin /> : "Submit Report"}
                   </button>
                 </div>
               </div>

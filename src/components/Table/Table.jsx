@@ -1,97 +1,72 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  Table,
-  TableContainer,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Paper,
-  TablePagination,
-} from '@mui/material';
+import { Box } from '@mui/material';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Spinner from 'react-bootstrap/Spinner';
-import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';  
 
-export default function CustomerTable() {
-  const [orders, setOrders] = useState([]);
+
+const CustomerTable = () => {
+  const [orders, setOrders] = useState([]); // Update to []
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
   useEffect(() => {
-    // Make an API request to fetch orders
     axios
       .get('https://drawproject-production-012c.up.railway.app/api/v1/admin/orders', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
-        setOrders(response.data);
+        const dataWithIds = response.data.map((row, index) => ({
+          ...row,
+          id: index + 1, // Generate a unique id for each row
+        }));
+        setOrders(dataWithIds);
         setLoading(false);
       });
   }, [accessToken]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const columns = [
+    { field: 'fullName', headerName: 'Name', width: 200 },
+    { field: 'username', headerName: 'Tracking ID', width: 200 },
+    { field: 'courseName', headerName: 'Date', width: 200 },
+    { field: 'price', headerName: 'Price', width: 120 },
+  ];
 
   if (loading) {
     return (
-      <div
-        className="d-flex flex-column justify-content-center align-items-center"
-        style={{ paddingTop: '300px', paddingBottom: '300px' }}
-      >
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
         <Spinner animation="grow" variant="light" size="lg" />
       </div>
     );
   }
 
-  const filteredOrders = orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  const handleChange = (event, value) => {
-    setPage(value);
-  };
   return (
-    <div className="Table">
+    <>
       <h3>Orders</h3>
-      <TableContainer component={Paper} style={{ boxShadow: '0px 13px 20px 0px #80808029' }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="left">Tracking ID</TableCell>
-              <TableCell align="left">Date</TableCell>
-              <TableCell align="left">Price</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredOrders.map((order) => (
-              <TableRow key={order.username}>
-                <TableCell component="th" scope="row">
-                  {order.fullName}
-                </TableCell>
-                <TableCell align="left">{order.username}</TableCell>
-                <TableCell align="left">{order.courseName}</TableCell>
-                <TableCell align="left">
-                  <span className="status">{order.price}</span>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Stack spacing={2}>
-      <Typography>Page: {page}</Typography>
-      <Pagination count={10} page={page} onChange={handleChange} />
-    </Stack>
-      </TableContainer>
-    </div>
+      <div className='dataTable bg-transparent' >
+          <DataGrid
+          style={{ border: '1px solid #333' }}
+            rows={orders} // Update to use the new data
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSize={5}
+            checkboxSelection
+            disableColumnFilter
+            disableColumnSelector
+            disableDensitySelector
+            components={{
+              Toolbar: GridToolbar,
+            }}
+          />
+      </div>
+    </>
   );
-}
+};
+
+export default CustomerTable;

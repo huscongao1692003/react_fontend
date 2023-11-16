@@ -56,7 +56,7 @@ const User = () => {
                 console.error('Error fetching post data:', error);
                 setLoading(false);
             });
-        }, [accessToken]);
+    }, [accessToken]);
 
     const columns = [
         { field: 'id', headerName: 'Id', width: 100 }, // Use 'id' as the field name
@@ -71,43 +71,43 @@ const User = () => {
             renderCell: (params) => (
                 <button
                     onClick={() => handleDisablePost(params.row.id)} // Call your API function here
-                    >
+                >
                     Disable
                 </button>
-                ),
+            ),
         },
-        ];
+    ];
 
     if (loading) {
         return (
             <div className="d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: '300px', paddingBottom: '300px' }}>
                 <Spinner animation="grow" variant="light" size="lg" />
             </div>
-            );
+        );
     }
 
     return (
         <>
-        <h3>Posts</h3>
-        <div className='dataTable bg-transparent'>
-            <Box sx={{ height: 400, width: '100%' }}>
+            <h3>Posts</h3>
+            <div className='dataTable bg-transparent'>
                 <DataGrid
+                    style={{ border: '1px solid #333' }}
                     rows={posts}
                     columns={columns}
                     getRowId={(row) => row.id.toString()} // Specify a custom ID for each row
                     initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 5,
+                        pagination: {
+                            paginationModel: {
+                                pageSize: 5,
+                            },
                         },
-                    },
                     }}
                     slots={{ toolbar: GridToolbar }}
                     slotProps={{
-                    toolbar: {
-                        showQuickFilter: true,
-                    }
-                }}
+                        toolbar: {
+                            showQuickFilter: true,
+                        }
+                    }}
                     pageSizeOptions={[5]}
                     checkboxSelection
                     disableRowSelectionOnClick
@@ -115,10 +115,9 @@ const User = () => {
                     disableDensitySelector
                     disableColumnSelector
                 />
-            </Box>
-        </div>
+            </div>
         </>
-        )
+    )
 }
 
 export default User;
