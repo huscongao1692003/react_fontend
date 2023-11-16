@@ -192,7 +192,7 @@ const Collection = () => {
                     placeholder="Enter your bio"
                     id="bio"
                     type="text"
-                    value={dataInstructor.bio}
+                    value={bio}
                     onChange={handleBioChange} // Handle bio field change
                   />
                   <label htmlFor="payment">
@@ -202,7 +202,7 @@ const Collection = () => {
                     id="payment"
                     placeholder="Enter your payment"
                     type="text"
-                    value={dataInstructor.payment}
+                    value={payment}
                     onChange={handlePaymentChange} // Handle payment field change
                   />
                   <label htmlFor="education">
@@ -212,7 +212,7 @@ const Collection = () => {
                     id="education"
                     type="text"
                     placeholder="Enter your education"
-                    value={dataInstructor.education}
+                    value={education} 
                     onChange={handleEducationChange} // Handle education field change
                   />
                   <h5>Instructor's Experiences</h5>
