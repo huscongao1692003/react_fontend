@@ -76,8 +76,8 @@ function CourseCreateArea() {
     setReadingTimeError("");
     setBodyError("");
 
-    const loadingMessage = message.loading('Processing your post...', 0);
-    setIsloading(true);
+    // const loadingMessage = message.loading('Processing your post...', 0);
+    
 
     // Validation checks
     if (!courseData.title) {
@@ -99,6 +99,7 @@ function CourseCreateArea() {
     // If any validation error is found, do not submit the form
     if (titleError || categoryIdError || descriptionError || readingTimeError || bodyError) {
       setIsloading(false);
+      setLoading(false)
       return;
     }
 
@@ -118,13 +119,14 @@ function CourseCreateArea() {
         formData.append("readingTime", courseData.readingTime);
         formData.append("requestImage", courseData.requestImage);
         formData.append("body", courseData.body);
-
+        setIsloading(true);
         const response = await axios.post(url, formData, { headers });
 
         if (response.status === 201) {
           setErr("");
           setSuccessMsg("You have successfully created a post.");
           const delayDuration = 1500; 
+          setIsloading(false)
           setTimeout(() => {
             window.location.reload();
             }, delayDuration);
@@ -132,10 +134,10 @@ function CourseCreateArea() {
       }
     } catch (e) {
       console.error(e);
+      setIsloading(false)
     }
 
     setLoading(false);
-    loadingMessage();
     setIsloading(false);
   };
 

@@ -5,7 +5,7 @@ import Cetificate from "./cetificate"
 const index = () => {
   return (
     <>
-      <Breadcrumb  title="Cetificate" subtitle="cetificate" />
+      <Breadcrumb  title="Cetificate" subtitle="Cetificate" />
       <Cetificate />
       
     </>

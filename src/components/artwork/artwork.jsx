@@ -5,7 +5,7 @@ import axios from "axios";
 function Artwork() {
   const [artwork, setArtwork] = useState({
     categoryId: 0,
-    status: "Open",
+    status: "Close",
     requestImage: null,
   });
 
@@ -108,7 +108,7 @@ function Artwork() {
           Authorization: `Bearer ${accessToken}`,
         };
         const url =
-          "https://drawproject-production-012c.up.railway.app/api/v1/instructor/artworks&eachPage=10";
+          "https://drawproject-production-012c.up.railway.app/api/v1/instructor/artworks";
         const formData = new FormData();
         formData.append("categoryId", artwork.categoryId);
         formData.append("status", artwork.status);
@@ -205,23 +205,23 @@ function Artwork() {
                 </button>
               </form>
               <div className="mb-3"></div>
-              <button
+              {/* <button
                 type="button"
                 className="tp-btn"
                 onClick={fetchArtworkDataOpen}
                 disabled={loading} // Disable button while loading
               >
                 {loadingArt ? "Loading..." : "Waiting Verify ArtWork"}
-              </button>
+              </button> */}
               <h2></h2>
-              <button
+              {/* <button
                 type="button"
                 className="tp-btn m-100 "
                 onClick={fetchArtworkDataComplete}
                 disabled={loading} // Disable button while loading
               >
                 {loadingArt ? "Loading..." : " ArtWork"}
-              </button>
+              </button> */}
             </div>
           </div>
           <h2>My Artwork</h2>

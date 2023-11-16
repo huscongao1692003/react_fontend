@@ -58,10 +58,10 @@ const InstructorArea = () => {
                     }} />                    
                     </div>
                     <div className="tp-instructor__content">
-                      <span>{item.username}</span>
+                      <span>{item.fullName}</span>
                       <h4 className="tp-instructor__title tp-instructor__title-info p-relative mb-35 mt-5">
                         <Link href={`/instructor-profile?userId=${item.userId}`}>
-                          {item.username}
+                          {item.fullName}
                         </Link>
                       </h4>
                       <div className="tp-instructor__stu-info">

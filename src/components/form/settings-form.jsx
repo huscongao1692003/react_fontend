@@ -76,7 +76,7 @@ const Settings = () => {
   }, []);
 
   const handleSubmit = async (e) => {
-    const loadingMessage = message.loading('Processing login...', 0);
+    const loadingMessage = message.loading('Processing...', 0);
     setIsloading(true);
     e.preventDefault();
     const accessToken = localStorage.getItem("accessToken");
