@@ -1,11 +1,14 @@
-import VideoPopup from "@/src/modals/video-popup";
+// import VideoPopup from "@/src/modals/video-popup";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
 import PostComment from "../form/post-comment";
 import { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
+import ReactPlayer from "react-player";
+import Popup from "reactjs-popup";
 import { Pagination } from "@mui/material";
+import Button from "react-bootstrap/Button";
 
 const CourseDetailsArea = () => {
   const [courseData, setCourseData] = useState({});
@@ -21,6 +24,8 @@ const CourseDetailsArea = () => {
   const [isPay, setIsPay] = useState(false);
   const [isVac, setVac] = useState(false);
   const [isBanned, setIsBanned] = useState(false);
+  const [url, setUrl] = useState("");
+
   const storedUserRole =
     typeof window !== "undefined" ? localStorage.getItem("roles") : null;
   const isLoggedIn =
@@ -34,13 +39,19 @@ const CourseDetailsArea = () => {
   const handlePageChange = (event, value) => {
     setPage(value); // This should update the page state
   };
+  const toggleVideo = (url) => {
+    setUrl(url);
+    setIsVideoOpen(true);
+  };
 
   useEffect(() => {
     isLoading(true);
     if (storedUserRole === "ROLE_INSTRUCTOR") {
       axios
-        .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+        .get(
+          `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        )
         .then((response) => {
           isLoading(false);
 
@@ -58,8 +69,10 @@ const CourseDetailsArea = () => {
     }
     if (storedUserRole === "ROLE_CUSTOMER") {
       axios
-        .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+        .get(
+          `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/check-enroll`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        )
         .then((response) => {
           isLoading(false);
 
@@ -73,7 +86,10 @@ const CourseDetailsArea = () => {
           } else {
             setVac(false);
           }
-          if(response.data.status === "NOT_ACCEPTABLE" && response.data.data === "Close") {
+          if (
+            response.data.status === "NOT_ACCEPTABLE" &&
+            response.data.data === "Close"
+          ) {
             setIsBanned(true);
           } else {
             setIsBanned(false);
@@ -86,19 +102,21 @@ const CourseDetailsArea = () => {
         });
     }
 
-   axios
-     .get(`https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}`)
-     .then((response) => {
-       setCourseData(response.data.data);
-       const queryParams = {
-        eachPage: 4,
-        page: page,
-        
-      };
+    axios
+      .get(
+        `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}`
+      )
+      .then((response) => {
+        setCourseData(response.data.data);
+        setUrl(response.data.data.videoIntro);
+        const queryParams = {
+          eachPage: 4,
+          page: page,
+        };
         axios
           .get(
             `https://drawproject-production-012c.up.railway.app/api/v1/courses/${id}/feedback?${new URLSearchParams(
-              queryParams 
+              queryParams
             )}`
           )
           .then((responseFeedback) => {
@@ -109,7 +127,7 @@ const CourseDetailsArea = () => {
               setAvatar(decodedData.avatar);
             }
             setTotalPage(responseFeedback.data.totalPage);
-            console.log(responseFeedback.data.totalPage)
+            console.log(responseFeedback.data.totalPage);
             setFeedbackData(decodedData);
             isLoading(false);
           })
@@ -271,9 +289,7 @@ const CourseDetailsArea = () => {
                             </div>
                             <p>{feedback.feedbackInformation}</p>
                           </div>
-                          
                         </div>
-                        
                       ))}
                     <Pagination
                       page={page}
@@ -288,11 +304,11 @@ const CourseDetailsArea = () => {
             <div className="col-lg-4 col-md-12">
               <div className="c-details-sidebar">
                 <div className="c-video-thumb p-relative mb-25">
-                  <img
-                    src={courseData.image}
-                    alt="video-bg"
-                  />
-                  <div className="c-video-icon">
+                  <img src={courseData.image} alt="video-bg" />
+                  <div
+                    className="c-video-icon"
+                    onClick={() => toggleVideo(url)}
+                  >
                     <a
                       className="popup-video"
                       onClick={() => setIsVideoOpen(true)}
@@ -300,6 +316,15 @@ const CourseDetailsArea = () => {
                       <i className="fi fi-sr-play"></i>
                     </a>
                   </div>
+                  <Popup
+                    open={isVideoOpen}
+                    onClose={() => setIsVideoOpen(false)}
+                  >
+                    <div>
+                      <ReactPlayer url={url} controls />
+                      {/* <Button variant="success" className="mt-10" onClick={close}>Close</Button> */}
+                    </div>
+                  </Popup>
                 </div>
                 <div className="course-details-widget">
                   <div className="cd-video-price">
@@ -339,11 +364,13 @@ const CourseDetailsArea = () => {
                       storedUserRole === "ROLE_CUSTOMER" &&
                       isBanned ? (
                         <>
-                          <strong style={{color: "red"}}>You have been banned to this course</strong>
-                        </> 
-                      ) : <></>
-
-                      }
+                          <strong style={{ color: "red" }}>
+                            You have been banned to this course
+                          </strong>
+                        </>
+                      ) : (
+                        <></>
+                      )}
 
                       {isLoggedIn === "true" &&
                       storedUserRole === "ROLE_INSTRUCTOR" &&
@@ -424,8 +451,8 @@ const CourseDetailsArea = () => {
         storedUserRole === "ROLE_CUSTOMER" &&
         isPay == true ? (
           <>
-          <div className="container">
-            <PostComment />
+            <div className="container">
+              <PostComment />
             </div>
           </>
         ) : (
@@ -434,11 +461,11 @@ const CourseDetailsArea = () => {
       </section>
 
       {/* video modal start */}
-      <VideoPopup
+      {/* <VideoPopup
         isVideoOpen={isVideoOpen}
         setIsVideoOpen={setIsVideoOpen}
         videoId={"W-bgMEvrd2E"}
-      />
+      /> */}
 
       {/* video modal end */}
     </>
