@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Alert from "react-bootstrap/Alert";
-import { Button, Popover, Space } from "antd";
+import { Button, Popover, Space, Checkbox} from "antd";
 import { Form, Dropdown } from "react-bootstrap";
 import { Spin, message } from "antd";
 import {
@@ -366,12 +366,14 @@ const RegisterhtmlForm = () => {
                     </div>
                   </div>
 
-                  <div className="mt-10"></div>
+                  <div className="mt-10 d-flex flex-row policy-checkbox align-items-center">
+                    <Checkbox style={{paddingTop: "5%"}} required></Checkbox>
+                    <a href="/privacy" target="_blank" style={{marginLeft: "0.5rem", cursor: "pointer"}} >Terms of Use and Privacy Policy</a>
+                  </div>
                   <Spin spinning={isLoading}>
                     <button
                       className="tp-btn w-100"
                       type="submit"
-                      style={{ marginTop: "2rem" }}
                     >
                       Register Now
                     </button>

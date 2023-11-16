@@ -71,7 +71,7 @@
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--tp-common-white);
-	background: var(--tp-theme-1);
+	background: #245D51;
 	line-height: 1;
 	text-align: center;
 	padding: 21px 32px;
@@ -128,9 +128,9 @@
 	display: inline-block;
 	font-size: 16px;
 	font-weight: 600;
-	color: var(--tp-heading-secondary);
+	color: #245D51;
 	background: var(--tp-common-white);
-	border: 1px solid var(--tp-heading-secondary);
+	border: 1px solid #245D51;
 	line-height: 28px;
 	text-align: center;
 	padding: 10px 25px;
@@ -145,7 +145,7 @@
 
 	&:hover{
 		color: var(--tp-common-white);
-		background-color: var(--tp-heading-secondary);
+		background-color: #245D51;
 	}
 	&:focus{
 		color: var(--tp-common-white);

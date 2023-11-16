@@ -20,7 +20,7 @@ const footer_data = [
     links: [
       // { name: "Refund Policy", link: "/policy" },
       { name: "Documentation", link: "/documentation" },
-      { name: "Privacy Policy", link: "/privacy-policy" },
+      { name: "Privacy Policy", link: "/privacy" },
     ],
   },
 ];

@@ -77,3 +77,22 @@
         background-color: var(--tp-heading-secondary);
     }
 }
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #245D51 !important;
+    font-weight: bold;
+}
+
+.policy-checkbox {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+    
+    span {
+        color: black!important;
+    }
+    
+    .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: #245D51;
+        border-color: #245D51;
+    }
+}

@@ -47298,7 +47298,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   height: -moz-fit-content;
   height: fit-content;
   display: flex;
-  align-items: center;
   justify-content: center;
   font-family: "Inter", sans-serif;
   min-height: 100vh;
@@ -47359,6 +47358,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   padding-right: 20px;
   padding-top: 10px;
   margin-right: 15px;
+  width: 18%;
+  height: 100vh;
+  position: fixed;
 }
 
 .menuItem {
@@ -47368,7 +47370,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   height: 2.5rem;
   margin-left: 2rem;
   position: relative;
-  transition: all 300ms ease;
+  /* transition: all 300ms ease; */
   border-radius: 0.7rem;
   font-size: 14px;
   position: sticky;
@@ -47448,14 +47450,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 .columnView {
   display: flex;
-  height: 100%;
-  width: 97vw;
+  width: 100vw;
 }
 
 .content {
-  overflow-x: auto;
+  width: 82%;
   flex-grow: 1;
-  overflow-y: hidden;
+  overflow-y: auto;
+  margin-left: 20%;
+  padding-top: 1.3rem;
 }
 
 .MainDash {
@@ -47479,19 +47482,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 .Cards {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .parentContainer {
-  width: 100%;
+  width: 18.5%;
 }
 
 @media screen and (max-width: 1200px) {
-  .Cards {
-    flex-direction: column;
-  }
   .parentContainer {
     height: 9rem;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .parentContainer {
+    width: 168px;
+    margin-left: 1rem;
   }
 }
 @media screen and (max-width: 768px) {
@@ -47677,6 +47684,11 @@ th {
 .ComposedChart {
   width: 32%;
   flex: 1;
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .RightSide {
@@ -49764,7 +49776,7 @@ img {
   font-size: 14px;
   font-weight: 600;
   color: var(--tp-common-white);
-  background: var(--tp-theme-1);
+  background: #245D51;
   line-height: 1;
   text-align: center;
   padding: 21px 32px;
@@ -49818,9 +49830,9 @@ img {
   display: inline-block;
   font-size: 16px;
   font-weight: 600;
-  color: var(--tp-heading-secondary);
+  color: #245D51;
   background: var(--tp-common-white);
-  border: 1px solid var(--tp-heading-secondary);
+  border: 1px solid #245D51;
   line-height: 28px;
   text-align: center;
   padding: 10px 25px;
@@ -49835,7 +49847,7 @@ img {
 }
 .tp-border-btn:hover {
   color: var(--tp-common-white);
-  background-color: var(--tp-heading-secondary);
+  background-color: #245D51;
 }
 .tp-border-btn:focus {
   color: var(--tp-common-white);
@@ -50093,6 +50105,23 @@ input[type=number]::-webkit-outer-spin-button {
   height: 1px;
   width: 100%;
   background-color: var(--tp-heading-secondary);
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #245D51 !important;
+  font-weight: bold;
+}
+
+.policy-checkbox {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+.policy-checkbox span {
+  color: black !important;
+}
+.policy-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #245D51;
+  border-color: #245D51;
 }
 
 /*----------------------------------------*/
@@ -53368,7 +53397,7 @@ div.choose-sub-color {
 /*  11. INSTRUCTOR CSS START
 /*----------------------------------------*/
 .ArtworkModal {
-  width: 1200px !important;
+  width: 1440px !important;
 }
 
 .tp-instructor {
