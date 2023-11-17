@@ -1,6 +1,6 @@
 import React from 'react'
 import Cards from '../Cards/Cards'
-import Table from './Table/Table'
+import Table from '../Table/Table';
 import Courses from '../Table/Courses'
 import Order from '../instructor-dash/Table/Orders'
 
@@ -9,7 +9,7 @@ const DashStaff = () => {
     <div className='DashStaff'>
       <div className="staffDashContainer mt-30">
         <h1>Dashboard</h1>
-        <Order/>
+        <Table/>
         <Courses/>
       </div>
         
