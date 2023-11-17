@@ -162,7 +162,7 @@ export default function CourseTable() {
                         variant="outlined"
                         color="secondary"
                       >
-                        Delete Course
+                        Close Course
                       </Button>
                     </Spin>
                   </TableCell>

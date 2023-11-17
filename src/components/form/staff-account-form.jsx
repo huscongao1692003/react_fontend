@@ -25,8 +25,7 @@ const RegisterhtmlForm = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const [isLoading, setIsloading] = useState(false);
     const [err, setErr] = useState("");
-    const checkLogin =
-        typeof window !== "undefined" ? localStorage.getItem("isLoggedIn") : null;
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
     const content = [
         <div className="d-flex flex-column">
@@ -147,18 +146,18 @@ const RegisterhtmlForm = () => {
             }, delayDuration);
         } catch (error) {
             if (error.response) {
-                if (error.response.status === 400 && error.response.data) {
-                    setErr(error.response.data.message || "Bad request");
-                    console.log(err);
-                } else {
-                    setErr(error.response.data.message);
-                }
-            } else {
+              if (error.response.status === 400 && error.response.data) {
+                setErr(error.response.data.message || "Bad request");
+                console.log(err);
+              } else {
                 setErr(error.response.data.message);
+              }
+            } else {
+              setErr(error.response.data.message);
             }
             setErr("Cannot register! Please try again.");
             setSuccessMsg("");
-        }
+          }
         loadingMessage();
         setIsloading(false);
     };
