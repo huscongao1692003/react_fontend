@@ -190,7 +190,7 @@ const InstructorPortfolioArea = () => {
                               </div>
                             ) : (
                               <div className="row">
-                                {artworkData.map((item, i) => (
+                                {artworkData.filter((item) => item.status === "Open").map((item, i) => (
                                   <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                                     <div className="tpcourse">
                                       <div className="tpcourse__thumb p-relative w-img fix">
@@ -226,7 +226,7 @@ const InstructorPortfolioArea = () => {
                               </div>
                             ) : (
                               <div className="row">
-                                {certificateData.map((item, i) => (
+                                {certificateData.filter((item) => item.status === "Open").map((item, i) => (
                                   <div key={i} className="col-xl-6 col-lg-12 col-md-6">
                                     <div className="tpcourse">
                                       <div className="tpcourse__thumb p-relative w-img fix">
