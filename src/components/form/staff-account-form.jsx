@@ -45,7 +45,7 @@ const RegisterhtmlForm = () => {
         mobileNum: "",
         confirmPwd: "",
         fullName: "",
-        roleName: "STAFF",
+        roleId: "2",
     });
 
     const handleInputChange = (e) => {
@@ -329,11 +329,11 @@ const RegisterhtmlForm = () => {
                                                 className="mt-10 bg-transparent"
                                                 as="select"
                                                 name="roleName"
-                                                value={formData.roleName}
+                                                value={formData.roleId}
                                                 onChange={handleInputChange}
                                                 required
                                             >
-                                                <option value={"STAFF"}>Staff</option>
+                                                <option value={"2"}>Staff</option>
                                             </Form.Control>
                                         </div>
                                     </div>

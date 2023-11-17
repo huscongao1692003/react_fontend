@@ -45,9 +45,9 @@ const instructors = [
       "Instructors need to create a safe and respectful learning environment for children. They should not accept, encourage, or engage in any form of harassment, discrimination, or violence against students.",
   },
   {
-    title: "Clarification of Content Ownership",
+    title: "Instructor payment for your course",
     content:
-      "Instructors need to clearly define the ownership rights of the content they create in the course. They may decide on the publication, distribution, or reuse of their own content. However, if using students' content in the course, instructors need the consent of the students and comply with privacy and copyright regulations.",
+      "After you sell your course successful, the money will be admin calculate and send you in your payment info in Collection. We will not take any fee for your course, in the future maybe we will consider about taking fee but now this is free platform",
   },
   {
     title: "Compliance with Pricing Regulations",
