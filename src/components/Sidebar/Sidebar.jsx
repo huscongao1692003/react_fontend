@@ -8,6 +8,7 @@ import {
   UilAt,
   UilBars,
   UilShoppingCartAlt,
+  UilUserPlus,
 } from "@iconscout/react-unicons";
 import { motion } from "framer-motion";
 //  import Home from "../";
@@ -19,6 +20,7 @@ import Contact from "../Table/Contact";
 import Postbox from "@/src/components/blog/postbox";
 import Post from "../Table/Post"
 import ReportUser from "../Table/ReportUser";
+import RegisterhtmlForm from "../form/staff-account-form";
 
 const MenuItems = [
   // {
@@ -61,6 +63,11 @@ const MenuItems = [
     icon: UilAt,
     heading: 'Contact msg',
     content: <Contact />,
+  },
+  {
+    icon: UilUserPlus,
+    heading: 'New Staff',
+    content: <RegisterhtmlForm />,
   },
 ];
 

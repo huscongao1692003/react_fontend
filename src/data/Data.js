@@ -73,6 +73,22 @@ export const cardsData = [
       },
     ],
   },
+  {
+    title: "Incomes:",
+    color: {
+      backGround: "linear-gradient(180deg, #03A9F4 0%, #00BCD4 100%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    barValue: 70,
+    value: "173$",
+    png: UilUser,
+    series: [
+      {
+        name: "User",
+        data: [31, 40, 28, 51, 42, 109, 100],
+      },
+    ],
+  },
 ];
 
 export const UpdatesData = [
