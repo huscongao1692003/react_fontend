@@ -63,6 +63,7 @@ export default function ContactTable() {
     <div className="Table">
       <h3>Contacts</h3>
       <TableContainer
+      className='bg-transparent'
         component={Paper}
         style={{ boxShadow: '0px 13px 20px 0px #80808029' }}
         >
