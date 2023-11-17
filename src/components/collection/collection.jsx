@@ -129,7 +129,7 @@ const Collection = () => {
   };
 
   return (
-    <>
+    
       <section
         className="login-area pt-100 pb-100 wow fadeInUp"
         data-wow-duration=".8s"
@@ -262,7 +262,7 @@ const Collection = () => {
           </div>
         </div>
       </section>
-    </>
+    
   );
 };
 

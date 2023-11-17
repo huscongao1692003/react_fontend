@@ -181,8 +181,6 @@ function Artwork() {
                     : imagePre
                 }
                 alt=""
-                width={290}
-                height={310}
               />
               <div className="small font-italic text-muted mb-4">
                 {artwork?.requestImage?.name

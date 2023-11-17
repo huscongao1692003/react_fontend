@@ -34,8 +34,6 @@ const CourseDetailsArea = () => {
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const [avatar, setAvatar] = useState("/assets/img/icon/course-avata-05.png");
 
-  console.log(accessToken);
-
   const handlePageChange = (event, value) => {
     setPage(value); // This should update the page state
   };
@@ -334,7 +332,7 @@ const CourseDetailsArea = () => {
                     <div className="cd-pricing-btn text-center mb-30">
                       {isLoggedIn === "true" &&
                       storedUserRole === "ROLE_CUSTOMER" &&
-                      isPay == false ? (
+                      isPay == false && !isBanned ? (
                         <Link
                           className="tp-vp-btn"
                           href={`/check-out?idCourse=${courseData.courseId}`}
@@ -347,7 +345,7 @@ const CourseDetailsArea = () => {
                       {isLoggedIn === "true" &&
                       storedUserRole === "ROLE_CUSTOMER" &&
                       isPay == true &&
-                      isVac == false ? (
+                      isVac == false && !isBanned ? (
                         <>
                           <Link
                             className="tp-vp-btn-green"

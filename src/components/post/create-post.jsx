@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Spin, message } from 'antd';
+import { Image } from "antd";
 
 function CourseCreateArea() {
   const [courseData, setCourseData] = useState({
@@ -18,6 +19,7 @@ function CourseCreateArea() {
   const [err, setErr] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [imagePre, setImagePre] = useState("");
 
   // Add state variables for input validation errors
   const [titleError, setTitleError] = useState("");
@@ -49,7 +51,20 @@ function CourseCreateArea() {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setCourseData({ ...courseData, requestImage: selectedFile });
+    handleUpload(e);
   };
+
+  const handleUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      setImagePre(e.target.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   const handleDescriptionChange = (e) => {
     const description = e.target.value;
     setCourseData({ ...courseData, description });
@@ -158,11 +173,14 @@ function CourseCreateArea() {
                 onChange={handleFileChange}
               />
 
-              <img
-                src="https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"
+<Image
+                src={
+                  imagePre === ""
+                    ? "https://as1.ftcdn.net/v2/jpg/01/94/55/90/1000_F_194559085_coSk1DYPdHWAYxI74GM9VjyAL4x7OjSq.jpg"
+                    : imagePre
+                }
                 alt=""
-                className="img-account-profile rounded-circle mb-2"
-              />
+                />
               <div className="small font-italic text-muted mb-4">
                 {courseData?.requestImage?.name ? courseData?.requestImage?.name : "JPG or PNG no larger than 5 MB"}
               </div>
