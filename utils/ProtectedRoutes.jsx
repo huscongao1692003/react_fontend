@@ -12,6 +12,8 @@ export const ProtectedRoutes = ({ children, allowedRoles }) => {
         router.pathname.startsWith("/dashboard")||
         router.pathname.startsWith("/checkout")||
         router.pathname.startsWith("/Settings")||
+        router.pathname.startsWith("/artwork")||
+        router.pathname.startsWith("/cetificate")||
         router.pathname.startsWith("/cart")||
         router.pathname.startsWith("/course-create-topic")||
         router.pathname.startsWith("/course-create")||
