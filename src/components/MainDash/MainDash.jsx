@@ -1,14 +1,14 @@
 import React from 'react'
-import Cards from '../Cards/Cards'
 import LineChart from '../Table/LineChart'
 import RadarGrid from '../Table/RadarGrid'
 import ComposedGrid from '../Table/ComposedChart'
+import AdminCards from '../Cards/Cards1'
 const MainDash = () => {
   return (
     
     <div className='MainDash'>
       
-      <Cards />
+      <AdminCards />
       <div class="chart-container">
         <RadarGrid />
         <LineChart />

@@ -1,29 +1,36 @@
-import React from "react";
 import { cardsData } from "@/src/data/Data";
+import React from "react";
 import Card from "../Card/Card";
+import CardCourse from "../Card/Card-Course";
 
-const Cards = () => {
+const Cards = ({ listDataCard = [], open, close }) => {
   return (
     <>
-          <h3 style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+      <h3 style={{ marginTop: "2rem", marginBottom: "2rem" }}>
         Analytics Data
       </h3>
-    <div className="Cards">
-      {cardsData.map((card, id) => {
-        return (
-          <div className="parentContainer" key={id}>
-            <Card
-              title={card.title}
-              color={card.color}
-              barValue={card.barValue}
-              value={card.value}
-              png={card.png}
-              series={card.series}
-            />
-          </div>
-        );
-      })}
-    </div></>
+      <div className="Cards">
+        <div className="parentContainer">
+          <CardCourse open={open} close={close} />
+        </div>
+        {listDataCard.map((card, id) => {
+          return (
+            <div className="parentContainer" key={id}>
+              {" "}
+              {/* Add a unique key prop */}
+              <Card
+                title={card.title}
+                color={card.color}
+                barValue={card.barValue}
+                value={card.value}
+                png={card.png}
+                series={card.series}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 
