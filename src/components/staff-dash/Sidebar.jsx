@@ -7,7 +7,7 @@ import {
   UilPackage,
   UilChart,
   UilBars,
-  UilSignOutAlt
+  UilImages,
 } from "@iconscout/react-unicons";
 import MainDash from "./MainDash";
 import Certificate from './Table/Certificate';
@@ -44,7 +44,7 @@ const MenuItems = [
     content: <Post />,
   },
   {
-    icon: UilChart,
+    icon: UilImages,
     heading: 'Censorship',
     content: <Certificate />,
   },
