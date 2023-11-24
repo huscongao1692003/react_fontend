@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
+import { Space, Tag } from "antd";
+const { CheckableTag } = Tag;
 
 const Collection = () => {
   const [loading, setLoading] = useState(false);
@@ -16,15 +18,35 @@ const Collection = () => {
   const [selectedStyles, setSelectedStyles] = useState([]);
   const [styles, setStyles] = useState([]);
 
+  function mapToListInt(list) {
+    let data = [];
+    for (const element of list) {
+      data.push(element.drawingStyleId);
+    }
+    return data;
+  }
+
+  const handleChange = (tag, checked) => {
+    const nextSelectedTags = checked
+      ? [...experiences, tag]
+      : experiences.filter((t) => t !== tag);
+    console.log("1. Experiences", experiences);
+    setExperiences(nextSelectedTags);
+    console.log("2. Experiences", experiences);
+  };
+
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
   useEffect(() => {
     // Fetch instructor data and set the initial state
     axios
-      .get(`https://drawproject-production-012c.up.railway.app/api/v1/users/id`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get(
+        `https://drawproject-production-012c.up.railway.app/api/v1/users/id`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
       .then((response) => {
         const userId = response.data;
         setId(userId);
@@ -52,7 +74,7 @@ const Collection = () => {
               )
               .then((response) => {
                 const experienceData = response.data.data;
-                setExperiences(experienceData);
+                setExperiences(mapToListInt(experienceData));
                 axios
                   .get(
                     `https://drawproject-production-012c.up.railway.app/api/v1/style`
@@ -102,7 +124,7 @@ const Collection = () => {
         bio: bio,
         payment: payment,
         education: education,
-        styles: selectedStyles,
+        styles: experiences,
       };
 
       await axios.put(
@@ -120,29 +142,21 @@ const Collection = () => {
       console.error("Failed to update instructor profile:", error);
     }
   };
-  const handleStyleChange = (styleId) => {
-    if (selectedStyles.includes(styleId)) {
-      setSelectedStyles(selectedStyles.filter((id) => id !== styleId));
-    } else {
-      setSelectedStyles([...selectedStyles, styleId]);
-    }
-  };
 
   return (
-    
-      <section
-        className="login-area pt-100 pb-100 wow fadeInUp"
-        data-wow-duration=".8s"
-        data-wow-delay=".5s"
-      >
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 offset-lg-2">
-              <div>
-                <h3 className="text-center mb-60">
-                  Update Your Profile Instructor
-                </h3>
-                <form className="" onSubmit={handleSubmit}>
+    <section
+      className="login-area pt-100 pb-100 wow fadeInUp"
+      data-wow-duration=".8s"
+      data-wow-delay=".5s"
+    >
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-8 offset-lg-2">
+            <div>
+              <h3 className="text-center mb-60">
+                Update Your Profile Instructor
+              </h3>
+              <form className="" onSubmit={handleSubmit}>
                 <div className="basic-login">
                   <label>Profile Picture</label>
                   <div className="circular-avatar">
@@ -212,57 +226,42 @@ const Collection = () => {
                     id="education"
                     type="text"
                     placeholder="Enter your education"
-                    value={education} 
+                    value={education}
                     onChange={handleEducationChange} // Handle education field change
                   />
                   <h5>Instructor's Experiences</h5>
-                  <ul>
-                    {experiences.map((experience) => (
-                      <li key={experience.drawingStyleId}>
-                        {experience.drawingStyleName}
-                      </li>
-                    ))}
-                  </ul>
-                  </div>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="style-dropdown">
-                      Select Styles
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                    <Form.Group>
+                  <Space size={[0, 8]} wrap>
                     {styles.map((style) => (
-                      <div key={`style-${style.drawingStyleId}`}>
-                        <Form.Check
-                          type="radio"
-                          id={`style-${style.drawingStyleId}`}
-                          label={style.drawingStyleName}
-                          checked={selectedStyles.includes(style.drawingStyleId)}
-                          onChange={() => handleStyleChange(style.drawingStyleId)}
-                        />
-                      </div>
+                      <CheckableTag
+                        key={style.drawingStyleId}
+                        checked={experiences.includes(style.drawingStyleId)}
+                        onChange={(checked) => handleChange(style.drawingStyleId, checked)}
+                        className="primary-drawing"
+                        style={{fontSize: "1rem", padding:"0.3rem 0.4rem"}}
+                      >
+                        {style.drawingStyleName}
+                      </CheckableTag>
                     ))}
-                  </Form.Group>
-                  </Dropdown.Menu>
-                  </Dropdown>
-                  <div className="mt-30"></div>
-                  <button className="tp-btn w-100">Update Profile</button>
-                </form>
-                <Link className="tp-btn mt-20 w-100" href={`/artwork?id=${id}`}>
-                  Artwork
-                </Link>
-                <Link
-                  className="tp-btn mt-20 w-100"
-                  href={`/cetificate?id=${id}`}
-                >
-                  Cetificate
-                </Link>
-                <div className="mt-20"></div>
-              </div>
+                  </Space>
+                </div>
+                <div className="mt-30"></div>
+                <button className="tp-btn w-100">Update Profile</button>
+              </form>
+              <Link className="tp-btn mt-20 w-100" href={`/artwork?id=${id}`}>
+                Artwork
+              </Link>
+              <Link
+                className="tp-btn mt-20 w-100"
+                href={`/cetificate?id=${id}`}
+              >
+                Cetificate
+              </Link>
+              <div className="mt-20"></div>
             </div>
           </div>
         </div>
-      </section>
-    
+      </div>
+    </section>
   );
 };
 

@@ -5,10 +5,13 @@ import axios from "axios";
 import { useEffect } from "react";
 import TopicItem from "./topic-item";
 import { ModalCreateLesson, ModalCreateAssignment } from "./Modal";
+import Spinner from "react-bootstrap/Spinner";
 
 function CourseCreateTopicArea({ courseId }) {
   const [topics, setTopics] = useState([]);
   const [refetch, setRefetch] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   const [courseData, setCourseData] = useState({
     lessons: [],
     index: "",
@@ -19,6 +22,7 @@ function CourseCreateTopicArea({ courseId }) {
     setCourseData((prevData) => ({ ...prevData, lessons: topics }));
   }, [topics]);
   const getCourseData = async () => {
+    setLoading(true);
     const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
     const accessToken = localStorage.getItem("accessToken");
     const config = {
@@ -28,7 +32,7 @@ function CourseCreateTopicArea({ courseId }) {
         Authorization: `Bearer ${accessToken}`,
       },
     };
-  
+
     try {
       const response = await axios.get(url, config);
       if (response.data.status === "OK") {
@@ -37,42 +41,18 @@ function CourseCreateTopicArea({ courseId }) {
       } else {
         console.error(response);
       }
+      setLoading(false); 
     } catch (e) {
       console.error(e);
+      setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     if (courseId) {
       getCourseData();
     }
-  }, [courseId]);
-  
-
-  const handleSubmit = async () => {
-    const url = `https://drawproject-production-012c.up.railway.app/api/v1/courses/${courseId}/topic`;
-    const accessToken = localStorage.getItem("accessToken");
-    const config = {
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
-    try {
-      const response = await axios.post(url, courseData, config);
-      if (response.data.status === "OK") {
-        alert("success");
-      } else {
-        console.error(response);
-      }
-      // You can process the response data here
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-
+  }, [courseId, refresh]);
 
   return (
     <div style={{ minHeight: "50vh" }}>
@@ -80,6 +60,8 @@ function CourseCreateTopicArea({ courseId }) {
         courseData={courseData}
         setCourseData={setCourseData}
         courseId={courseId}
+        setRefresh={setRefetch}
+        refresh={refresh}
       />
       <ModalCreateAssignment
         courseData={courseData}
@@ -105,10 +87,26 @@ function CourseCreateTopicArea({ courseId }) {
         </button>
       </div>
       <div>
-      {topics.length > 0 ? topics.map((topic) => (
-  <TopicItem key={topic.topicId} data={topic} setRefetch={setRefetch} refetch={refetch} />
-)) : ""}
-    </div>
+        {loading ? (
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            style={{ paddingTop: "300px", paddingBottom: "300px" }}
+          >
+            <Spinner animation="grow" variant="success" size="lg" />
+          </div>
+        ) : topics.length > 0 ? (
+          topics.map((topic) => (
+            <TopicItem
+              key={topic.topicId}
+              data={topic}
+              setRefetch={setRefetch}
+              refetch={refetch}
+            />
+          ))
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 }

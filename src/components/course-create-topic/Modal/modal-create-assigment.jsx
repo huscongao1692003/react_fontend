@@ -184,7 +184,31 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
             ></button>
           </div>
 
-          <div className="mb-3">
+          
+          <div className="modal-body">
+            <form novalidate="" className="ng-untouched ng-pristine ng-invalid">
+              <div className="mb-3">
+                <label for="inputEmailAddress" className="small mb-1">
+                  Topic Id
+                </label>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  value={topicId}
+                  onChange={(e) => {
+                    const newTopicId = e.target.value;
+                    setTopicId(newTopicId);
+                    // You don't need to set lessonId here, just topicId
+                  }}
+                >
+                  <option selected disabled required>
+                    Choose the Topic
+                  </option>
+                  {TopicIdHTML}
+                </select>
+                {errors.topicId && <div className="error">{errors.topicId}</div>}
+              </div>
+              <div className="mb-3">
             <label htmlFor="lessonType" className="small mb-1">
               Lesson Type
             </label>
@@ -233,30 +257,6 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
               />
             </div>
           ) : null}
-          <div className="modal-body">
-            <form novalidate="" className="ng-untouched ng-pristine ng-invalid">
-              <div className="mb-3">
-                <label for="inputEmailAddress" className="small mb-1">
-                  Topic Id
-                </label>
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  value={topicId}
-                  onChange={(e) => {
-                    const newTopicId = e.target.value;
-                    setTopicId(newTopicId);
-                    // You don't need to set lessonId here, just topicId
-                  }}
-                >
-                  <option selected disabled required>
-                    Choose the Topic
-                  </option>
-                  {TopicIdHTML}
-                </select>
-                {errors.topicId && <div className="error">{errors.topicId}</div>}
-              </div>
-
               <div className="mb-3">
                 <label for="inputEmailAddress" className="small mb-1">
                   Lesson Name
@@ -286,7 +286,7 @@ function CreateAssignment({ courseData, setCourseData, courseId }) {
                   placeholder="index"
                   className="form-control ng-untouched ng-pristine ng-invalid"
                   value={newLessonNumber}
-                  readOnly
+                  disabled
                   onChange={(e) => {
                     setLessonData({
                       ...lessonData,
