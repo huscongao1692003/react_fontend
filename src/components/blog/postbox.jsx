@@ -69,7 +69,6 @@ const Postbox = () => {
     );
   }
   return (
-    <>
       <div>
         <div
           className="postbox__area pt-120 pb-120 wow fadeInUp"
@@ -105,6 +104,12 @@ const Postbox = () => {
                               <Link href="#">
                                 <i className="fi fi-rr-user"></i>{" "}
                                 {post.userName}
+                              </Link>
+                            </span>
+                            <span>
+                              <Link href="#">
+                              <i class="fa-solid fa-hourglass-half"></i>{" "}
+                                {post.readingTime} Minus
                               </Link>
                             </span>
                           </div>
@@ -151,7 +156,7 @@ const Postbox = () => {
           </div>
         </div>
       </div>
-    </>
+ 
   );
 };
 

@@ -30,9 +30,7 @@ const Collection = () => {
     const nextSelectedTags = checked
       ? [...experiences, tag]
       : experiences.filter((t) => t !== tag);
-    console.log("1. Experiences", experiences);
     setExperiences(nextSelectedTags);
-    console.log("2. Experiences", experiences);
   };
 
   const accessToken =

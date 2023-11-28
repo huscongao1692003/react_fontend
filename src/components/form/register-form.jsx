@@ -131,7 +131,6 @@ const RegisterhtmlForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(formData);
     const loadingMessage = message.loading("Processing login...", 0);
     setIsloading(true);
     e.preventDefault();

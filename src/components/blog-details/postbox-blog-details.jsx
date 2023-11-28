@@ -102,11 +102,8 @@ if(postId){
                     <h3 className="postbox__title">
                       {post.title}
                     </h3>
-                    <div className="postbox__text">
-                      
-                      <p>
-                        {post.body}
-                      </p>
+                    <div className="postbox__text">  
+                      <div dangerouslySetInnerHTML={{ __html: post.body }} />
                     </div>
 
                     {/* <div className="postbox__tag tagcloud">
